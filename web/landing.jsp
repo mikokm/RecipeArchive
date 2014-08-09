@@ -45,6 +45,11 @@
 	There has been [count] drink recipes added since your last visit! See them <a href="latest.jsp">here</a>.
 </div>
 
+<div>
+	<h2>Administration</h2>
+	Click <a href="users.jsp">here</a> to open administration page.
+</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </body>

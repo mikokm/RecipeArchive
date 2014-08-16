@@ -58,13 +58,13 @@
 		</thead>
 		<tbody>
 		<tr>
-			<td>Jallu</td>
+			<td><a href="drink.jsp">Jallu</a></td>
 			<td>Opiskelijan herkku</td>
 			<td>Jallu, jallu ja jallu</td>
 			<td><input type="submit" name="btn1" class="btn btn-default" value="Add to favourites"></td>
 		</tr>
 		<tr>
-			<td>Jallu</td>
+			<td><a href="drink.jsp">Jallu</a></td>
 			<td>Opiskelijan herkku</td>
 			<td>Jallu, jallu ja jallu</td>
 			<td><input type="submit" name="btn2" class="btn btn-default" value="Add to favourites"></td>

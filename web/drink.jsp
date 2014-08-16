@@ -29,8 +29,8 @@
 		</div>
 		<div class="collapse navbar-collapse" id="links">
 			<ul class="nav navbar-nav navbar-left">
-				<li class="active"><a href="favourites.jsp">Favourite drinks</a></li>
-				<li><a href="drinks.jsp">Find drinks</a></li>
+				<li><a href="favourites.jsp">Favourite drinks</a></li>
+				<li class="active"><a href="drinks.jsp">Find drinks</a></li>
 				<li><a href="createDrink.jsp">Create a new drink</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
@@ -41,34 +41,25 @@
 </nav>
 
 <div class="container-fluid">
-	<h1>Your favourite drinks</h1>
+	<h1>Jallu</h1>
 
-	<form role="form" action="favourites.jsp">
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>Drink name</th>
-				<th>Description</th>
-				<th>Ingredients</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-		<tr>
-			<td><a href="drink.jsp">Jallu</a></td>
-			<td>Opiskelijan herkku</td>
-			<td>Jallu, jallu ja jallu</td>
-			<td><input type="submit" name="btn1" class="btn btn-default" value="Remove"></td>
-		</tr>
-		<tr>
-			<td><a href="drink.jsp">Jallu</a></td>
-			<td>Opiskelijan herkku</td>
-			<td>Jallu, jallu ja jallu</td>
-			<td><input type="submit" name="btn2" class="btn btn-default" value="Remove"></td>
-		</tr>
-		</tbody>
-	</table>
-	</form>
+	<div class="row">
+	<div class="container col-md-3">
+		<img alt="Jallu" src="images/jallu.jpg">
+	</div>
+
+	<div class="container col-md-9">
+		<h2>Description</h2>
+		<p>Opiskelijan herkku</p>
+
+		<h2>Ingredients</h2>
+		<ul>
+			<li>Jallu</li>
+			<li>Jallu</li>
+			<li>Jallu</li>
+		</ul>
+	</div>
+	</div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

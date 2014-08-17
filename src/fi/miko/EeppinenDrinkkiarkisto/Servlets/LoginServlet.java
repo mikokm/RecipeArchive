@@ -71,12 +71,11 @@ public class LoginServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Object loggedIn = session.getAttribute("loggedIn");
 
-		if(loggedIn != null || handleLogin(username, password)) {
-			session.setAttribute("loggedIn", true);
+		if(loggedIn != null || handleLogin(username, password, session)) {
 			request.getRequestDispatcher("/WEB-INF/landing.jsp").forward(request, response);
 		} else {
 			request.setAttribute("username", username);
-
+			
 			if(username != null && password != null) {
 				request.setAttribute("pageError", "Invalid username or password!");
 			}
@@ -89,18 +88,25 @@ public class LoginServlet extends HttpServlet {
 		return !(username == null || password == null || username.isEmpty() || password.isEmpty());
 	}
 
-	private boolean handleLogin(String username, String password) {
+	private boolean handleLogin(String username, String password, HttpSession session) {
 		System.out.println("Login request: " + username + "/" + password);
 		
 		if(!isValidLogin(username, password)) {
 			return false;
 		}
 		
-		User user = User.getUserByName(database, username);
-		if(user == null || !user.getPassword().equals(password)) {
+		User user = User.getUser(database, username, password);
+		if(user == null) {
 			return false;
 		}
 		
-		return true;
+		if(user.getUsername().equals(username) && user.getPassword().equals(password)) {
+			session.setAttribute("loggedIn", true);
+			session.setAttribute("username", user.getUsername());
+			session.setAttribute("admin", user.isAdmin());
+			return true;
+		}
+		
+		return false;
 	}
 }

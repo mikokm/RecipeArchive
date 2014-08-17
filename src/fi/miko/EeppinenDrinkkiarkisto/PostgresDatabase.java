@@ -15,7 +15,7 @@ class DatabaseException extends Exception {
 }
 
 public class PostgresDatabase {
-	private final Logger logger = Logger.getGlobal();
+	private final Logger logger = Logger.getLogger("global");
 	private Properties databaseProperties;
 	private String databaseUrl;
 

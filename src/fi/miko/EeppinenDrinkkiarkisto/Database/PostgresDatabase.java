@@ -1,4 +1,4 @@
-package fi.miko.EeppinenDrinkkiarkisto;
+package fi.miko.EeppinenDrinkkiarkisto.Database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

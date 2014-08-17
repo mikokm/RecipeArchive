@@ -1,18 +1,20 @@
-package fi.miko.EeppinenDrinkkiarkisto;
+package fi.miko.EeppinenDrinkkiarkisto.Servlets;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import fi.miko.EeppinenDrinkkiarkisto.Database.PostgresDatabase;
 
 /**
  * Servlet implementation class DrinkListing
@@ -29,10 +31,10 @@ public class DrinkListing extends HttpServlet {
 	}
 
 	@Override
-	public void init() {
+	public void init(ServletConfig config) throws ServletException {
 		try {
 			Properties props = new Properties();
-			InputStream is = getServletContext().getResourceAsStream("/WEB-INF/database.xml");
+			InputStream is = config.getServletContext().getResourceAsStream("/WEB-INF/database.xml");
 			props.loadFromXML(is);
 			db = new PostgresDatabase(props);
 		} catch (Exception e) {

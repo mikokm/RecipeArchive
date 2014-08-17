@@ -29,21 +29,29 @@
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#links">
 						<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="landing.jsp">Eeppinen drinkkiarkisto</a>
+					<a class="navbar-brand" href="login">Eeppinen drinkkiarkisto</a>
 				</div>
 				<div class="collapse navbar-collapse" id="links">
 					<ul class="nav navbar-nav navbar-left">
-						<li <c:if test="${page == 'favourites'}"> class="active"</c:if>><a href="favourites.jsp">Favourite drinks</a></li>
-						<li <c:if test="${page == 'drinks'}"> class="active"</c:if>><a href="drinks.jsp">Find drinks</a></li>
-						<li <c:if test="${page == 'createDrink'}"> class="active"</c:if>><a href="createDrink.jsp">Create a new drink</a></li>
+						<li <c:if test="${page == 'favourites'}"> class="active"</c:if>><a href="drinks">Favourite drinks</a></li>
+						<li <c:if test="${page == 'drinks'}"> class="active"</c:if>><a href="drinks">Find drinks</a></li>
+						<li <c:if test="${page == 'createDrink'}"> class="active"</c:if>><a href="drinks">Create a new drink</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="logout.jsp">Logout</a></li>
+						<li><a href="logout">Logout</a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
 	</c:if>
+	
 	<jsp:doBody />
+	
+	<c:if test="${pageError != null}">
+		<div class="col-md-2 col-md-offset-5 text-center">
+			<h1>Error!</h1>
+			<p>${pageError}</p>
+		</div>
+	</c:if>
 </body>
 </html>

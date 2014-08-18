@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import fi.miko.EeppinenDrinkkiarkist.Model.User;
 import fi.miko.EeppinenDrinkkiarkisto.Database.PostgresDatabase;
+import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
 /**
  * Servlet implementation class LoginServlet

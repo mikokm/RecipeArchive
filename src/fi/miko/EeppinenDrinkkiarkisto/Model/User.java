@@ -1,4 +1,4 @@
-package fi.miko.EeppinenDrinkkiarkist.Model;
+package fi.miko.EeppinenDrinkkiarkisto.Model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

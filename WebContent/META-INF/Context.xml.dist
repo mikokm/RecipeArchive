@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
-<Resource name="jdbc/postgres" auth="Container"
-          type="javax.sql.DataSource" driverClassName="org.postgresql.Driver"
-          url="jdbc:postgresql://localhost:5432/mikodb"
-          username="user" password="pass" maxActive="100" maxIdle="10" maxWait="100"/>
+    <Resource name="jdbc/postgres" auth="Container"
+        type="javax.sql.DataSource" removeAbandoned="true"
+        removeAbandonedTimeout="30" maxActive="100"
+        maxIdle="30" maxWait="10000" username="user"
+        password="password"
+        driverClassName="org.postgresql.Driver"
+        url="jdbc:postgresql://localhost/mikomynt" />
 </Context>

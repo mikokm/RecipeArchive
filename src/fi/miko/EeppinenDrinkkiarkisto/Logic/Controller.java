@@ -11,28 +11,28 @@ public class Controller {
 	private final DataSource datasource;
 	private final HttpServletRequest request;
 	private final HttpServletResponse response;
+	
 	private static final String jspPath = "/WEB-INF/";
+	private static Map<String, Action> actions = new HashMap<String, Action>();;
 
-	private Map<String, Action> actions = new HashMap<String, Action>();;
+	static {
+		actions.put("POST/login", new LoginAction());
+		actions.put("GET/logout", new LogoutAction());
+		
+		actions.put("GET/drinks", new RedirectAction("drinks.jsp", true));
+		actions.put("GET/landing", new RedirectAction("landing.jsp", true));
+		actions.put("GET/", new RedirectAction("index.jsp", false));
+	}
 
 	public Controller(DataSource ds, HttpServletRequest request, HttpServletResponse response){
 		this.request = request;
 		this.response = response;
 		this.datasource = ds;
-
-		initializeActions();
 	}
+	
 
 	private Action getAction(HttpServletRequest request) {
 		return actions.get(request.getMethod() + request.getPathInfo());
-	}
-
-	private void initializeActions() {
-		actions.put("POST/login", new LoginAction());
-		actions.put("GET/logout", new LogoutAction());
-		actions.put("GET/drinks", new NullAction("drinks.jsp", true));
-		actions.put("GET/landing", new NullAction("landing.jsp", true));
-		actions.put("GET/", new NullAction("index.jsp", false));
 	}
 
 	private void dispatch(String url) {

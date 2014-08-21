@@ -21,7 +21,7 @@ public class User {
 	public boolean isAdmin() {
 		return admin;
 	}
-	
+
 	private User(String username, String password, boolean admin) {
 		this.username = username;
 		this.password = password;
@@ -35,19 +35,22 @@ public class User {
 			System.out.println("Connection is null!");
 			return null;
 		}
-		
+
 		try {
-			PreparedStatement st = con.prepareStatement("SELECT name, password, admin FROM users WHERE name = ? AND password = ?");
+			PreparedStatement st = con.prepareStatement(
+					"SELECT username, password, admin FROM Users " +
+					"WHERE username = ? AND password = ?");
+
 			st.setString(1, name);
 			st.setString(2, password);
 
 			ResultSet rs = st.executeQuery();
-			
+
 			if(rs.next()) {
-				user = new User(rs.getString("name"), rs.getString("password"), rs.getBoolean("admin"));
+				user = new User(rs.getString("username"), rs.getString("password"), rs.getBoolean("admin"));
 				System.out.println("Found user: " + user.getUsername() + "/" + user.getPassword());
 			}
-			
+
 			try { st.close(); st = null; } catch (SQLException e) { ; }
 			try { rs.close(); rs = null; } catch (SQLException e) { ; }
 			try { con.close(); con = null; } catch (SQLException e) { ; }

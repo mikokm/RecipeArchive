@@ -4,11 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-public class NullAction implements Action {
+public class RedirectAction implements Action {
 	private final String url;
 	private final boolean secure;
 
-	public NullAction(String url, boolean secure) {
+	public RedirectAction(String url, boolean secure) {
 		this.url = url;
 		this.secure = secure;
 	}

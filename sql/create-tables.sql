@@ -1,6 +1,6 @@
 CREATE TABLE Users (
 	user_id SERIAL PRIMARY KEY,
-	name TEXT UNIQUE,
+	username TEXT UNIQUE,
 	password TEXT,
 	salt TEXT,
 	admin BOOLEAN,
@@ -12,20 +12,15 @@ CREATE TABLE Drinks (
 	name TEXT UNIQUE,
 	description TEXT,
 	picture_url TEXT,
-	owner INTEGER REFERENCES Users(user_id) ON DELETE SET NULL,
-	date TIMESTAMP
+	date TIMESTAMP,
+	owner INTEGER REFERENCES Users(user_id) ON DELETE SET NULL
 );
 
 CREATE TABLE Ingredients (
 	ingredient_id SERIAL PRIMARY KEY,
-	name TEXT UNIQUE
-);
-
-CREATE TABLE Drink_Ingredients (
+	name TEXT,
 	amount INTEGER CHECK(amount > 0),
-	drink_id INTEGER REFERENCES Drinks(drink_id) ON DELETE CASCADE,
-	ingredient_id INTEGER REFERENCES Ingredients (ingredient_id) ON DELETE CASCADE,
-	PRIMARY KEY(drink_id, ingredient_id)
+	drink_id INTEGER REFERENCES Drinks(drink_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Favourites (

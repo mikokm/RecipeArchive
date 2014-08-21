@@ -8,7 +8,7 @@
 
 		<label>Filter drink recipes:</label> <input id="filter" type="text" class="form-control" placeHolder="">
 
-		<form role="form" action="favourites.jsp">
+		<form role="form" action="favourites">
 			<table class="table table-striped">
 				<thead>
 					<tr>

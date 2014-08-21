@@ -1,50 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-  <display-name>EeppinenDrinkkiarkisto</display-name>
-  <jsp-config>
-    <jsp-property-group>
-      <url-pattern>*.jsp</url-pattern>
-      <trim-directive-whitespaces>true</trim-directive-whitespaces>
-    </jsp-property-group>
-  </jsp-config>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
-  <servlet>
-    <servlet-name>DrinkListing</servlet-name>
-    <servlet-class>fi.miko.EeppinenDrinkkiarkisto.Servlets.DrinkListing</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DrinkListing</servlet-name>
-    <url-pattern>/Listing</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>LoginServlet</servlet-name>
-    <servlet-class>fi.miko.EeppinenDrinkkiarkisto.Servlets.LoginServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>LoginServlet</servlet-name>
-    <url-pattern>/login</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>LogoutServlet</servlet-name>
-    <servlet-class>fi.miko.EeppinenDrinkkiarkisto.Servlets.LogoutServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>LogoutServlet</servlet-name>
-    <url-pattern>/logout</url-pattern>
-  </servlet-mapping>
-    <servlet>
-    <servlet-name>DrinksServlet</servlet-name>
-    <servlet-class>fi.miko.EeppinenDrinkkiarkisto.Servlets.DrinksServlet</servlet-class>
-  </servlet>
-    <servlet-mapping>
-    <servlet-name>DrinksServlet</servlet-name>
-    <url-pattern>/drinks</url-pattern>
-  </servlet-mapping>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<display-name>EeppinenDrinkkiarkisto</display-name>
+	<jsp-config>
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<trim-directive-whitespaces>true</trim-directive-whitespaces>
+		</jsp-property-group>
+	</jsp-config>
+
+	<resource-ref>
+		<description>Datasource</description>
+		<res-ref-name>jdbc/postgres</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+
+	<filter>
+		<filter-name>filter</filter-name>
+		<filter-class>fi.miko.EeppinenDrinkkiarkisto.Servlets.StaticFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>DrinkListServlet</servlet-name>
+		<servlet-class>fi.miko.EeppinenDrinkkiarkisto.Servlets.DrinkListServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DrinkListServlet</servlet-name>
+		<url-pattern>/DrinkList</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ControllerServlet</servlet-name>
+		<servlet-class>fi.miko.EeppinenDrinkkiarkisto.Servlets.ControllerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ControllerServlet</servlet-name>
+		<url-pattern>/pages/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/static/*</url-pattern>
+	</servlet-mapping>
 </web-app>

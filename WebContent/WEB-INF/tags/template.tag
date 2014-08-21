@@ -10,8 +10,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Eeppinen drinkkiarkisto</title>
 
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/custom.css" rel="stylesheet">
+<link href="static/css/bootstrap.min.css" rel="stylesheet">
+<link href="static/css/custom.css" rel="stylesheet">
 
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -19,7 +19,7 @@
 <![endif]-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<c:if test="${page != null}">
@@ -29,7 +29,7 @@
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#links">
 						<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="login">Eeppinen drinkkiarkisto</a>
+					<a class="navbar-brand" href="landing">Eeppinen drinkkiarkisto</a>
 				</div>
 				<div class="collapse navbar-collapse" id="links">
 					<ul class="nav navbar-nav navbar-left">

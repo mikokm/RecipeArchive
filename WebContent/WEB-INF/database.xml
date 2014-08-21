@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="user">miko</entry>
+	<entry key="password">okim</entry>
+	<entry key="database">jdbc:postgresql://localhost:5432/mikodb</entry>
+</properties>

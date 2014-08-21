@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+<Resource name="jdbc/postgres" auth="Container"
+          type="javax.sql.DataSource" driverClassName="org.postgresql.Driver"
+          url="jdbc:postgresql://localhost:5432/mikodb"
+          username="miko" password="okim" maxActive="100" maxIdle="10" maxWait="100"/>
+</Context>

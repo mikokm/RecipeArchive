@@ -3,8 +3,7 @@ package fi.miko.EeppinenDrinkkiarkisto.Model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import fi.miko.EeppinenDrinkkiarkisto.Database.PostgresDatabase;
+import java.sql.SQLException;
 
 public class User {
 	private	String username;
@@ -29,11 +28,15 @@ public class User {
 		this.admin = admin;
 	}
 
-	public static User getUser(PostgresDatabase database, String name, String password) {
+	public static User getUser(Connection con, String name, String password) {
 		User user = null;
 
+		if(con == null) {
+			System.out.println("Connection is null!");
+			return null;
+		}
+		
 		try {
-			Connection con = database.connect();
 			PreparedStatement st = con.prepareStatement("SELECT name, password, admin FROM users WHERE name = ? AND password = ?");
 			st.setString(1, name);
 			st.setString(2, password);
@@ -45,11 +48,13 @@ public class User {
 				System.out.println("Found user: " + user.getUsername() + "/" + user.getPassword());
 			}
 			
-			st.close();
-			rs.close();
-			con.close();
+			try { st.close(); st = null; } catch (SQLException e) { ; }
+			try { rs.close(); rs = null; } catch (SQLException e) { ; }
+			try { con.close(); con = null; } catch (SQLException e) { ; }
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			try { if(con != null) con.close(); } catch (SQLException e) { ; }
 		}
 
 		return user;

@@ -42,9 +42,4 @@
 		<servlet-name>ControllerServlet</servlet-name>
 		<url-pattern>/pages/*</url-pattern>
 	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>default</servlet-name>
-		<url-pattern>/static/*</url-pattern>
-	</servlet-mapping>
 </web-app>

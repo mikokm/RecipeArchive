@@ -45,6 +45,8 @@ public class Controller {
 
 	public void processRequest() throws Exception {
 		response.setContentType("text/html;charset=UTF-8");
+		
+		System.out.println(request.getPathInfo() + " / " + request.getRequestURI());
 
 		// Redirect the logged in users to the landing page.
 		if(request.getPathInfo().equals("/") && isLoggedIn()) {

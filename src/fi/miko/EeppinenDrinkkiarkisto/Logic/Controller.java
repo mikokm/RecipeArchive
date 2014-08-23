@@ -18,9 +18,17 @@ public class Controller {
 	static {
 		actions.put("POST/login", new LoginAction());
 		actions.put("GET/logout", new LogoutAction());
-		
+
+		actions.put("GET/addDrinkList", new RedirectAction("addDrinkList.jsp", true));
+		actions.put("GET/createDrink", new RedirectAction("createDrink.jsp", true));
 		actions.put("GET/drinks", new RedirectAction("drinks.jsp", true));
+		actions.put("GET/favourites", new RedirectAction("favourites.jsp", true));
 		actions.put("GET/landing", new RedirectAction("landing.jsp", true));
+		
+		actions.put("GET/createUser", new RedirectAction("createUser.jsp", true));
+		actions.put("GET/admin", new RedirectAction("admin.jsp", true));
+		
+		
 		actions.put("GET/", new RedirectAction("index.jsp", false));
 	}
 

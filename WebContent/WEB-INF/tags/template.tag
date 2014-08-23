@@ -33,9 +33,9 @@
 				</div>
 				<div class="collapse navbar-collapse" id="links">
 					<ul class="nav navbar-nav navbar-left">
-						<li <c:if test="${page == 'favourites'}"> class="active"</c:if>><a href="drinks">Favourite drinks</a></li>
+						<li <c:if test="${page == 'favourites'}"> class="active"</c:if>><a href="favourites">Favourite drinks</a></li>
 						<li <c:if test="${page == 'drinks'}"> class="active"</c:if>><a href="drinks">Find drinks</a></li>
-						<li <c:if test="${page == 'createDrink'}"> class="active"</c:if>><a href="drinks">Create a new drink</a></li>
+						<li <c:if test="${page == 'createDrink'}"> class="active"</c:if>><a href="createDrink">Create a new drink</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="logout">Logout</a></li>

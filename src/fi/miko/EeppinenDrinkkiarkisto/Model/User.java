@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.commons.dbutils.DbUtils;
+
 public class User {
 	private	String username;
 	private String password;
@@ -28,36 +30,37 @@ public class User {
 		this.admin = admin;
 	}
 
-	public static User getUser(Connection con, String name, String password) {
+	public static User getUser(Connection conn, String name, String password) {
 		User user = null;
 
-		if(con == null) {
+		if(conn == null) {
 			System.out.println("Connection is null!");
 			return null;
 		}
 
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
 		try {
-			PreparedStatement st = con.prepareStatement(
+			st = conn.prepareStatement(
 					"SELECT username, password, admin FROM Users " +
 					"WHERE username = ? AND password = ?");
 
 			st.setString(1, name);
 			st.setString(2, password);
 
-			ResultSet rs = st.executeQuery();
+			rs = st.executeQuery();
 
 			if(rs.next()) {
 				user = new User(rs.getString("username"), rs.getString("password"), rs.getBoolean("admin"));
 				System.out.println("Found user: " + user.getUsername() + "/" + user.getPassword());
 			}
 
-			try { st.close(); st = null; } catch (SQLException e) { ; }
-			try { rs.close(); rs = null; } catch (SQLException e) { ; }
-			try { con.close(); con = null; } catch (SQLException e) { ; }
-		} catch (Exception e) {
+			DbUtils.closeQuietly(conn, st, rs);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try { if(con != null) con.close(); } catch (SQLException e) { ; }
+			DbUtils.closeQuietly(conn, st, rs);
 		}
 
 		return user;

@@ -21,10 +21,12 @@ public class DrinkListServlet extends HttpServlet {
 		super();
 	}
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processRequest(request, response);
 	}
 
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processRequest(request, response);
 	}
@@ -32,25 +34,25 @@ public class DrinkListServlet extends HttpServlet {
 	protected void loadDrinks(PrintWriter out) {
 		InitialContext ctx;
 		DataSource ds;
-		
+
 		try {
 			ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup( "java:/comp/env/jdbc/postgres" );
+			ds = (DataSource) ctx.lookup("java:/comp/env/jdbc/postgres");
 		} catch (NamingException e) {
 			e.printStackTrace();
 			return;
 		}
-		
-		if(ctx == null || ds == null) {
+
+		if (ctx == null || ds == null) {
 			return;
 		}
-		
+
 		try {
 			Connection con = ds.getConnection();
 			String sql = "SELECT name, description, picture_url FROM Drinks";
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
-			
+
 			out.println("<table>");
 			out.println("<tr>\n");
 			out.println("<th>Name</th>");
@@ -80,9 +82,9 @@ public class DrinkListServlet extends HttpServlet {
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = response.getWriter(); 
+		PrintWriter out = response.getWriter();
 		try {
-			out.println("<html><head>"); 
+			out.println("<html><head>");
 			out.println("<title>List of drinks</title>");
 			out.println("<style> table,th,td { border:1px solid black; } </style>");
 			out.println("</head><body>");
@@ -90,7 +92,7 @@ public class DrinkListServlet extends HttpServlet {
 			loadDrinks(out);
 			out.println("</body>");
 			out.println("</html>");
-		} finally {            
+		} finally {
 			out.close();
 		}
 	}

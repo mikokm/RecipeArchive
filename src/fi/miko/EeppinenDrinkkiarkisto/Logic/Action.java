@@ -6,5 +6,6 @@ import javax.sql.DataSource;
 
 public interface Action {
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception;
+
 	public boolean secure();
 }

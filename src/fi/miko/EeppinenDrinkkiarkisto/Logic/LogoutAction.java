@@ -11,7 +11,7 @@ public class LogoutAction implements Action {
 		HttpSession session = request.getSession();
 		session.removeAttribute("loggedIn");
 		request.removeAttribute("username");
-		
+
 		return "index.jsp";
 	}
 

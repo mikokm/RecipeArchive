@@ -9,21 +9,20 @@ import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
 public class LoginAction implements Action {
 	@Override
-	public String execute(DataSource ds, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		
+
 		// First page view.
-		if(username == null && password == null) {
+		if (username == null && password == null) {
 			return "index.jsp";
 		}
-		
+
 		request.setAttribute("username", username);
 
 		User user = User.getUser(ds.getConnection(), username, password);
 
-		if(user == null) {
+		if (user == null) {
 			request.setAttribute("pageError", "Invalid username or password!");
 			return "index.jsp";
 		}
@@ -32,7 +31,7 @@ public class LoginAction implements Action {
 		session.setAttribute("loggedIn", true);
 		session.setAttribute("username", user.getUsername());
 		session.setAttribute("admin", user.isAdmin());
-		
+
 		return "landing.jsp";
 	}
 

@@ -8,32 +8,26 @@ import java.sql.SQLException;
 import org.apache.commons.dbutils.DbUtils;
 
 public class User {
-	private	String username;
+	private int id;
+	private String username;
 	private String password;
 	private boolean admin;
 
-	public String getUsername() {
-		return username;
+	private User(int id, String username, String password, boolean admin) {
+		setId(id);
+		setUsername(username);
+		setPassword(password);
+		setAdmin(admin);
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public boolean isAdmin() {
-		return admin;
-	}
-
-	private User(String username, String password, boolean admin) {
-		this.username = username;
-		this.password = password;
-		this.admin = admin;
+	public static User createUser(Connection conn) {
+		return null;
 	}
 
 	public static User getUser(Connection conn, String name, String password) {
 		User user = null;
 
-		if(conn == null) {
+		if (conn == null) {
 			System.out.println("Connection is null!");
 			return null;
 		}
@@ -42,17 +36,16 @@ public class User {
 		ResultSet rs = null;
 
 		try {
-			st = conn.prepareStatement(
-					"SELECT username, password, admin FROM Users " +
-					"WHERE username = ? AND password = ?");
+			st = conn.prepareStatement("SELECT user_id, username, password, admin FROM Users " + "WHERE username = ? AND password = ?");
 
 			st.setString(1, name);
 			st.setString(2, password);
 
 			rs = st.executeQuery();
 
-			if(rs.next()) {
-				user = new User(rs.getString("username"), rs.getString("password"), rs.getBoolean("admin"));
+			if (rs.next()) {
+				user = new User(rs.getInt("user_id"), rs.getString("username"), rs.getString("password"), rs.getBoolean("admin"));
+
 				System.out.println("Found user: " + user.getUsername() + "/" + user.getPassword());
 			}
 
@@ -64,5 +57,37 @@ public class User {
 		}
 
 		return user;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+
+	private void setId(int id) {
+		this.id = id;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

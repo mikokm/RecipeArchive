@@ -28,7 +28,6 @@ public class LoginAction implements Action {
 		}
 
 		HttpSession session = request.getSession();
-		session.setAttribute("loggedIn", true);
 		session.setAttribute("user", user);
 
 		return "landing.jsp";

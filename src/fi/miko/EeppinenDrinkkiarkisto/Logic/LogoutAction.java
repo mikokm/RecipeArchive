@@ -9,7 +9,7 @@ public class LogoutAction implements Action {
 	@Override
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpSession session = request.getSession();
-		session.removeAttribute("loggedIn");
+
 		session.removeAttribute("user");
 		request.removeAttribute("username");
 

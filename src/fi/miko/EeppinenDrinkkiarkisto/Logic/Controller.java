@@ -30,13 +30,13 @@ public class Controller {
 		actions.add("GET/logout", new LogoutAction());
 
 		actions.add("GET/addDrinkList", new RedirectAction("addDrinkList.jsp", true));
-		
-		actions.add("GET/createDrink", new CreateDrinkAction());
+
+		actions.add("GET/createDrink", new RedirectAction("createDrink.jsp", true));
+		actions.add("POST/createDrink", new CreateDrinkAction());
 		actions.add("GET/drink", new DrinkAction());
 		actions.add("GET/drinks", new DrinksAction());
-		
 		actions.add("POST/deleteDrink", new DeleteDrinkAction());
-		
+
 		actions.add("GET/favourites", new RedirectAction("favourites.jsp", true));
 		actions.add("GET/landing", new RedirectAction("landing.jsp", true));
 
@@ -76,13 +76,20 @@ public class Controller {
 		}
 
 		// Require logged in status for the secure sites.
-		if (!action.secure() || (action.secure() && isLoggedIn())) {
+		if (!action.secure() || isLoggedIn()) {
 			String url = action.execute(dataSource, request, response);
+
+			if (url == null || url.isEmpty()) {
+				return;
+			}
+
 			dispatch(url);
+		} else {
+			dispatch("index.jsp");
 		}
 	}
 
 	private boolean isLoggedIn() {
-		return request.getSession().getAttribute("loggedIn") != null;
+		return request.getSession().getAttribute("user") != null;
 	}
 }

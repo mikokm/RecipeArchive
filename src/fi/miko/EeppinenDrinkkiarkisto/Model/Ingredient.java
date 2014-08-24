@@ -3,7 +3,7 @@ package fi.miko.EeppinenDrinkkiarkisto.Model;
 public class Ingredient {
 	private int amount;
 	private String name;
-	
+
 	public int getAmount() {
 		return amount;
 	}

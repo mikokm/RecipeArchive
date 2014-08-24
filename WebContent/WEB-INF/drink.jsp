@@ -6,6 +6,8 @@
 	<div class="container-fluid">
 		<a href="drinks">Return to drinks</a>
 
+		<c:set var="drink" value="${sessionScope.activeDrink}"/>
+
 		<div class="page-header">
 			<h1><c:out value="${drink.name}" /></h1>
 		</div>

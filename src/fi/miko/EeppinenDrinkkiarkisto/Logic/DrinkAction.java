@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
-import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
 public class DrinkAction implements Action {
 	private final static String DRINK_PAGE = "drink.jsp";
@@ -13,7 +12,7 @@ public class DrinkAction implements Action {
 	@Override
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String parameter = request.getParameter("id");
-		int id;
+		int id = 0;
 
 		try {
 			id = Integer.parseInt(parameter);
@@ -31,15 +30,10 @@ public class DrinkAction implements Action {
 			request.setAttribute("pageError", "Failed to find a drink from the database with an id: " + id);
 			return DRINK_PAGE;
 		}
-		
-		User user = (User) request.getSession().getAttribute("user");
-		System.out.println(drink.getOwnerId() + " & " + user.getId());
 
-		request.setAttribute("drink", drink);
 		request.setAttribute("previousPage", "drinks");
-		
 		request.getSession().setAttribute("activeDrink", drink);
-		
+
 		return DRINK_PAGE;
 	}
 

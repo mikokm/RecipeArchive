@@ -71,7 +71,7 @@ public class Drink {
 	public int getOwnerId() {
 		return ownerId;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -83,6 +83,7 @@ public class Drink {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 	public Map<String, Integer> getIngredients() {
 		return ingredients;
 	}
@@ -147,13 +148,8 @@ public class Drink {
 			if (rs.next()) {
 				DateTime date = new DateTime(rs.getTimestamp("date").getTime());
 
-				drink = new Drink(rs.getInt("drink_id"),
-						rs.getString("name"),
-						rs.getString("description"),
-						rs.getString("picture_url"),
-						date.toString("hh:mm dd.MM.yyy"),
-						rs.getString("username"),
-						rs.getInt("owner"));
+				drink = new Drink(rs.getInt("drink_id"), rs.getString("name"), rs.getString("description"), rs.getString("picture_url"),
+						date.toString("hh:mm dd.MM.yyy"), rs.getString("username"), rs.getInt("owner"));
 			}
 
 			DbUtils.closeQuietly(null, st, rs);
@@ -194,7 +190,7 @@ public class Drink {
 	}
 
 	public static boolean addDrinkToDatabase(Connection conn, Drink drink, int ownerId) {
-		if(drink.getId() != 0) {
+		if (drink.getId() != 0) {
 			return false;
 		}
 
@@ -240,14 +236,13 @@ public class Drink {
 	}
 
 	public boolean saveDrink(Connection conn) {
-		if(id == 0) {
+		if (id == 0) {
 			return false;
 		}
 
 		String sql;
 
-		sql = "UPDATE Drinks SET name = ?, description = ?, picture_url = ? "
-				+ "WHERE drink_id = ?";
+		sql = "UPDATE Drinks SET name = ?, description = ?, picture_url = ? " + "WHERE drink_id = ?";
 
 		PreparedStatement st = null;
 
@@ -278,7 +273,7 @@ public class Drink {
 		DbUtils.closeQuietly(st);
 
 		st = conn.prepareStatement("INSERT INTO Ingredients(amount, name) VALUES (?, ?)");
-		for(Entry<String, Integer> entry : ingredients.entrySet()) {
+		for (Entry<String, Integer> entry : ingredients.entrySet()) {
 			st.setInt(1, entry.getValue());
 			st.setString(2, entry.getKey());
 			st.executeQuery();

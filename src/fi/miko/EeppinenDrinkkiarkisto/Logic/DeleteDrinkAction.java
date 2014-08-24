@@ -8,25 +8,24 @@ import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
 public class DeleteDrinkAction implements Action {
-
 	@Override
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Drink drink = (Drink) request.getSession().getAttribute("activeDrink");
 		User user = (User) request.getSession().getAttribute("user");
-		String previous = (String) request.getAttribute("previousPage");
-		
-		if(drink == null || user == null) {
-			return previous;
+		String previous = request.getParameter("previousPage");
+
+		if (drink == null || user == null || drink.getOwnerId() != user.getId()) {
+			return "landing.jsp";
 		}
-		
-		if(drink.getOwnerId() != user.getId()) {
-			return previous;
-		}
-		
+
 		drink.deleteDrink(ds.getConnection());
 		request.getSession().removeAttribute("activeDrink");
-		
-		return previous;
+
+		if (previous != null) {
+			response.sendRedirect(response.encodeRedirectURL(previous));
+		}
+
+		return "landing.jsp";
 	}
 
 	@Override

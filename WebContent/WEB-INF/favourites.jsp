@@ -4,8 +4,10 @@
 
 <t:template page="favourites">
 	<div class="container-fluid">
-		<h1>Your favourite drinks</h1>
-
+		<div class="page-header">
+			<h1>Your favourite drinks</h1>
+		</div>
+		
 		<form role="form" action="favourites.jsp">
 			<table class="table table-striped">
 				<thead>

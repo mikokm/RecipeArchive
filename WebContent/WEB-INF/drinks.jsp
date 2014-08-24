@@ -4,8 +4,10 @@
 
 <t:template page="drinks">
 	<div class="container-fluid">
-		<h1>Available drinks</h1>
-
+		<div class="page-header">
+			<h1>Available drinks</h1>
+		</div>
+		
 		<form role="form" action="favourites">
 			<table class="table table-striped">
 				<thead>

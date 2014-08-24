@@ -6,7 +6,9 @@
 	<div class="container-fluid">
 		<a href="drinks">Return to drinks</a>
 
-		<h1><c:out value="${drink.name}" /></h1>
+		<div class="page-header">
+			<h1><c:out value="${drink.name}" /></h1>
+		</div>
 
 		<div class="row">
 			<div class="container col-md-3">
@@ -14,15 +16,28 @@
 			</div>
 
 			<div class="container col-md-9">
-				<h2>Description</h2>
+				<h3>Description</h3>
 				<p><c:out value="${drink.description}" /></p>
 
-				<h2>Ingredients</h2>
+				<h3>Added by</h3>
+				<p><c:out value="${drink.owner}" /></p>
+
+				<h3>Addition date</h3>
+				<p><c:out value="${drink.date}" /></p>
+
+				<h3>Ingredients</h3>
 				<ul>
 				<c:forEach var="entry" items="${drink.ingredients}">
-						<li>${entry.value}cl <c:out value="${entry.key}" /></li>
+				<li>${entry.value}cl<c:out value=" ${entry.key}" /></li>
 				</c:forEach></ul>
 			</div>
 		</div>
+		<br>
+		<c:if test="${drink.ownerId == sessionScope.user.id}">
+			<form role="form" action="deleteDrink" method="post">
+				<input type="hidden" name="previousPage" value="${previousPage}">
+				<button type="submit" class="btn btn-default pull-left">Delete drink</button>
+			</form>
+		</c:if>
 	</div>
 </t:template>

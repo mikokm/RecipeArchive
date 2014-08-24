@@ -11,13 +11,14 @@ public class User {
 	private int id;
 	private String username;
 	private String password;
+	private String lastLogin;
 	private boolean admin;
 
 	private User(int id, String username, String password, boolean admin) {
-		setId(id);
-		setUsername(username);
-		setPassword(password);
-		setAdmin(admin);
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.admin = admin;
 	}
 
 	public static User createUser(Connection conn) {
@@ -36,7 +37,7 @@ public class User {
 		ResultSet rs = null;
 
 		try {
-			st = conn.prepareStatement("SELECT user_id, username, password, admin FROM Users " + "WHERE username = ? AND password = ?");
+			st = conn.prepareStatement("SELECT user_id, username, password, admin, last_login FROM Users " + "WHERE username = ? AND password = ?");
 
 			st.setString(1, name);
 			st.setString(2, password);
@@ -71,7 +72,7 @@ public class User {
 		return username;
 	}
 
-	public boolean isAdmin() {
+	public boolean getAdmin() {
 		return admin;
 	}
 

@@ -4,8 +4,8 @@
 
 <t:template page="landing">
 	<div class="container-fluid">
-		<h1>Welcome back ${sessionScope.username}!</h1>
-		<c:if test="${sessionScope.admin == true}">
+		<h1>Welcome back ${sessionScope.user.username}!</h1>
+		<c:if test="${sessionScope.user.admin == true}">
 		<h2>Administration</h2>
 		Click <a href="admin">here</a> to open administration page.
 		</c:if>

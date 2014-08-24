@@ -4,8 +4,10 @@
 
 <t:template page="createDrink">
 <div class="container-fluid">
-	<h1>Create a new drink</h1>
-
+	<div class="page-header">
+		<h1>Create a new drink</h1>
+	</div>
+		
 	<div class="form-group">
 		<form role="form" action="createDrink" method="post">
 			<label>Drink name</label>

@@ -1,8 +1,7 @@
 package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -18,10 +17,10 @@ public class CreateDrinkAction implements Action {
 		drink.setDescription("moi");
 		drink.setUrl("testurl");
 
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("Jallu", 20);
-		map.put("Kossu", 20);
-		drink.setIngredients(map);
+		List<String> list = new ArrayList<String>();
+		list.add("10 cl kossu");
+		list.add("20 cl jallu");
+		drink.setIngredients(list);
 
 		User user = (User) request.getSession().getAttribute("user");
 		if (user == null) {

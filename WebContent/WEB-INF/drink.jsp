@@ -30,12 +30,12 @@
 				<h3>Ingredients</h3>
 				<ul>
 				<c:forEach var="entry" items="${drink.ingredients}">
-				<li>${entry.value}cl<c:out value=" ${entry.key}" /></li>
+				<li><c:out value=" ${entry}" /></li>
 				</c:forEach></ul>
 			</div>
 		</div>
 		<br>
-		<c:if test="${drink.ownerId == sessionScope.user.id}">
+		<c:if test="${drink.ownerId == sessionScope.user.id || sessionScope.user.admin == true}">
 			<form role="form" action="deleteDrink" method="post">
 				<input type="hidden" name="previousPage" value="${previousPage}">
 				<button type="submit" class="btn btn-default pull-left">Delete drink</button>

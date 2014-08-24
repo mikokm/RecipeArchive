@@ -6,11 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.commons.dbutils.DbUtils;
 import org.joda.time.DateTime;
 
@@ -22,7 +18,7 @@ public class Drink {
 	private String date;
 	private String owner;
 	private int ownerId;
-	private Map<String, Integer> ingredients;
+	private List<String> ingredients;
 
 	private Drink(int id, String name, String description, String url, String date, String owner, int ownerId) {
 		this.id = id;
@@ -84,11 +80,11 @@ public class Drink {
 		this.url = url;
 	}
 
-	public Map<String, Integer> getIngredients() {
+	public List<String> getIngredients() {
 		return ingredients;
 	}
 
-	public void setIngredients(Map<String, Integer> ingredients) {
+	public void setIngredients(List<String> ingredients) {
 		this.ingredients = ingredients;
 	}
 
@@ -96,28 +92,20 @@ public class Drink {
 		return new Drink();
 	}
 
-	private static Map<String, Integer> getIngredientsFromDatabase(Connection conn, int id) {
-		Map<String, Integer> ingredients = new HashMap<String, Integer>();
+	private static List<String> getIngredientsFromDatabase(Connection conn, int id) {
+		List<String> ingredients = new ArrayList<String>();
 
-		String sql = ("SELECT name, amount FROM Ingredients WHERE drink_id = ?");
+		String sql = ("SELECT name FROM Ingredients WHERE drink_id = ?");
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
 		try {
 			st = conn.prepareStatement(sql);
 			st.setInt(1, id);
-
 			rs = st.executeQuery();
 
 			while (rs.next()) {
-				String name = rs.getString("name");
-				int amount = rs.getInt("amount");
-
-				if (ingredients.containsKey(name)) {
-					amount += ingredients.get(name);
-				}
-
-				ingredients.put(name, amount);
+				ingredients.add(rs.getString("name"));
 			}
 
 			DbUtils.closeQuietly(conn, st, rs);
@@ -257,6 +245,8 @@ public class Drink {
 
 			DbUtils.closeQuietly(st);
 			saveIngredients(conn);
+			DbUtils.closeQuietly(conn);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -272,13 +262,12 @@ public class Drink {
 		st.executeQuery();
 		DbUtils.closeQuietly(st);
 
-		st = conn.prepareStatement("INSERT INTO Ingredients(amount, name) VALUES (?, ?)");
-		for (Entry<String, Integer> entry : ingredients.entrySet()) {
-			st.setInt(1, entry.getValue());
-			st.setString(2, entry.getKey());
+		st = conn.prepareStatement("INSERT INTO Ingredients(name) VALUES (?)");
+		for(String ingredient : ingredients) {
+			st.setString(1, ingredient);
 			st.executeQuery();
 		}
-
+		
 		DbUtils.closeQuietly(st);
 	}
 }

@@ -40,6 +40,11 @@
 				<input type="hidden" name="previousPage" value="${previousPage}">
 				<button type="submit" class="btn btn-default pull-left">Delete drink</button>
 			</form>
+			
+			<form role="form" action="modifyDrink" method="post">
+				<input type="hidden" name="previousPage" value="${previousPage}">
+				<button type="submit" class="btn btn-default pull-left">Modify drink</button>
+			</form>
 		</c:if>
 	</div>
 </t:template>

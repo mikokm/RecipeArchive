@@ -7,7 +7,17 @@ import javax.sql.DataSource;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
-public class DeleteDrinkAction implements Action {
+public class ModifyDrinkAction implements Action {
+	private ACTION_TYPE action;
+	
+	public enum ACTION_TYPE {
+		 DELETE, MODIFY
+	}
+	
+	public ModifyDrinkAction(ACTION_TYPE action) {
+		this.action = action;
+	}
+	
 	@Override
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Drink drink = (Drink) request.getSession().getAttribute("activeDrink");
@@ -17,20 +27,26 @@ public class DeleteDrinkAction implements Action {
 		if (drink == null || user == null || drink.getOwnerId() != user.getId()) {
 			return "landing.jsp";
 		}
-
-		drink.deleteDrink(ds.getConnection());
-		request.getSession().removeAttribute("activeDrink");
-
-		if (previous != null) {
-			response.sendRedirect(response.encodeRedirectURL(previous));
+		
+		if(action == ACTION_TYPE.DELETE) {
+			drink.deleteDrink(ds.getConnection());
+			request.getSession().removeAttribute("activeDrink");
+			
+			if (previous != null) {
+				response.sendRedirect(response.encodeRedirectURL(previous));
+			}
 		}
 
-		return "landing.jsp";
+		if(action == ACTION_TYPE.MODIFY) {
+			request.setAttribute("drink", drink);
+			return "modifyDrink.jsp";
+		}
+		
+		return null;
 	}
 
 	@Override
 	public boolean secure() {
 		return true;
 	}
-
 }

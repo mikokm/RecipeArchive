@@ -18,6 +18,11 @@ public class Drink {
 	private String date;
 	private String owner;
 	private int ownerId;
+	
+	public void setOwnerId(int ownerId) {
+		this.ownerId = ownerId;
+	}
+
 	private List<String> ingredients;
 
 	private Drink(int id, String name, String description, String url, String date, String owner, int ownerId) {
@@ -259,13 +264,14 @@ public class Drink {
 	private void saveIngredients(Connection conn) throws SQLException {
 		PreparedStatement st = conn.prepareStatement("DELETE FROM Ingredients WHERE drink_id = ?");
 		st.setInt(1, id);
-		st.executeQuery();
+		st.executeUpdate();
 		DbUtils.closeQuietly(st);
 
-		st = conn.prepareStatement("INSERT INTO Ingredients(name) VALUES (?)");
+		st = conn.prepareStatement("INSERT INTO Ingredients(drink_id, name) VALUES (?, ?)");
 		for(String ingredient : ingredients) {
-			st.setString(1, ingredient);
-			st.executeQuery();
+			st.setInt(1, id);
+			st.setString(2, ingredient);
+			st.executeUpdate();
 		}
 		
 		DbUtils.closeQuietly(st);

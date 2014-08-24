@@ -4,7 +4,7 @@ CREATE TABLE Users (
 	password TEXT,
 	salt TEXT,
 	admin BOOLEAN,
-	last_login TIMESTAMP
+	last_login TIMESTAMPTZ
 );
 
 CREATE TABLE Drinks (
@@ -12,7 +12,7 @@ CREATE TABLE Drinks (
 	name TEXT UNIQUE,
 	description TEXT,
 	picture_url TEXT,
-	date TIMESTAMP,
+	date TIMESTAMPTZ,
 	owner INTEGER REFERENCES Users(user_id) ON DELETE SET NULL
 );
 

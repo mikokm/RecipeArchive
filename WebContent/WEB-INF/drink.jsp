@@ -6,23 +6,22 @@
 	<div class="container-fluid">
 		<a href="drinks">Return to drinks</a>
 
-		<h1>Jallu</h1>
+		<h1><c:out value="${drink.name}" /></h1>
 
 		<div class="row">
 			<div class="container col-md-3">
-				<img alt="Jallu" src="images/jallu.jpg">
+				<img alt="<c:out value="${drink.name}" />" src="<c:out value="${drink.url}" />">
 			</div>
 
 			<div class="container col-md-9">
 				<h2>Description</h2>
-				<p>Opiskelijan herkku</p>
+				<p><c:out value="${drink.description}" /></p>
 
 				<h2>Ingredients</h2>
 				<ul>
-					<li>Jallu</li>
-					<li>Jallu</li>
-					<li>Jallu</li>
-				</ul>
+				<c:forEach var="entry" items="${drink.ingredients}">
+						<li>${entry.value}cl <c:out value="${entry.key}" /></li>
+				</c:forEach></ul>
 			</div>
 		</div>
 	</div>

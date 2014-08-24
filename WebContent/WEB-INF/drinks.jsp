@@ -6,31 +6,23 @@
 	<div class="container-fluid">
 		<h1>Available drinks</h1>
 
-		<label>Filter drink recipes:</label> <input id="filter" type="text" class="form-control" placeHolder="">
-
 		<form role="form" action="favourites">
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th>Drink name</th>
 						<th>Description</th>
-						<th>Ingredients</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td><a href="drink.jsp">Jallu</a></td>
-						<td>Opiskelijan herkku</td>
-						<td>Jallu, jallu ja jallu</td>
-						<td><input type="submit" name="btn1" class="btn btn-default" value="Add to favourites"></td>
-					</tr>
-					<tr>
-						<td><a href="drink.jsp">Jallu</a></td>
-						<td>Opiskelijan herkku</td>
-						<td>Jallu, jallu ja jallu</td>
-						<td><input type="submit" name="btn2" class="btn btn-default" value="Add to favourites"></td>
-					</tr>
+					<c:forEach var="drink" items="${drinks}">
+						<tr>
+							<td><a href="drink?id=${drink.id}"><c:out value="${drink.name}" /></a></td>
+							<td><c:out value="${drink.description}" /></td>
+							<td><input type="submit" name="btn1" class="btn btn-default" value="Add to favourites"></td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 		</form>

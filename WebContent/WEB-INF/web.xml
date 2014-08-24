@@ -28,15 +28,6 @@
 	</filter-mapping>
 
 	<servlet>
-		<servlet-name>DrinkListServlet</servlet-name>
-		<servlet-class>fi.miko.EeppinenDrinkkiarkisto.Servlets.DrinkListServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>DrinkListServlet</servlet-name>
-		<url-pattern>/DrinkList</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
 		<servlet-name>ControllerServlet</servlet-name>
 		<servlet-class>fi.miko.EeppinenDrinkkiarkisto.Servlets.ControllerServlet</servlet-class>
 	</servlet>

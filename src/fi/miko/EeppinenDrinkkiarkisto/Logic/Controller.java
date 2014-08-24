@@ -31,8 +31,8 @@ public class Controller {
 
 		actions.add("GET/addDrinkList", new RedirectAction("addDrinkList.jsp", true));
 		actions.add("GET/createDrink", new RedirectAction("createDrink.jsp", true));
-		actions.add("GET/drink", new RedirectAction("drink.jsp", true));
-		actions.add("GET/drinks", new RedirectAction("drinks.jsp", true));
+		actions.add("GET/drink", new DrinkAction());
+		actions.add("GET/drinks", new DrinksAction());
 		actions.add("GET/favourites", new RedirectAction("favourites.jsp", true));
 		actions.add("GET/landing", new RedirectAction("landing.jsp", true));
 

@@ -4,6 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import org.apache.commons.dbutils.QueryRunner;
+
+import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class DrinkAction implements Action {
@@ -25,7 +28,7 @@ public class DrinkAction implements Action {
 			return DRINK_PAGE;
 		}
 
-		Drink drink = Drink.getDrinkWithId(ds.getConnection(), id);
+		Drink drink = DrinkDAO.getDrinkWithId(new QueryRunner(ds), id);
 		if (drink == null) {
 			request.setAttribute("pageError", "Failed to find a drink from the database with an id: " + id);
 			return DRINK_PAGE;

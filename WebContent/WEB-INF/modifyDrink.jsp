@@ -19,7 +19,7 @@
 			<label>Ingredients (for example: 1 spoon of sugar|20 cl water|50 cl vodka)</label>
 			<input type="text" name="ingredients" value="" class="form-control">
 			<label>Picture URL</label>
-			<input type="text" name="image" value="${drink.url}" class="form-control">
+			<input type="text" name="image" value="${drink.imageUrl}" class="form-control">
 			<br>
 			
 			<c:if test="${drink == null}">

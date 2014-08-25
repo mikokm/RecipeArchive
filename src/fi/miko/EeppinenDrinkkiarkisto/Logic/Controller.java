@@ -35,12 +35,12 @@ public class Controller {
 
 		actions.add("GET/createDrink", new CreateDrinkAction());
 		actions.add("POST/createDrink", new CreateDrinkAction());
-		
+
 		actions.add("GET/drink", new DrinkAction());
 		actions.add("GET/drinks", new DrinksAction());
-		
+
 		actions.add("POST/deleteDrink", new ModifyDrinkAction(ACTION_TYPE.DELETE));
-		
+
 		actions.add("GET/modifyDrink", new ModifyDrinkAction(ACTION_TYPE.MODIFY));
 		actions.add("POST/modifyDrink", new ModifyDrinkAction(ACTION_TYPE.MODIFY));
 

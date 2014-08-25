@@ -14,7 +14,7 @@
 
 		<div class="row">
 			<div class="container col-md-3">
-				<img alt="<c:out value="${drink.name}" />" src="<c:out value="${drink.url}" />">
+				<img alt="<c:out value="${drink.name}" />" src="<c:out value="${drink.imageUrl}" />">
 			</div>
 
 			<div class="container col-md-9">

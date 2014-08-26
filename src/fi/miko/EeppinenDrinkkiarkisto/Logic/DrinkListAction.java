@@ -11,7 +11,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
-public class DrinksAction implements Action {
+public class DrinkListAction implements Action {
 	@Override
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		List<Drink> drinks = DrinkDAO.getDrinkList(new QueryRunner(ds));

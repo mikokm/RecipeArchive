@@ -15,10 +15,6 @@ import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 public class CreateDrinkAction implements Action {
 	@Override
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (request.getMethod().equals("GET") || !request.getMethod().equals("POST")) {
-			return "modifyDrink.jsp";
-		}
-
 		User user = (User) request.getSession().getAttribute("user");
 
 		String name = request.getParameter("name");

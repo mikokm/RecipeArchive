@@ -31,11 +31,11 @@ public class Controller {
 
 		actions.add("GET/addDrinkList", new RedirectAction("addDrinkList.jsp", true));
 
-		actions.add("GET/createDrink", new CreateDrinkAction());
+		actions.add("GET/createDrink", new RedirectAction("modifyDrink.jsp", true));
 		actions.add("POST/createDrink", new CreateDrinkAction());
 
 		actions.add("GET/drink", new DrinkAction());
-		actions.add("GET/drinks", new DrinksAction());
+		actions.add("GET/drinks", new DrinkListAction());
 
 		actions.add("POST/modifyDrink", new ModifyDrinkAction());
 

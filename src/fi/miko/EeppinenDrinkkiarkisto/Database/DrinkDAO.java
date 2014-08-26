@@ -39,12 +39,19 @@ public class DrinkDAO {
 			date = new DateTime(ts.getTime()).toString("hh:mm dd.MM.yyy");
 		}
 
-		return new Drink(rs.getInt("drink_id"), rs.getString("name"), rs.getString("description"),
-				rs.getString("image_url"), date, rs.getString("username"), rs.getInt("owner"));
+		Drink drink = createFromWrapperResult(rs);
+		drink.setImageUrl(rs.getString("image_url"));
+		drink.setDate(date);
+		drink.setOwner(rs.getString("username"));
+		drink.setOwnerId(rs.getInt("owner"));
+
+		return drink;
 	}
 
 	private static Drink createFromWrapperResult(ResultSet rs) throws SQLException {
-		return new Drink(rs.getInt("drink_id"), rs.getString("name"), rs.getString("description"));
+		Drink drink = new Drink(rs.getInt("drink_id"), rs.getString("name"));
+		drink.setDescription(rs.getString("description"));
+		return drink;
 	}
 
 	private static List<String> getIngredientsFromDatabase(QueryRunner runner, int id) throws SQLException {
@@ -95,7 +102,7 @@ public class DrinkDAO {
 			return false;
 		}
 
-		String sql = "INSERT INTO Drinks(name, description, image_url, owner, date) VALUES(?, ?, ?, now()) RETURNING drink_id";
+		String sql = "INSERT INTO Drinks(name, description, image_url, owner, date) VALUES(?, ?, ?, ?, now()) RETURNING drink_id";
 
 		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"),
 				drink.getName(), drink.getDescription(), drink.getImageUrl(), drink.getOwnerId());
@@ -109,7 +116,7 @@ public class DrinkDAO {
 		runner.update("DELETE FROM Drinks WHERE drink_id = ?", id);
 	}
 
-	public static boolean saveDrink(QueryRunner runner, Drink drink) throws SQLException {
+	public static boolean updateDrink(QueryRunner runner, Drink drink) throws SQLException {
 		if (drink.getId() == 0) {
 			return false;
 		}

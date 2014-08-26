@@ -17,6 +17,7 @@ public class CreateDrinkAction implements Action {
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		User user = (User) request.getSession().getAttribute("user");
 
+		//Drink drink = ModifyDrinkAction.parseDrink
 		String name = request.getParameter("name");
 		Drink drink = new Drink(user.getId(), name);
 		
@@ -33,10 +34,10 @@ public class CreateDrinkAction implements Action {
 		boolean ret = DrinkDAO.addDrinkToDatabase(runner, drink);
 		System.out.println("add drink: " + ret + " drink id: " + drink.getId());
 
-		ret = DrinkDAO.saveDrink(runner, drink);
+		ret = DrinkDAO.updateDrink(runner, drink);
 		System.out.println("save drink: " + ret);
 
-		response.sendRedirect(response.encodeRedirectURL("drinks"));
+		response.sendRedirect(response.encodeRedirectURL("drinklist"));
 		
 		return null;
 	}

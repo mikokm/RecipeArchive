@@ -32,7 +32,7 @@ public class ModifyDrinkAction implements Action {
 		
 		if(request.getParameter("deleteButton") != null) {
 			DrinkDAO.deleteDrink(runner, drink.getId());
-			response.sendRedirect(response.encodeRedirectURL("drinks"));
+			response.sendRedirect(response.encodeRedirectURL("drinklist"));
 		}
 
 		if (request.getParameter("modifyButton") != null) {

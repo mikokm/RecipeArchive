@@ -16,7 +16,7 @@ public class DrinkListAction implements Action {
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		List<Drink> drinks = DrinkDAO.getDrinkList(new QueryRunner(ds));
 		request.setAttribute("drinks", drinks);
-		return "drinks.jsp";
+		return "drinklist.jsp";
 	}
 
 	@Override

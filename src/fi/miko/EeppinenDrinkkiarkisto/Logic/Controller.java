@@ -35,7 +35,7 @@ public class Controller {
 		actions.add("POST/createDrink", new CreateDrinkAction());
 
 		actions.add("GET/drink", new DrinkAction());
-		actions.add("GET/drinks", new DrinkListAction());
+		actions.add("GET/drinklist", new DrinkListAction());
 
 		actions.add("POST/modifyDrink", new ModifyDrinkAction());
 

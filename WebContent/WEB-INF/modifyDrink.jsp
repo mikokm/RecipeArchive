@@ -28,7 +28,7 @@
 			<label>Ingredients</label>
 			<input type="text" name="ingredients" value="" class="form-control">
 			<label>Image URL</label>
-			<input type="text" name="image" value="${drink.imageUrl}" class="form-control">
+			<input type="text" name="imageUrl" value="${drink.imageUrl}" class="form-control">
 			<br>
 			<input type="hidden" name="drinkId" value="${drink.id}">
 			<input type="submit" name="button" class="btn btn-default pull-right" value="${type}">

@@ -20,7 +20,7 @@
 				<tbody>
 					<c:forEach var="drink" items="${drinks}">
 						<tr>
-							<td><a href="drink?id=${drink.id}"><c:out value="${drink.name}" /></a></td>
+							<td><a href="drink?drinkId=${drink.id}"><c:out value="${drink.name}" /></a></td>
 							<td><c:out value="${drink.description}" /></td>
 							<td><input type="submit" name="btn1" class="btn btn-default" value="Add to favourites"></td>
 						</tr>

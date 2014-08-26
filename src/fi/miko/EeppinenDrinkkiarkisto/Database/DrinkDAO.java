@@ -15,6 +15,22 @@ import org.joda.time.DateTime;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class DrinkDAO {
+	public static int parseId(String idString) {
+		int id;
+
+		if(idString == null || idString.isEmpty()) {
+			return 0;
+		}
+
+		try {
+			id = Integer.parseInt(idString);
+		} catch(NumberFormatException e) {
+			id = 0;
+		}
+
+		return id;
+	}
+
 	private static Drink createFromFullResult(ResultSet rs) throws SQLException {
 		Timestamp ts = rs.getTimestamp("date");
 		String date = null;
@@ -23,8 +39,8 @@ public class DrinkDAO {
 			date = new DateTime(ts.getTime()).toString("hh:mm dd.MM.yyy");
 		}
 
-		return new Drink(rs.getInt("drink_id"), rs.getString("name"), rs.getString("description"), rs.getString("picture_url"), date,
-				rs.getString("username"), rs.getInt("owner"));
+		return new Drink(rs.getInt("drink_id"), rs.getString("name"), rs.getString("description"),
+				rs.getString("image_url"), date, rs.getString("username"), rs.getInt("owner"));
 	}
 
 	private static Drink createFromWrapperResult(ResultSet rs) throws SQLException {
@@ -37,7 +53,7 @@ public class DrinkDAO {
 	}
 
 	public static Drink getDrinkWithId(QueryRunner runner, int id) throws SQLException {
-		String sql = "SELECT drink_id, name, description, picture_url, date, owner, username "
+		String sql = "SELECT drink_id, name, description, image_url, date, owner, username "
 				+ "FROM Drinks INNER JOIN Users ON Drinks.owner = Users.user_id " + "WHERE drink_id = ? " + "ORDER BY name";
 
 		ResultSetHandler<Drink> rhs = new ResultSetHandler<Drink>() {
@@ -79,9 +95,11 @@ public class DrinkDAO {
 			return false;
 		}
 
-		String sql = "INSERT INTO Drinks(name, date, owner) VALUES(?, now(), ?) RETURNING drink_id";
+		String sql = "INSERT INTO Drinks(name, description, image_url, owner, date) VALUES(?, ?, ?, now()) RETURNING drink_id";
 
-		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getOwnerId());
+		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"),
+				drink.getName(), drink.getDescription(), drink.getImageUrl(), drink.getOwnerId());
+
 		drink.setId(id);
 
 		return drink.getId() != 0;
@@ -96,7 +114,7 @@ public class DrinkDAO {
 			return false;
 		}
 
-		String sql = "UPDATE Drinks SET name = ?, description = ?, picture_url = ? " + "WHERE drink_id = ?";
+		String sql = "UPDATE Drinks SET name = ?, description = ?, image_url = ? " + "WHERE drink_id = ?";
 		runner.update(sql, drink.getName(), drink.getDescription(), drink.getImageUrl(), drink.getId());
 
 		saveIngredients(runner, drink);

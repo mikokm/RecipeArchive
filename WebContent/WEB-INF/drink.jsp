@@ -6,8 +6,6 @@
 	<div class="container-fluid">
 		<a href="drinks">Return to drinks</a>
 
-		<c:set var="drink" value="${sessionScope.activeDrink}"/>
-
 		<div class="page-header">
 			<h1><c:out value="${drink.name}" /></h1>
 		</div>
@@ -36,14 +34,11 @@
 		</div>
 		<br>
 		<c:if test="${drink.ownerId == sessionScope.user.id || sessionScope.user.admin == true}">
-			<form role="form" action="deleteDrink" method="post">
-				<input type="hidden" name="previousPage" value="${previousPage}">
-				<button type="submit" class="btn btn-default pull-left">Delete drink</button>
-			</form>
-			
 			<form role="form" action="modifyDrink" method="post">
-				<input type="hidden" name="previousPage" value="${previousPage}">
-				<button type="submit" class="btn btn-default pull-left">Modify drink</button>
+				<input type="hidden" name="drinkId" value="${drink.id}">
+				<input type="hidden" name="previous" value="drink?drinkId=${drink.id}">
+				<button type="submit" name="deleteButton" class="btn btn-default">Delete drink</button>
+				<button type="submit" name="modifyButton" class="btn btn-default">Modify drink</button>
 			</form>
 		</c:if>
 	</div>

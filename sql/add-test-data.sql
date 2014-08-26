@@ -4,7 +4,7 @@ INSERT INTO Users (username, password, salt, admin, last_login) VALUES
 
 \set Jallu_u '(SELECT user_id FROM Users WHERE username = \'Jallu\')'
 
-INSERT INTO Drinks(name, description, picture_url, owner, date) VALUES
+INSERT INTO Drinks(name, description, image_url, owner, date) VALUES
 ('Jallu', 'Opiskelijan herkku', 'http://t-mikomynt.users.cs.helsinki.fi/html-demo/images/jallu.jpg', :Jallu_u, now()),
 ('ullaJ', 'Salanimellinen mysteerijuoma', 'http://t-mikomynt.users.cs.helsinki.fi/html-demo/images/jallu.jpg', :Jallu_u, now());
 

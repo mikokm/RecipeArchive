@@ -19,14 +19,7 @@ public class CreateDrinkAction implements Action {
 			return "modifyDrink.jsp";
 		}
 
-		if (!request.getMethod().equals("POST")) {
-			return "modifyDrink.jsp";
-		}
-
 		User user = (User) request.getSession().getAttribute("user");
-		if(user == null) {
-			return "landing.jsp";
-		}
 
 		String name = request.getParameter("name");
 		Drink drink = new Drink(user.getId(), name);

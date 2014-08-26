@@ -11,36 +11,31 @@ import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
 public class ModifyDrinkAction implements Action {
-	private ACTION_TYPE action;
-
-	public enum ACTION_TYPE {
-		DELETE, MODIFY
-	}
-
-	public ModifyDrinkAction(ACTION_TYPE action) {
-		this.action = action;
-	}
-
 	@Override
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Drink drink = (Drink) request.getSession().getAttribute("activeDrink");
 		User user = (User) request.getSession().getAttribute("user");
 		String previous = request.getParameter("previousPage");
-
-		if (drink == null || user == null || drink.getOwnerId() != user.getId()) {
+		int drinkId = DrinkDAO.parseId(request.getParameter("drinkId"));
+		
+		if(drinkId == 0) {
+			request.setAttribute("pageError", "modifyDrink failed because of an invalid drinkId!");
 			return "landing.jsp";
 		}
+		
+		QueryRunner runner = new QueryRunner(ds);
+		Drink drink = DrinkDAO.getDrinkWithId(runner, drinkId);
 
-		if (action == ACTION_TYPE.DELETE) {
-			DrinkDAO.deleteDrink(new QueryRunner(ds), drink.getId());
-			request.getSession().removeAttribute("activeDrink");
-
-			if (previous != null) {
-				response.sendRedirect(response.encodeRedirectURL(previous));
-			}
+		if(drink == null || drink.getOwnerId() != user.getId()) {
+			response.sendRedirect(response.encodeRedirectURL(previous));
+			return null;
+		}
+		
+		if(request.getParameter("deleteButton") != null) {
+			DrinkDAO.deleteDrink(runner, drink.getId());
+			response.sendRedirect(response.encodeRedirectURL("drinks"));
 		}
 
-		if (action == ACTION_TYPE.MODIFY) {
+		if (request.getParameter("modifyButton") != null) {
 			request.setAttribute("drink", drink);
 			return "modifyDrink.jsp";
 		}

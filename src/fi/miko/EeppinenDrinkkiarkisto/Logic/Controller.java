@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import fi.miko.EeppinenDrinkkiarkisto.Logic.ModifyDrinkAction.ACTION_TYPE;
-
 public class Controller {
 	private final HttpServletRequest request;
 	private final HttpServletResponse response;
@@ -39,10 +37,7 @@ public class Controller {
 		actions.add("GET/drink", new DrinkAction());
 		actions.add("GET/drinks", new DrinksAction());
 
-		actions.add("POST/deleteDrink", new ModifyDrinkAction(ACTION_TYPE.DELETE));
-
-		actions.add("GET/modifyDrink", new ModifyDrinkAction(ACTION_TYPE.MODIFY));
-		actions.add("POST/modifyDrink", new ModifyDrinkAction(ACTION_TYPE.MODIFY));
+		actions.add("POST/modifyDrink", new ModifyDrinkAction());
 
 		actions.add("GET/favourites", new RedirectAction("favourites.jsp", true));
 		actions.add("GET/landing", new RedirectAction("landing.jsp", true));

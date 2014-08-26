@@ -14,14 +14,7 @@ public class DrinkAction implements Action {
 
 	@Override
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String parameter = request.getParameter("id");
-		int id = 0;
-
-		try {
-			id = Integer.parseInt(parameter);
-		} catch (NumberFormatException e) {
-			id = 0;
-		}
+		int id = DrinkDAO.parseId(request.getParameter("drinkId"));
 
 		if (id == 0) {
 			request.setAttribute("pageError", "Invalid query string.");
@@ -34,8 +27,7 @@ public class DrinkAction implements Action {
 			return DRINK_PAGE;
 		}
 
-		request.setAttribute("previousPage", "drinks");
-		request.getSession().setAttribute("activeDrink", drink);
+		request.setAttribute("drink", drink);
 
 		return DRINK_PAGE;
 	}

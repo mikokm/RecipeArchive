@@ -11,7 +11,7 @@ CREATE TABLE Drinks (
 	drink_id SERIAL PRIMARY KEY,
 	name TEXT UNIQUE,
 	description TEXT,
-	picture_url TEXT,
+	image_url TEXT,
 	date TIMESTAMPTZ,
 	owner INTEGER REFERENCES Users(user_id) ON DELETE SET NULL
 );

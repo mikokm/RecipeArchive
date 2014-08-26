@@ -14,11 +14,10 @@ public class ModifyDrinkAction implements Action {
 	@Override
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		User user = (User) request.getSession().getAttribute("user");
-		String previous = request.getParameter("previousPage");
 		int drinkId = DrinkDAO.parseId(request.getParameter("drinkId"));
 		
 		if(drinkId == 0) {
-			request.setAttribute("pageError", "modifyDrink failed because of an invalid drinkId!");
+			request.setAttribute("pageError", "modifyDrink: Invalid drinkId!");
 			return "landing.jsp";
 		}
 		
@@ -26,8 +25,8 @@ public class ModifyDrinkAction implements Action {
 		Drink drink = DrinkDAO.getDrinkWithId(runner, drinkId);
 
 		if(drink == null || drink.getOwnerId() != user.getId()) {
-			response.sendRedirect(response.encodeRedirectURL(previous));
-			return null;
+			request.setAttribute("pageError", "modifyDrink: Invalid drinkId or ownerId!");
+			return "landing.jsp";
 		}
 		
 		if(request.getParameter("deleteButton") != null) {
@@ -35,7 +34,7 @@ public class ModifyDrinkAction implements Action {
 			response.sendRedirect(response.encodeRedirectURL("drinklist"));
 		}
 
-		if (request.getParameter("modifyButton") != null) {
+		if(request.getParameter("modifyButton") != null) {
 			request.setAttribute("drink", drink);
 			return "modifyDrink.jsp";
 		}

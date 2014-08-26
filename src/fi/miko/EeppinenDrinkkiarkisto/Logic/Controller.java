@@ -26,10 +26,10 @@ public class Controller {
 	}
 
 	static {
+		actions.add("GET/", new RedirectAction("index.jsp", false));
 		actions.add("POST/login", new LoginAction());
+		actions.add("GET/landing", new RedirectAction("landing.jsp", true));
 		actions.add("GET/logout", new LogoutAction());
-
-		actions.add("GET/addDrinkList", new RedirectAction("addDrinkList.jsp", true));
 
 		actions.add("GET/createDrink", new RedirectAction("modifyDrink.jsp", true));
 		actions.add("POST/createDrink", new CreateDrinkAction());
@@ -38,14 +38,13 @@ public class Controller {
 		actions.add("GET/drinklist", new DrinkListAction());
 
 		actions.add("POST/modifyDrink", new ModifyDrinkAction());
+		actions.add("POST/updateDrink", new UpdateDrinkAction());
 
-		actions.add("GET/favourites", new RedirectAction("favourites.jsp", true));
-		actions.add("GET/landing", new RedirectAction("landing.jsp", true));
-
-		actions.add("GET/createUser", new RedirectAction("createUser.jsp", true));
+		// TODO:
+		actions.add("GET/addDrinkList", new RedirectAction("addDrinkList.jsp", true));
 		actions.add("GET/admin", new RedirectAction("admin.jsp", true));
-
-		actions.add("GET/", new RedirectAction("index.jsp", false));
+		actions.add("GET/createUser", new RedirectAction("createUser.jsp", true));
+		actions.add("GET/favourites", new RedirectAction("favourites.jsp", true));
 	}
 
 	public Controller(HttpServletRequest request, HttpServletResponse response) {

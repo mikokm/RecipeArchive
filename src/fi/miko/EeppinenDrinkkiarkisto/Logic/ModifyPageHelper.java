@@ -1,5 +1,7 @@
 package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
+import java.util.Arrays;
+
 import javax.servlet.http.HttpServletRequest;
 
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
@@ -24,14 +26,12 @@ public class ModifyPageHelper {
 	public static Drink parseFormParameters(HttpServletRequest request) {
 		int id = ModifyPageHelper.parseId(request.getParameter("drinkId"));
 		
-		String name = request.getParameter("name");
-		String description = request.getParameter("description");
-		String url = request.getParameter("imageUrl");
-		String [] ingredients = request.getParameter("ingredients").split("\\|");
+		Drink drink = new Drink(id, request.getParameter("name"));
+		drink.setDescription(request.getParameter("description"));
+		drink.setImageUrl(request.getParameter("imageUrl"));
 		
-		Drink drink = new Drink(id, name);
-		//drink.setIngredients();
-		//System.out.println("ingredients:" + Arrays.toString(ingredients));
+		String [] ingredients = request.getParameter("ingredients").split("\\|");
+		drink.setIngredients(Arrays.asList(ingredients));
 		
 		return drink;
 	}

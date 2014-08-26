@@ -61,7 +61,7 @@ public class DrinkDAO {
 
 	public static Drink getDrinkWithId(QueryRunner runner, int id) throws SQLException {
 		String sql = "SELECT drink_id, name, description, image_url, date, owner, username "
-				+ "FROM Drinks INNER JOIN Users ON Drinks.owner = Users.user_id " + "WHERE drink_id = ? " + "ORDER BY name";
+				+ "FROM Drinks INNER JOIN Users ON Drinks.owner = Users.user_id " + "WHERE drink_id = ?";
 
 		ResultSetHandler<Drink> rhs = new ResultSetHandler<Drink>() {
 			@Override
@@ -94,7 +94,7 @@ public class DrinkDAO {
 			}
 		};
 
-		return runner.query("SELECT drink_id, name, description FROM Drinks", rsh);
+		return runner.query("SELECT drink_id, name, description FROM Drinks ORDER BY name", rsh);
 	}
 
 	public static boolean addDrinkToDatabase(QueryRunner runner, Drink drink) throws SQLException {
@@ -125,7 +125,6 @@ public class DrinkDAO {
 		runner.update(sql, drink.getName(), drink.getDescription(), drink.getImageUrl(), drink.getId());
 
 		saveIngredients(runner, drink);
-
 		return true;
 	}
 

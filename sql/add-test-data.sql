@@ -11,9 +11,9 @@ INSERT INTO Drinks(name, description, image_url, owner, date) VALUES
 \set Jallu1_d '(SELECT drink_id FROM Drinks WHERE name = \'Jallu\')'
 \set Jallu2_d '(SELECT drink_id FROM Drinks WHERE name = \'ullaJ\')'
 
-INSERT INTO Ingredients(name, amount, drink_id) VALUES
-('Jallu1', 500, :Jallu1_d),
-('Jallu2', 250, :Jallu2_d);
+INSERT INTO Ingredients(name, drink_id) VALUES
+('25cl Jallu', :Jallu1_d),
+('50cl Jallu', :Jallu2_d);
 
 INSERT INTO Favourites(user_id, drink_id) VALUES
 (:Jallu_u, :Jallu1_d),

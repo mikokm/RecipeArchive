@@ -15,26 +15,26 @@ public class ModifyDrinkAction implements Action {
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		User user = (User) request.getSession().getAttribute("user");
 		int drinkId = DrinkDAO.parseId(request.getParameter("drinkId"));
-		
-		if(drinkId == 0) {
+
+		if (drinkId == 0) {
 			request.setAttribute("pageError", "modifyDrink: Invalid drinkId!");
 			return "landing.jsp";
 		}
-		
+
 		QueryRunner runner = new QueryRunner(ds);
 		Drink drink = DrinkDAO.getDrinkWithId(runner, drinkId);
 
-		if(drink == null || drink.getOwnerId() != user.getId()) {
+		if (drink == null || drink.getOwnerId() != user.getId()) {
 			request.setAttribute("pageError", "modifyDrink: Invalid drinkId or ownerId!");
 			return "landing.jsp";
 		}
-		
-		if(request.getParameter("deleteButton") != null) {
+
+		if (request.getParameter("deleteButton") != null) {
 			DrinkDAO.deleteDrink(runner, drink.getId());
 			response.sendRedirect(response.encodeRedirectURL("drinklist"));
 		}
 
-		if(request.getParameter("modifyButton") != null) {
+		if (request.getParameter("modifyButton") != null) {
 			request.setAttribute("drink", drink);
 			return "modifyDrink.jsp";
 		}

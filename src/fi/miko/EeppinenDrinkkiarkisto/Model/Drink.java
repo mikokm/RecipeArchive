@@ -11,16 +11,16 @@ public class Drink {
 	private String owner;
 	private int ownerId;
 	private List<String> ingredients;
-	
+
 	public Drink() {
 		this.id = 0;
 	}
-	
+
 	public Drink(int id, String name) {
 		this.id = id;
 		this.name = name;
 	}
-	
+
 	public String getDate() {
 		return date;
 	}
@@ -28,7 +28,7 @@ public class Drink {
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public int getId() {
 		return id;
 	}

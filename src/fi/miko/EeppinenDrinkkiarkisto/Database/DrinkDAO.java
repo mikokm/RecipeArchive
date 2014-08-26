@@ -18,13 +18,13 @@ public class DrinkDAO {
 	public static int parseId(String idString) {
 		int id;
 
-		if(idString == null || idString.isEmpty()) {
+		if (idString == null || idString.isEmpty()) {
 			return 0;
 		}
 
 		try {
 			id = Integer.parseInt(idString);
-		} catch(NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			id = 0;
 		}
 
@@ -104,8 +104,8 @@ public class DrinkDAO {
 
 		String sql = "INSERT INTO Drinks(name, description, image_url, owner, date) VALUES(?, ?, ?, ?, now()) RETURNING drink_id";
 
-		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"),
-				drink.getName(), drink.getDescription(), drink.getImageUrl(), drink.getOwnerId());
+		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(), drink.getImageUrl(),
+				drink.getOwnerId());
 
 		drink.setId(id);
 

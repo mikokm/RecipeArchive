@@ -17,16 +17,16 @@ public class CreateDrinkAction implements Action {
 
 		Drink drink = ModifyPageHelper.parseFormParameters(request);
 		drink.setOwnerId(user.getId());
-	
+
 		QueryRunner runner = new QueryRunner(ds);
-		
-		if(drink.getId() == 0) {
+
+		if (drink.getId() == 0) {
 			boolean ret = DrinkDAO.addDrinkToDatabase(runner, drink);
 			System.out.println("add drink: " + ret + " drink id: " + drink.getId());
 		} else {
 			System.out.println("drink id not what it's supposed to be: " + drink.getId());
 		}
-		
+
 		response.sendRedirect(response.encodeRedirectURL("drink?drinkId=" + drink.getId()));
 		return null;
 	}

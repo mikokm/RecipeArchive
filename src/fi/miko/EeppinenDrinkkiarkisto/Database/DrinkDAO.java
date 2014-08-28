@@ -3,7 +3,6 @@ package fi.miko.EeppinenDrinkkiarkisto.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbutils.QueryRunner;
@@ -15,26 +14,22 @@ import org.joda.time.DateTime;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class DrinkDAO {
-	private static Drink createFromFullResult(ResultSet rs) throws SQLException {
-		Timestamp ts = rs.getTimestamp("date");
-		String date = null;
-
-		if (ts != null) {
-			date = new DateTime(ts.getTime()).toString("hh:mm dd.MM.yyy");
+	public static Drink createFromResultSet(ResultSet rs) throws SQLException {
+		ColumnChecker c = new ColumnChecker(rs);
+		
+		Drink drink = new Drink(c.getInt("drink_id"), c.getString("name"));
+		drink.setDescription(c.getString("description"));
+		drink.setImageUrl(c.getString("image_url"));
+		drink.setOwner(c.getString("username"));
+		drink.setOwnerId(c.getInt("owner"));
+		
+		if(c.contains("date")) {
+			Timestamp ts = rs.getTimestamp("date");
+			String date = new DateTime(ts.getTime()).toString("hh:mm dd.MM.yyy");
+			
+			drink.setDate(date);
 		}
 
-		Drink drink = createFromWrapperResult(rs);
-		drink.setImageUrl(rs.getString("image_url"));
-		drink.setDate(date);
-		drink.setOwner(rs.getString("username"));
-		drink.setOwnerId(rs.getInt("owner"));
-
-		return drink;
-	}
-
-	private static Drink createFromWrapperResult(ResultSet rs) throws SQLException {
-		Drink drink = new Drink(rs.getInt("drink_id"), rs.getString("name"));
-		drink.setDescription(rs.getString("description"));
 		return drink;
 	}
 
@@ -50,7 +45,7 @@ public class DrinkDAO {
 		ResultSetHandler<Drink> rhs = new ResultSetHandler<Drink>() {
 			@Override
 			public Drink handle(ResultSet rs) throws SQLException {
-				return rs.next() ? createFromFullResult(rs) : null;
+				return rs.next() ? createFromResultSet(rs) : null;
 			}
 		};
 
@@ -65,20 +60,7 @@ public class DrinkDAO {
 	}
 
 	public static List<Drink> getDrinkList(QueryRunner runner) throws SQLException {
-		ResultSetHandler<List<Drink>> rsh = new ResultSetHandler<List<Drink>>() {
-			@Override
-			public List<Drink> handle(ResultSet rs) throws SQLException {
-				List<Drink> drinks = new ArrayList<Drink>();
-
-				while (rs.next()) {
-					drinks.add(createFromWrapperResult(rs));
-				}
-
-				return drinks;
-			}
-		};
-
-		return runner.query("SELECT drink_id, name, description FROM Drinks ORDER BY name", rsh);
+		return runner.query("SELECT drink_id, name, description FROM Drinks ORDER BY name", new DrinkListResultSetHandler());
 	}
 
 	public static boolean addDrinkToDatabase(QueryRunner runner, Drink drink) throws SQLException {
@@ -103,16 +85,11 @@ public class DrinkDAO {
 		runner.update("DELETE FROM Drinks WHERE drink_id = ?", id);
 	}
 
-	public static boolean updateDrink(QueryRunner runner, Drink drink) throws SQLException {
-		if (drink.getId() == 0) {
-			return false;
-		}
-
+	public static void updateDrink(QueryRunner runner, Drink drink) throws SQLException {
 		String sql = "UPDATE Drinks SET name = ?, description = ?, image_url = ? " + "WHERE drink_id = ?";
 		runner.update(sql, drink.getName(), drink.getDescription(), drink.getImageUrl(), drink.getId());
 
 		saveIngredients(runner, drink);
-		return true;
 	}
 
 	private static void saveIngredients(QueryRunner runner, Drink drink) throws SQLException {

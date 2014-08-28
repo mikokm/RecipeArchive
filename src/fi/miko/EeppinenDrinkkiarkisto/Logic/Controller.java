@@ -35,6 +35,8 @@ public class Controller {
 
 		actions.add("GET/drink", new DrinkAction());
 		actions.add("GET/drinklist", new DrinkListAction());
+		
+		actions.add("GET/favourites", new FavouritesAction());
 
 		actions.add("POST/modifyDrink", new ModifyDrinkAction());
 		actions.add("POST/updateDrink", new UpdateDrinkAction());
@@ -43,7 +45,6 @@ public class Controller {
 		actions.add("GET/addDrinkList", new RedirectAction("addDrinkList.jsp", true));
 		actions.add("GET/admin", new RedirectAction("admin.jsp", true));
 		actions.add("GET/createUser", new RedirectAction("createUser.jsp", true));
-		actions.add("GET/favourites", new RedirectAction("favourites.jsp", true));
 	}
 
 	public Controller(HttpServletRequest request, HttpServletResponse response) {

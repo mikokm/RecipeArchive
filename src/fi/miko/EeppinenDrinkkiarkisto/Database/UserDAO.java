@@ -1,6 +1,7 @@
 package fi.miko.EeppinenDrinkkiarkisto.Database;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
 

@@ -2,4 +2,4 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<t:modify action="updateDrink" type="Modify drink"/>
+<t:modify action="createDrink" type="Create a new drink"/>

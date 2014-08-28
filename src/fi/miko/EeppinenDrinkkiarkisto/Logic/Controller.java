@@ -30,7 +30,7 @@ public class Controller {
 		actions.add("GET/landing", new RedirectAction("landing.jsp", true));
 		actions.add("GET/logout", new LogoutAction());
 
-		actions.add("GET/createDrink", new RedirectAction("modifyDrink.jsp", true));
+		actions.add("GET/createDrink", new RedirectAction("createDrink.jsp", true));
 		actions.add("POST/createDrink", new CreateDrinkAction());
 
 		actions.add("GET/drink", new DrinkAction());

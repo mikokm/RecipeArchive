@@ -30,7 +30,7 @@ public class CreateDrinkAction implements Action {
 			if(e.getSQLState().contains("23505")) {
 				rd.setPageError("Drink name is already in use!");
 				rd.setAttribute("drink", drink);
-				return "modifyDrink.jsp";
+				return "createDrink.jsp";
 			}
 		}
 

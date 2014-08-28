@@ -4,8 +4,6 @@
 
 <t:template page="drink">
 	<div class="container-fluid">
-		<a href="drinklist">Return to drinks</a>
-
 		<div class="page-header">
 			<h1><c:out value="${drink.name}" /></h1>
 		</div>

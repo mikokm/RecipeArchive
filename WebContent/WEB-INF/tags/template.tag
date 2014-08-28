@@ -45,13 +45,14 @@
 		</nav>
 	</c:if>
 	
-	<jsp:doBody />
-	
+	<div class="row">
 	<c:if test="${pageError != null}">
 		<div class="col-md-2 col-md-offset-5 text-center">
 			<h1>Error!</h1>
 			<p>${pageError}</p>
 		</div>
 	</c:if>
+	</div>
+	<jsp:doBody />
 </body>
 </html>

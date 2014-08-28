@@ -25,6 +25,9 @@
 	<div class="jumbotron col-md-6 col-md-offset-3">
 		<h1>Error!</h1>
 		<p>${pageError}</p>
+		
+		<br>
+		<a href="./">Return to the site</a>
 	</div>
 </body>
 

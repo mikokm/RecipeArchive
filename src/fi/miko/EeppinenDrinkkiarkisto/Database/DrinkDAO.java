@@ -16,17 +16,17 @@ import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 public class DrinkDAO {
 	public static Drink createFromResultSet(ResultSet rs) throws SQLException {
 		ColumnChecker c = new ColumnChecker(rs);
-		
+
 		Drink drink = new Drink(c.getInt("drink_id"), c.getString("name"));
 		drink.setDescription(c.getString("description"));
 		drink.setImageUrl(c.getString("image_url"));
 		drink.setOwner(c.getString("username"));
 		drink.setOwnerId(c.getInt("owner"));
-		
-		if(c.contains("date")) {
+
+		if (c.contains("date")) {
 			Timestamp ts = rs.getTimestamp("date");
 			String date = new DateTime(ts.getTime()).toString("HH:mm dd.MM.yyy");
-			
+
 			drink.setDate(date);
 		}
 

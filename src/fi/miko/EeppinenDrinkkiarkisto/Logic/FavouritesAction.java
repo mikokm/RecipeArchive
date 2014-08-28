@@ -13,7 +13,7 @@ public class FavouritesAction implements Action {
 	@Override
 	public String execute(RequestData rd) throws Exception {
 		User user = (User) rd.getSession().getAttribute("user");
-		
+
 		try {
 			List<Drink> drinks = FavouritesDAO.getFavouritesWithUserId(new QueryRunner(rd.getDataSource()), user.getId());
 			rd.setAttribute("drinks", drinks);

@@ -26,6 +26,7 @@ public class Controller {
 
 	static {
 		actions.add("GET/", new RedirectAction("index.jsp", false));
+		
 		actions.add("POST/login", new LoginAction());
 		actions.add("GET/landing", new RedirectAction("landing.jsp", true));
 		actions.add("GET/logout", new LogoutAction());
@@ -35,7 +36,7 @@ public class Controller {
 
 		actions.add("GET/drink", new DrinkAction());
 		actions.add("GET/drinklist", new DrinkListAction());
-		
+
 		actions.add("GET/favourites", new FavouritesAction());
 
 		actions.add("POST/modifyDrink", new ModifyDrinkAction());

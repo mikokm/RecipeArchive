@@ -1,7 +1,6 @@
 package fi.miko.EeppinenDrinkkiarkisto.Database;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,13 +17,19 @@ public class UserDAO {
 	}
 
 	private static User createFromResult(ResultSet rs) throws SQLException {
-		User user = new User(rs.getInt("user_id"), rs.getString("username"));
-		user.setSalt(rs.getString("salt"));
-		user.setPassword(rs.getString("password"));
-		user.setAdmin(rs.getBoolean("admin"));
+		ColumnChecker c = new ColumnChecker(rs);
+		User user = new User(c.getInt("user_id"), c.getString("username"));
+		user.setSalt(c.getString("salt"));
+		user.setPassword(c.getString("password"));
 
-		String date = new DateTime(rs.getTimestamp("last_login").getTime()).toString("HH:mm dd.MM.yyy");
-		user.setLastLogin(date);
+		if (c.contains("admin")) {
+			user.setAdmin(rs.getBoolean("admin"));
+		}
+
+		if (c.contains("last_login")) {
+			String date = new DateTime(rs.getTimestamp("last_login").getTime()).toString("HH:mm dd.MM.yyy");
+			user.setLastLogin(date);
+		}
 
 		return user;
 	}

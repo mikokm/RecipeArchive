@@ -14,12 +14,15 @@ public class UpdateDrinkAction implements Action {
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Drink drink = ModifyPageHelper.parseFormParameters(request);
 
-		if (drink.getId() != 0) {
-			QueryRunner runner = new QueryRunner(ds);
-			DrinkDAO.updateDrink(runner, drink);
-		} else {
+		if (drink.getId() == 0) {
 			System.out.println("drink id not what it's supposed to be: " + drink.getId());
 		}
+		
+		
+		
+		
+			QueryRunner runner = new QueryRunner(ds);
+			DrinkDAO.updateDrink(runner, drink);
 
 		response.sendRedirect(response.encodeRedirectURL("drink?drinkId=" + drink.getId()));
 		return null;

@@ -1,12 +1,15 @@
 package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class ModifyPageHelper {
+	public static final int MAX_INGREDIENTS = 10;
+
 	public static int parseId(String idString) {
 		int id;
 
@@ -30,8 +33,20 @@ public class ModifyPageHelper {
 		drink.setDescription(request.getParameter("description"));
 		drink.setImageUrl(request.getParameter("imageUrl"));
 
-		String[] ingredients = request.getParameter("ingredients").split("\\|");
-		drink.setIngredients(Arrays.asList(ingredients));
+		List<String> ingredients = new ArrayList<String>();
+		for (int i = 0; i < MAX_INGREDIENTS; ++i) {
+			String ingredient = request.getParameter("ingredients" + i);
+
+			if (ingredient == null || ingredient.isEmpty()) {
+				// Ingredient null or empty, skip.
+				continue;
+			}
+
+			ingredients.add(ingredient);
+		}
+
+		drink.setIngredients(ingredients);
+		System.out.println("ingredients: " + ingredients);
 
 		return drink;
 	}

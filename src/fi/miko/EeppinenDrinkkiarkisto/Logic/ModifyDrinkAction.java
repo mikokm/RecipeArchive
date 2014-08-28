@@ -1,5 +1,7 @@
 package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -8,12 +10,10 @@ import org.apache.commons.dbutils.QueryRunner;
 
 import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
-import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
 public class ModifyDrinkAction implements Action {
 	@Override
 	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		User user = (User) request.getSession().getAttribute("user");
 		int drinkId = DrinkDAO.parseId(request.getParameter("drinkId"));
 
 		if (drinkId == 0) {
@@ -22,10 +22,17 @@ public class ModifyDrinkAction implements Action {
 		}
 
 		QueryRunner runner = new QueryRunner(ds);
-		Drink drink = DrinkDAO.getDrinkWithId(runner, drinkId);
+		Drink drink = null;
+		
+		try {
+			drink = DrinkDAO.getDrinkWithId(runner, drinkId);
+		} catch (SQLException e) {
+			request.setAttribute("pageError", "modifyDrink: Failed to access the database!");
+			return "landing.jsp";
+		}
 
-		if (drink == null || drink.getOwnerId() != user.getId()) {
-			request.setAttribute("pageError", "modifyDrink: Invalid drinkId or ownerId!");
+		if (drink == null) {
+			request.setAttribute("pageError", "modifyDrink: Cannot find the drink from database!");
 			return "landing.jsp";
 		}
 

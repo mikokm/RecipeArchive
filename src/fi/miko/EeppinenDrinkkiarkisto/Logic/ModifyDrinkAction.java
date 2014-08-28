@@ -4,16 +4,17 @@ import java.sql.SQLException;
 
 import org.apache.commons.dbutils.QueryRunner;
 
+import fi.miko.EeppinenDrinkkiarkisto.Database.DatabaseHelper;
 import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class ModifyDrinkAction implements Action {
 	@Override
 	public String execute(RequestData rd) throws Exception {
-		int drinkId = DrinkDAO.parseId(rd.getParameter("drinkId"));
+		int drinkId = DatabaseHelper.parseId(rd.getParameter("drinkId"));
 
 		if (drinkId == 0) {
-			rd.setPageError("Invalid query parameters!");
+			rd.setPageError("Invalid query parameters, invalid drinkId!");
 			return rd.getErrorPage();
 		}
 
@@ -23,17 +24,22 @@ public class ModifyDrinkAction implements Action {
 		try {
 			drink = DrinkDAO.getDrinkWithId(runner, drinkId);
 		} catch (SQLException e) {
-			rd.setAttribute("pageError", "modifyDrink: Failed to access the database!");
+			rd.setPageError("Failed to access the database: " + e.getMessage());
 			return rd.getErrorPage();
 		}
 
 		if (drink == null) {
-			rd.setAttribute("pageError", "modifyDrink: Cannot find the drink from database!");
+			rd.setPageError("Cannot find the drink from database!");
 			return rd.getErrorPage();
 		}
 
 		if (rd.getParameter("deleteButton") != null) {
-			DrinkDAO.deleteDrink(runner, drink.getId());
+			try {
+				DrinkDAO.deleteDrink(runner, drink.getId());
+			} catch (SQLException e) {
+				// Not much to do here.
+			}
+
 			rd.redirect("drinklist");
 			return null;
 		}

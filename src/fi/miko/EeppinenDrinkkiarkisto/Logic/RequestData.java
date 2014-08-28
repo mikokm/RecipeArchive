@@ -9,17 +9,16 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 public class RequestData {
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-	private DataSource dataSource;
+	private final HttpServletRequest request;
+	private final HttpServletResponse response;
+	private final DataSource dataSource;
+	private final String jspPath;
 
 	private String defaultPage;
 	private String errorPage;
 	private String indexPage;
-	private String jspPath;
 
 	public RequestData(HttpServletRequest request, HttpServletResponse response, DataSource dataSource, String jspPath) {
-		super();
 		this.request = request;
 		this.response = response;
 		this.dataSource = dataSource;
@@ -78,10 +77,6 @@ public class RequestData {
 		request.setAttribute(attribute, object);
 	}
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
-
 	public void setDefaultPage(String defaultPage) {
 		this.defaultPage = defaultPage;
 	}
@@ -94,19 +89,7 @@ public class RequestData {
 		this.indexPage = indexPage;
 	}
 
-	public void setJspPath(String jspPath) {
-		this.jspPath = jspPath;
-	}
-
 	public void setPageError(String error) {
 		request.setAttribute("pageError", error);
-	}
-
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-
-	public void setResponse(HttpServletResponse response) {
-		this.response = response;
 	}
 }

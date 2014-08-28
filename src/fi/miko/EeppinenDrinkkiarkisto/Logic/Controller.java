@@ -58,7 +58,7 @@ public class Controller {
 		rd.setIndexPage("index.jsp");
 		rd.setErrorPage("error.jsp");
 		rd.setDefaultPage("landing.jsp");
-		
+
 		System.out.println(request.getPathInfo() + " / " + request.getRequestURI());
 
 		// Redirect the logged in users to the landing page.

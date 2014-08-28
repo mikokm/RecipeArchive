@@ -4,13 +4,14 @@ import java.sql.SQLException;
 
 import org.apache.commons.dbutils.QueryRunner;
 
+import fi.miko.EeppinenDrinkkiarkisto.Database.DatabaseHelper;
 import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class DrinkAction implements Action {
 	@Override
 	public String execute(RequestData rd) throws Exception {
-		int id = DrinkDAO.parseId(rd.getRequest().getParameter("drinkId"));
+		int id = DatabaseHelper.parseId(rd.getParameter("drinkId"));
 
 		if (id == 0) {
 			rd.setPageError("Invalid query string, drinkId is invalid!");
@@ -30,7 +31,7 @@ public class DrinkAction implements Action {
 			return rd.getErrorPage();
 		}
 
-		rd.getRequest().setAttribute("drink", drink);
+		rd.setAttribute("drink", drink);
 		return "drink.jsp";
 	}
 

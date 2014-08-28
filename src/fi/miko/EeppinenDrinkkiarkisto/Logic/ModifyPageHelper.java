@@ -46,7 +46,6 @@ public class ModifyPageHelper {
 		}
 
 		drink.setIngredients(ingredients);
-		System.out.println("ingredients: " + ingredients);
 
 		return drink;
 	}

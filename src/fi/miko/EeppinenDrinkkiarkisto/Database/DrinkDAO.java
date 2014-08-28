@@ -15,22 +15,6 @@ import org.joda.time.DateTime;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class DrinkDAO {
-	public static int parseId(String idString) {
-		int id;
-
-		if (idString == null || idString.isEmpty()) {
-			return 0;
-		}
-
-		try {
-			id = Integer.parseInt(idString);
-		} catch (NumberFormatException e) {
-			id = 0;
-		}
-
-		return id;
-	}
-
 	private static Drink createFromFullResult(ResultSet rs) throws SQLException {
 		Timestamp ts = rs.getTimestamp("date");
 		String date = null;
@@ -61,8 +45,7 @@ public class DrinkDAO {
 
 	public static Drink getDrinkWithId(QueryRunner runner, int id) throws SQLException {
 		String sql = "SELECT drink_id, name, description, image_url, date, owner, username "
-				+ "FROM Drinks INNER JOIN Users ON Drinks.owner = Users.user_id "
-				+ "WHERE drink_id = ?";
+				+ "FROM Drinks INNER JOIN Users ON Drinks.owner = Users.user_id WHERE drink_id = ?";
 
 		ResultSetHandler<Drink> rhs = new ResultSetHandler<Drink>() {
 			@Override
@@ -105,8 +88,8 @@ public class DrinkDAO {
 
 		String sql = "INSERT INTO Drinks(name, description, image_url, owner, date) VALUES(?, ?, ?, ?, now()) RETURNING drink_id";
 
-		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"),
-				drink.getName(), drink.getDescription(), drink.getImageUrl(), drink.getOwnerId());
+		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(), drink.getImageUrl(),
+				drink.getOwnerId());
 		drink.setId(id);
 
 		saveIngredients(runner, drink);

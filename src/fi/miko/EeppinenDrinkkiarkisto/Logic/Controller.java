@@ -70,7 +70,7 @@ public class Controller {
 
 		Action action = actions.get(request);
 		if (action == null) {
-			rd.setPageError("Cannot process request: " + request.getPathInfo());
+			rd.setPageError("Cannot process the request: " + request.getPathInfo());
 			rd.dispatch(rd.getErrorPage());
 			return;
 		}

@@ -11,6 +11,7 @@ public class Drink {
 	private String owner;
 	private int ownerId;
 	private List<String> ingredients;
+	private boolean favourite;
 
 	public Drink() {
 		this.id = 0;
@@ -53,12 +54,20 @@ public class Drink {
 		return ownerId;
 	}
 
+	public boolean isFavourite() {
+		return favourite;
+	}
+
 	public void setDate(String date) {
 		this.date = date;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public void setFavourite(boolean favourite) {
+		this.favourite = favourite;
 	}
 
 	public void setId(int id) {

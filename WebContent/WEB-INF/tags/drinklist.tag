@@ -27,12 +27,13 @@
 							<td><a href="drink?drinkId=${drink.id}"><c:out value="${drink.name}" /></a></td>
 							<td><c:out value="${drink.description}" /></td>
 							<td>
+							<c:if test="${(page == 'favourites') || (page == 'drinklist' && !drink.favourite)}">
 								<form role="form" action="favourites" method="post">
 									<input type="hidden" name="drinkId" value="${drink.id}">
 									<input type="submit" name="${buttonName}" class="btn btn-default" value="${buttonText}">
 								</form>
+							</c:if>
 							</td>
-							
 						</tr>
 					</c:forEach>
 				</tbody>

@@ -38,6 +38,7 @@ public class Controller {
 		actions.add("GET/drinklist", new DrinkListAction());
 
 		actions.add("GET/favourites", new FavouritesAction());
+		actions.add("POST/favourites", new FavouritesAction());
 
 		actions.add("POST/modifyDrink", new ModifyDrinkAction());
 		actions.add("POST/updateDrink", new UpdateDrinkAction());

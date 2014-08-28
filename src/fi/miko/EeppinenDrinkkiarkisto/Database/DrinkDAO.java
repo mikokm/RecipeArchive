@@ -23,6 +23,10 @@ public class DrinkDAO {
 		drink.setOwner(c.getString("username"));
 		drink.setOwnerId(c.getInt("owner"));
 
+		if(c.contains("favourite")) {
+			drink.setFavourite(rs.getBoolean("favourite"));
+		}
+
 		if (c.contains("date")) {
 			Timestamp ts = rs.getTimestamp("date");
 			String date = new DateTime(ts.getTime()).toString("HH:mm dd.MM.yyy");
@@ -39,8 +43,8 @@ public class DrinkDAO {
 	}
 
 	public static Drink getDrinkWithId(QueryRunner runner, int id) throws SQLException {
-		String sql = "SELECT drink_id, name, description, image_url, date, owner, username "
-				+ "FROM Drinks INNER JOIN Users ON Drinks.owner = Users.user_id WHERE drink_id = ?";
+		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, Drinks.image_url, Drinks.date, Drinks.owner, Users.username "
+				+ "FROM Drinks LEFT OUTER JOIN Users ON Drinks.owner = Users.user_id WHERE Drinks.drink_id = ?";
 
 		ResultSetHandler<Drink> rhs = new ResultSetHandler<Drink>() {
 			@Override
@@ -59,8 +63,13 @@ public class DrinkDAO {
 		return drink;
 	}
 
-	public static List<Drink> getDrinkList(QueryRunner runner) throws SQLException {
-		return runner.query("SELECT drink_id, name, description FROM Drinks ORDER BY name", new DrinkListResultSetHandler());
+	public static List<Drink> getDrinkList(QueryRunner runner, int userId) throws SQLException {
+		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, (Favourites.user_id IS NOT NULL) AS favourite FROM Drinks " 
+				+ "LEFT OUTER JOIN Users ON Drinks.owner = Users.user_id " 
+				+ "LEFT OUTER JOIN (SELECT * From Favourites WHERE Favourites.user_id = ?) Favourites ON Drinks.drink_id = Favourites.drink_id "
+				+ "ORDER BY Drinks.name";
+
+		return runner.query(sql, new DrinkListResultSetHandler(), userId);
 	}
 
 	public static boolean addDrinkToDatabase(QueryRunner runner, Drink drink) throws SQLException {

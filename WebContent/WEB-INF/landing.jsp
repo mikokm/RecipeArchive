@@ -4,7 +4,10 @@
 
 <t:template page="landing">
 	<div class="container-fluid">
-		<h1>Welcome back <c:out value="${sessionScope.user.username}" />!</h1>
+		<div class="page-header">
+			<h1>Welcome back <c:out value="${sessionScope.user.username}" />!</h1>
+		</div>
+		<p>You last visited here <c:out value="${sessionScope.user.lastLogin}" />.</p>
 		<c:if test="${sessionScope.user.admin == true}">
 		<h2>Administration</h2>
 		Click <a href="admin">here</a> to open administration page.

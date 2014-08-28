@@ -19,11 +19,13 @@ public class LoginAction implements Action {
 		}
 
 		rd.setAttribute("username", username);
+		
 		User user = null;
+		QueryRunner runner = new QueryRunner(rd.getDataSource());
 		
 		try {
-			user = UserDAO.getUserWithUsername(new QueryRunner(rd.getDataSource()), username);
-		} catch(SQLException e) {
+			user = UserDAO.getUserWithUsername(runner, username);
+		} catch (SQLException e) {
 			rd.setPageError("Failed to query user from the database: " + e.getMessage());
 			return rd.getIndexPage();
 		}
@@ -32,8 +34,10 @@ public class LoginAction implements Action {
 			rd.setAttribute("pageError", "Invalid username or password!");
 			return rd.getIndexPage();
 		}
-
+		
+		UserDAO.updateLastLogin(runner, user);
 		rd.getSession().setAttribute("user", user);
+		
 		return rd.getDefaultPage();
 	}
 

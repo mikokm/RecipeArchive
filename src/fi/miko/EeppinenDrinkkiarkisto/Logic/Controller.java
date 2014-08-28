@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import fi.miko.EeppinenDrinkkiarkisto.Database.UserDAO;
-
 public class Controller {
 	private final HttpServletRequest request;
 	private final HttpServletResponse response;

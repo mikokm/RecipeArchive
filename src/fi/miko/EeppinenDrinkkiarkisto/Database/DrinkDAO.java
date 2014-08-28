@@ -25,7 +25,7 @@ public class DrinkDAO {
 		
 		if(c.contains("date")) {
 			Timestamp ts = rs.getTimestamp("date");
-			String date = new DateTime(ts.getTime()).toString("hh:mm dd.MM.yyy");
+			String date = new DateTime(ts.getTime()).toString("HH:mm dd.MM.yyy");
 			
 			drink.setDate(date);
 		}

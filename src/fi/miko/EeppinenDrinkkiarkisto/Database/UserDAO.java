@@ -23,7 +23,7 @@ public class UserDAO {
 		user.setPassword(rs.getString("password"));
 		user.setAdmin(rs.getBoolean("admin"));
 
-		String date = new DateTime(rs.getTimestamp("last_login").getTime()).toString("hh:mm dd.MM.yyy");
+		String date = new DateTime(rs.getTimestamp("last_login").getTime()).toString("HH:mm dd.MM.yyy");
 		user.setLastLogin(date);
 
 		return user;

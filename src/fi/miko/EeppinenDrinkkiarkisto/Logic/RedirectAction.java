@@ -1,9 +1,5 @@
 package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
-
 public class RedirectAction implements Action {
 	private final String url;
 	private final boolean secure;
@@ -14,7 +10,7 @@ public class RedirectAction implements Action {
 	}
 
 	@Override
-	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String execute(RequestData rd) throws Exception {
 		return url;
 	}
 

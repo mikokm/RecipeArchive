@@ -1,8 +1,6 @@
 package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
+import java.sql.SQLException;
 
 import org.apache.commons.dbutils.QueryRunner;
 
@@ -10,26 +8,30 @@ import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class DrinkAction implements Action {
-	private final static String DRINK_PAGE = "drink.jsp";
-
 	@Override
-	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		int id = DrinkDAO.parseId(request.getParameter("drinkId"));
+	public String execute(RequestData rd) throws Exception {
+		int id = DrinkDAO.parseId(rd.getRequest().getParameter("drinkId"));
 
 		if (id == 0) {
-			request.setAttribute("pageError", "Invalid query string.");
-			return DRINK_PAGE;
+			rd.setPageError("Invalid query string, drinkId is invalid!");
+			return rd.getErrorPage();
 		}
 
-		Drink drink = DrinkDAO.getDrinkWithId(new QueryRunner(ds), id);
+		Drink drink = null;
+		try {
+			drink = DrinkDAO.getDrinkWithId(new QueryRunner(rd.getDataSource()), id);
+		} catch (SQLException e) {
+			rd.setPageError("Failed to query the database for the drink: " + e.getMessage());
+			return rd.getErrorPage();
+		}
+
 		if (drink == null) {
-			request.setAttribute("pageError", "Failed to find a drink from the database with an id: " + id);
-			return DRINK_PAGE;
+			rd.setPageError("Failed to find a drink from the database with a drinkId: " + id);
+			return rd.getErrorPage();
 		}
 
-		request.setAttribute("drink", drink);
-
-		return DRINK_PAGE;
+		rd.getRequest().setAttribute("drink", drink);
+		return "drink.jsp";
 	}
 
 	@Override

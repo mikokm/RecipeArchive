@@ -1,8 +1,6 @@
 package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
+import java.sql.SQLException;
 
 import org.apache.commons.dbutils.QueryRunner;
 
@@ -12,22 +10,31 @@ import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
 public class CreateDrinkAction implements Action {
 	@Override
-	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		User user = (User) request.getSession().getAttribute("user");
+	public String execute(RequestData rd) throws Exception {
+		User user = (User) rd.getSession().getAttribute("user");
 
-		Drink drink = ModifyPageHelper.parseFormParameters(request);
+		Drink drink = ModifyPageHelper.parseFormParameters(rd.getRequest());
 		drink.setOwnerId(user.getId());
 
-		QueryRunner runner = new QueryRunner(ds);
+		QueryRunner runner = new QueryRunner(rd.getDataSource());
 
-		if (drink.getId() == 0) {
-			boolean ret = DrinkDAO.addDrinkToDatabase(runner, drink);
-			System.out.println("add drink: " + ret + " drink id: " + drink.getId());
-		} else {
-			System.out.println("drink id not what it's supposed to be: " + drink.getId());
+		if (drink.getId() != 0) {
+			rd.setPageError("Invalid drinkId for the createDrink: " + drink.getId());
+			return rd.getErrorPage();
+		}
+		
+		try {
+			DrinkDAO.addDrinkToDatabase(runner, drink);
+		} catch(SQLException e) {
+			// Unique constraint.
+			if(e.getSQLState().contains("23505")) {
+				rd.setPageError("Drink name is already in use!");
+				rd.setAttribute("drink", drink);
+				return "modifyDrink.jsp";
+			}
 		}
 
-		response.sendRedirect(response.encodeRedirectURL("drink?drinkId=" + drink.getId()));
+		rd.redirect("drink?drinkId=" + drink.getId());
 		return null;
 	}
 

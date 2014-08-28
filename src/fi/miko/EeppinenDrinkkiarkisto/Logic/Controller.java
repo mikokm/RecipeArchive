@@ -12,7 +12,6 @@ public class Controller {
 
 	private static final Actions actions = new Actions();
 	private static final DataSource dataSource = getDataSource();
-	private static final String JSP_PATH = "/WEB-INF/";
 
 	private static DataSource getDataSource() {
 		DataSource ds = null;
@@ -52,41 +51,38 @@ public class Controller {
 		this.response = response;
 	}
 
-	private void dispatch(String url) {
-		try {
-			request.getRequestDispatcher(JSP_PATH + url).forward(request, response);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void processRequest() throws Exception {
 		response.setContentType("text/html;charset=UTF-8");
 
+		RequestData rd = new RequestData(request, response, dataSource, "/WEB-INF/");
+		rd.setIndexPage("index.jsp");
+		rd.setErrorPage("error.jsp");
+		rd.setDefaultPage("landing.jsp");
+		
 		System.out.println(request.getPathInfo() + " / " + request.getRequestURI());
 
 		// Redirect the logged in users to the landing page.
 		if (request.getPathInfo().equals("/") && isLoggedIn()) {
-			dispatch("landing.jsp");
+			rd.dispatch(rd.getDefaultPage());
 			return;
 		}
 
 		Action action = actions.get(request);
 		if (action == null) {
+			rd.setPageError("Cannot process request: " + request.getPathInfo());
+			rd.dispatch(rd.getErrorPage());
 			return;
 		}
 
 		// Require logged in status for the secure sites.
-		if (!action.secure() || isLoggedIn()) {
-			String url = action.execute(dataSource, request, response);
+		if (action.secure() && !isLoggedIn()) {
+			rd.dispatch(rd.getIndexPage());
+			return;
+		}
 
-			if (url == null || url.isEmpty()) {
-				return;
-			}
-
-			dispatch(url);
-		} else {
-			dispatch("index.jsp");
+		String url = action.execute(rd);
+		if (url != null) {
+			rd.dispatch(url);
 		}
 	}
 

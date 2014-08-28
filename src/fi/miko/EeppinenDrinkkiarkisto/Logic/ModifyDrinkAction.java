@@ -2,10 +2,6 @@ package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
 import java.sql.SQLException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
-
 import org.apache.commons.dbutils.QueryRunner;
 
 import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
@@ -13,36 +9,37 @@ import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class ModifyDrinkAction implements Action {
 	@Override
-	public String execute(DataSource ds, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		int drinkId = DrinkDAO.parseId(request.getParameter("drinkId"));
+	public String execute(RequestData rd) throws Exception {
+		int drinkId = DrinkDAO.parseId(rd.getParameter("drinkId"));
 
 		if (drinkId == 0) {
-			request.setAttribute("pageError", "modifyDrink: Invalid drinkId!");
-			return "landing.jsp";
+			rd.setPageError("Invalid query parameters!");
+			return rd.getErrorPage();
 		}
 
-		QueryRunner runner = new QueryRunner(ds);
+		QueryRunner runner = new QueryRunner(rd.getDataSource());
 		Drink drink = null;
-		
+
 		try {
 			drink = DrinkDAO.getDrinkWithId(runner, drinkId);
 		} catch (SQLException e) {
-			request.setAttribute("pageError", "modifyDrink: Failed to access the database!");
-			return "landing.jsp";
+			rd.setAttribute("pageError", "modifyDrink: Failed to access the database!");
+			return rd.getErrorPage();
 		}
 
 		if (drink == null) {
-			request.setAttribute("pageError", "modifyDrink: Cannot find the drink from database!");
-			return "landing.jsp";
+			rd.setAttribute("pageError", "modifyDrink: Cannot find the drink from database!");
+			return rd.getErrorPage();
 		}
 
-		if (request.getParameter("deleteButton") != null) {
+		if (rd.getParameter("deleteButton") != null) {
 			DrinkDAO.deleteDrink(runner, drink.getId());
-			response.sendRedirect(response.encodeRedirectURL("drinklist"));
+			rd.redirect("drinklist");
+			return null;
 		}
 
-		if (request.getParameter("modifyButton") != null) {
-			request.setAttribute("drink", drink);
+		if (rd.getParameter("modifyButton") != null) {
+			rd.setAttribute("drink", drink);
 			return "modifyDrink.jsp";
 		}
 

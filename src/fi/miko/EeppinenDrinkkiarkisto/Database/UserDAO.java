@@ -36,13 +36,8 @@ public class UserDAO {
 		ResultSetHandler<User> rsh = new ResultSetHandler<User>() {
 			@Override
 			public User handle(ResultSet rs) throws SQLException {
-				if (!rs.next()) {
-					return null;
-				}
-
-				return createFromResult(rs);
+				return rs.next() ? createFromResult(rs) : null;
 			}
-
 		};
 
 		return runner.query("SELECT user_id, username, password, salt, admin, last_login FROM Users WHERE username = ?", rsh, username);
@@ -55,16 +50,16 @@ public class UserDAO {
 	public static void removeUserWithId(QueryRunner runner, int id) throws SQLException {
 		runner.update("DELETE FROM User WHERE user_id = ?", id);
 	}
-	
+
 	public static void updateLastLogin(QueryRunner runner, User user) {
 		try {
 			runner.update("UPDATE Users SET last_login = now() WHERE user_id = ?", user.getId());
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			System.out.println("Failed to update the last_login field: " + e.getMessage());
 		}
 	}
+
 	public static void updateUser(QueryRunner runner, User user) throws SQLException {
-		runner.update("UPDATE Users SET password = ?, salt = ? WHERE user_id = ?",
-				user.getPassword(), user.getSalt(), user.getId());
+		runner.update("UPDATE Users SET password = ?, salt = ? WHERE user_id = ?", user.getPassword(), user.getSalt(), user.getId());
 	}
 }

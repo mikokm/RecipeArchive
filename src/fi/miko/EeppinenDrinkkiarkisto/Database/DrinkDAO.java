@@ -87,12 +87,14 @@ public class DrinkDAO {
 		}
 
 		String sql = "INSERT INTO Drinks(name, description, image_url, owner, date) VALUES(?, ?, ?, ?, now()) RETURNING drink_id";
-
 		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(), drink.getImageUrl(),
 				drink.getOwnerId());
+
 		drink.setId(id);
 
-		saveIngredients(runner, drink);
+		if (id != 0) {
+			saveIngredients(runner, drink);
+		}
 
 		return drink.getId() != 0;
 	}

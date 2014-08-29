@@ -20,8 +20,8 @@ public class DrinkDAO {
 		Drink drink = new Drink(c.getInt("drink_id"), c.getString("name"));
 		drink.setDescription(c.getString("description"));
 		drink.setImageUrl(c.getString("image_url"));
-		drink.setOwner(c.getString("username"));
-		drink.setOwnerId(c.getInt("owner"));
+		drink.setOwner(c.getString("owner_name"));
+		drink.setOwnerId(c.getInt("owner_id"));
 
 		if(c.contains("favourite")) {
 			drink.setFavourite(rs.getBoolean("favourite"));
@@ -43,8 +43,9 @@ public class DrinkDAO {
 	}
 
 	public static Drink getDrinkWithId(QueryRunner runner, int id) throws SQLException {
-		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, Drinks.image_url, Drinks.date, Drinks.owner, Users.username "
-				+ "FROM Drinks LEFT OUTER JOIN Users ON Drinks.owner = Users.user_id WHERE Drinks.drink_id = ?";
+		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, Drinks.image_url, Drinks.date, Drinks.owner_id, "
+				+ "Users.username AS owner_name FROM Drinks "
+				+ "LEFT OUTER JOIN Users ON Drinks.owner_id = Users.user_id WHERE Drinks.drink_id = ?";
 
 		ResultSetHandler<Drink> rhs = new ResultSetHandler<Drink>() {
 			@Override
@@ -65,7 +66,6 @@ public class DrinkDAO {
 
 	public static List<Drink> getDrinkList(QueryRunner runner, int userId) throws SQLException {
 		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, (Favourites.user_id IS NOT NULL) AS favourite FROM Drinks " 
-				+ "LEFT OUTER JOIN Users ON Drinks.owner = Users.user_id " 
 				+ "LEFT OUTER JOIN (SELECT * From Favourites WHERE Favourites.user_id = ?) Favourites ON Drinks.drink_id = Favourites.drink_id "
 				+ "ORDER BY Drinks.name";
 
@@ -77,7 +77,7 @@ public class DrinkDAO {
 			return false;
 		}
 
-		String sql = "INSERT INTO Drinks(name, description, image_url, owner, date) VALUES(?, ?, ?, ?, now()) RETURNING drink_id";
+		String sql = "INSERT INTO Drinks(name, description, image_url, owner_id, date) VALUES(?, ?, ?, ?, now()) RETURNING drink_id";
 		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(), drink.getImageUrl(),
 				drink.getOwnerId());
 

@@ -13,7 +13,7 @@ CREATE TABLE Drinks (
 	description TEXT,
 	image_url TEXT,
 	date TIMESTAMPTZ,
-	owner INTEGER REFERENCES Users(user_id) ON DELETE SET NULL
+	owner_id INTEGER REFERENCES Users(user_id) ON DELETE SET NULL
 );
 
 CREATE TABLE Ingredients (

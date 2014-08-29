@@ -6,7 +6,6 @@ import java.util.List;
 import org.apache.commons.dbutils.QueryRunner;
 
 import fi.miko.EeppinenDrinkkiarkisto.Database.DatabaseHelper;
-import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Database.FavouritesDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;

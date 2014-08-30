@@ -14,7 +14,11 @@ public class FavouritesDAO {
 		return runner.query(sql, new DrinkListResultSetHandler(), userId);
 	}
 
-	public static void addFavouriteForUserId(QueryRunner runner, int userId, int drinkId) throws SQLException {
-		runner.update("INSERT INTO Favourites user_id, drink_id VALUES(?, ?)", drinkId, userId);
+	public static void addFavourite(QueryRunner runner, int userId, int drinkId) throws SQLException {
+		runner.update("INSERT INTO Favourites(user_id, drink_id) VALUES(?, ?)", userId, drinkId);
+	}
+	
+	public static void removeFavourite(QueryRunner runner, int userId, int drinkId) throws SQLException {
+		runner.update("DELETE FROM Favourites WHERE user_id = ? AND drink_id = ?", userId, drinkId);
 	}
 }

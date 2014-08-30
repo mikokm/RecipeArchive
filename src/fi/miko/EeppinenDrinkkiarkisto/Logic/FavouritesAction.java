@@ -27,18 +27,24 @@ public class FavouritesAction implements Action {
 			return rd.getErrorPage();
 		}
 		
-		if(rd.getParameter("addFavourite") != null) {
-			try {
-				FavouritesDAO.addFavouriteForUserId(runner, user.getId(), drinkId);
-			} catch (SQLException e) {
-				
+		String error = "";
+		try {
+			if(rd.getParameter("addFavourite") != null) {
+				error = "adding favourite";
+				FavouritesDAO.addFavourite(runner, user.getId(), drinkId);
+			} else if(rd.getParameter("removeFavourite") != null) {
+				error = "removing favourite";
+				FavouritesDAO.removeFavourite(runner, user.getId(), drinkId);
+			} else {
+				rd.setPageError("Invalid query parameters!");
+				return rd.getErrorPage();
 			}
+		} catch (SQLException e) {
+			rd.setPageError("Error while " + error + ":\n" + e.getMessage());
+			return rd.getErrorPage();
 		}
 		
-		if(rd.getParameter("deleteFavourite") != null) {
-			return null;
-		}
-		
+		rd.redirect("favourites");
 		return null;
 	}
 

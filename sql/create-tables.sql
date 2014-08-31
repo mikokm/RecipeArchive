@@ -19,7 +19,6 @@ CREATE TABLE Drinks (
 CREATE TABLE Ingredients (
 	ingredient_id SERIAL PRIMARY KEY,
 	name TEXT,
-	amount INTEGER CHECK(amount > 0),
 	drink_id INTEGER REFERENCES Drinks(drink_id) ON DELETE CASCADE
 );
 

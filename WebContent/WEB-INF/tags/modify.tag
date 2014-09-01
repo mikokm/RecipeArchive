@@ -12,7 +12,7 @@
 		</div>
 
 		<div class="form-group">
-			<form role="form" action="${action}" method="post">
+			<form role="form" action="updateDrink" method="post">
 				<div class="row">
 					<div class="col-md-6">
 						<label>Drink name</label>
@@ -30,7 +30,7 @@
 					</div>
 				</div>
 				<br>
-				<input type="hidden" name="drinkId" value="${drink.id}"> <input type="submit" name="button" class="btn btn-default pull-left" value="${type}">
+				<input type="hidden" name="drinkId" value="${drink.id}"> <input type="submit" name="${action}Button" class="btn btn-default pull-left" value="${type}">
 			</form>
 		</div>
 	</div>

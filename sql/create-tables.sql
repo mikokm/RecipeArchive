@@ -23,7 +23,7 @@ CREATE TABLE Ingredients (
 );
 
 CREATE TABLE Favourites (
-	user_id INTEGER REFERENCES Users (user_id),
-	drink_id INTEGER REFERENCES Drinks (drink_id),
+	user_id INTEGER REFERENCES Users (user_id) ON DELETE CASCADE,
+	drink_id INTEGER REFERENCES Drinks (drink_id) ON DELETE CASCADE,
 	PRIMARY KEY(user_id, drink_id)
 );

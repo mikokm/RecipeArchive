@@ -33,10 +33,6 @@ public class User {
 		this.admin = admin;
 	}
 
-	private void setId(int id) {
-		this.id = id;
-	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}

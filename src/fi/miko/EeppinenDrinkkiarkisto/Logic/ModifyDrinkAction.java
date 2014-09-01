@@ -4,46 +4,41 @@ import java.sql.SQLException;
 
 import org.apache.commons.dbutils.QueryRunner;
 
-import fi.miko.EeppinenDrinkkiarkisto.Database.DatabaseHelper;
 import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
+import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
 public class ModifyDrinkAction implements Action {
 	@Override
 	public String execute(RequestData rd) throws Exception {
-		int drinkId = DatabaseHelper.parseId(rd.getParameter("drinkId"));
-
-		if (drinkId == 0) {
-			rd.setPageError("Invalid query parameters, invalid drinkId!");
-			return rd.getErrorPage();
-		}
-
-		QueryRunner runner = new QueryRunner(rd.getDataSource());
-		Drink drink = null;
-
-		try {
-			drink = DrinkDAO.getDrinkWithId(runner, drinkId);
-		} catch (SQLException e) {
-			rd.setPageError("Failed to access the database: " + e.getMessage());
-			return rd.getErrorPage();
-		}
-
+		User user = (User) rd.getSession().getAttribute("user");
+		Drink drink = DrinkHelper.getDrink(rd);
+		
+		// The drink was not found.
 		if (drink == null) {
-			rd.setPageError("Cannot find the drink from database!");
 			return rd.getErrorPage();
 		}
 
+		if(drink.getOwnerId() != user.getId()) {
+			rd.setPageError("You don't have permission to modify this drink!");
+			return rd.getErrorPage();
+		}
+
+		// Try to delete the drink and return to the drinklist-page.
 		if (rd.getParameter("deleteButton") != null) {
+			System.out.println("Deleting the drink...");
 			try {
-				DrinkDAO.deleteDrink(runner, drink.getId());
+				DrinkDAO.deleteDrink(new QueryRunner(rd.getDataSource()), drink.getId());
 			} catch (SQLException e) {
-				// Not much to do here.
+				System.out.println("sql fail:" + e.getMessage());
+				rd.setPageError("Failed to delete the drink from database: " + e.getMessage());
 			}
 
 			rd.redirect("drinklist");
 			return null;
 		}
 
+		// Show the modify page with the drink details.
 		if (rd.getParameter("modifyButton") != null) {
 			rd.setAttribute("drink", drink);
 			return "modifyDrink.jsp";

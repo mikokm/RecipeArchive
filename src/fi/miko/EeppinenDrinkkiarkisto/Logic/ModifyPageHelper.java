@@ -5,29 +5,14 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import fi.miko.EeppinenDrinkkiarkisto.Database.DatabaseHelper;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class ModifyPageHelper {
 	public static final int MAX_INGREDIENTS = 10;
 
-	public static int parseId(String idString) {
-		int id;
-
-		if (idString == null || idString.isEmpty()) {
-			return 0;
-		}
-
-		try {
-			id = Integer.parseInt(idString);
-		} catch (NumberFormatException e) {
-			id = 0;
-		}
-
-		return id;
-	}
-
 	public static Drink parseFormParameters(HttpServletRequest request) {
-		int id = ModifyPageHelper.parseId(request.getParameter("drinkId"));
+		int id = DatabaseHelper.parseId(request.getParameter("drinkId"));
 
 		Drink drink = new Drink(id, request.getParameter("name"));
 		drink.setDescription(request.getParameter("description"));

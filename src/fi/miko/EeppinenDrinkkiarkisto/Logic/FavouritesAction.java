@@ -44,7 +44,7 @@ public class FavouritesAction implements Action {
 			return rd.getErrorPage();
 		}
 		
-		rd.redirect("favourites");
+		rd.redirect("drinklist");
 		return null;
 	}
 

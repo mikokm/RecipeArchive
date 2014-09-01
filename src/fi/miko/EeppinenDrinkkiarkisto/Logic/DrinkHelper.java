@@ -20,7 +20,7 @@ public class DrinkHelper {
 
 		Drink drink = null;
 		try {
-			drink = DrinkDAO.getDrinkWithId(new QueryRunner(rd.getDataSource()), id);
+			drink = DrinkDAO.getDrink(new QueryRunner(rd.getDataSource()), id);
 		} catch (SQLException e) {
 			rd.setPageError("Failed to query the database for the drink: " + e.getMessage());
 			return null;
@@ -41,7 +41,7 @@ public class DrinkHelper {
 
 		try {
 			if (id == 0) {
-				DrinkDAO.addDrinkToDatabase(runner, drink);
+				DrinkDAO.addDrink(runner, drink);
 			} else {
 				DrinkDAO.updateDrink(runner, drink);
 			}

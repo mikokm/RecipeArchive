@@ -14,9 +14,29 @@ import org.joda.time.DateTime;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class DrinkDAO {
+	public static boolean addDrink(QueryRunner runner, Drink drink) throws SQLException {
+		if (drink.getId() != 0) {
+			return false;
+		}
+
+		String sql = "INSERT INTO Drinks(name, description, image_url, owner_id, date) VALUES(?, ?, ?, ?, now()) RETURNING drink_id";
+		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(), drink.getImageUrl(),
+				drink.getOwnerId());
+
+		drink.setId(id);
+
+		// If the drink id is 0, the query failed.
+		if (id != 0) {
+			saveDrinkIngredients(runner, drink);
+		}
+
+		return drink.getId() != 0;
+	}
+
 	public static Drink createFromResultSet(ResultSet rs) throws SQLException {
 		ColumnChecker c = new ColumnChecker(rs);
 
+		// Return a new Drink object with all the available fields in the ResultSet.
 		Drink drink = new Drink(c.getInt("drink_id"), c.getString("name"));
 		drink.setDescription(c.getString("description"));
 		drink.setImageUrl(c.getString("image_url"));
@@ -37,12 +57,11 @@ public class DrinkDAO {
 		return drink;
 	}
 
-	private static List<String> getIngredientsFromDatabase(QueryRunner runner, int id) throws SQLException {
-		String sql = "SELECT name FROM Ingredients WHERE drink_id = ?";
-		return runner.query(sql, new ColumnListHandler<String>("name"), id);
+	public static void deleteDrink(QueryRunner runner, int id) throws SQLException {
+		runner.update("DELETE FROM Drinks WHERE drink_id = ?", id);
 	}
 
-	public static Drink getDrinkWithId(QueryRunner runner, int id) throws SQLException {
+	public static Drink getDrink(QueryRunner runner, int id) throws SQLException {
 		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, Drinks.image_url, Drinks.date, Drinks.owner_id, "
 				+ "Users.username AS owner_name FROM Drinks "
 				+ "LEFT OUTER JOIN Users ON Drinks.owner_id = Users.user_id WHERE Drinks.drink_id = ?";
@@ -57,7 +76,7 @@ public class DrinkDAO {
 		Drink drink = runner.query(sql, rhs, id);
 
 		if (drink != null) {
-			List<String> ingredients = getIngredientsFromDatabase(runner, id);
+			List<String> ingredients = getIngredients(runner, id);
 			drink.setIngredients(ingredients);
 		}
 
@@ -72,36 +91,16 @@ public class DrinkDAO {
 		return runner.query(sql, new DrinkListResultSetHandler(), userId);
 	}
 
-	public static boolean addDrinkToDatabase(QueryRunner runner, Drink drink) throws SQLException {
-		if (drink.getId() != 0) {
-			return false;
-		}
-
-		String sql = "INSERT INTO Drinks(name, description, image_url, owner_id, date) VALUES(?, ?, ?, ?, now()) RETURNING drink_id";
-		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(), drink.getImageUrl(),
-				drink.getOwnerId());
-
-		drink.setId(id);
-
-		if (id != 0) {
-			saveIngredients(runner, drink);
-		}
-
-		return drink.getId() != 0;
+	public static int getDrinkOwnerId(QueryRunner runner, int id) throws SQLException {
+		return runner.query("SELECT owner_id FROM Drinks WHERE drink_id = ?", new ScalarHandler<Integer>("owner_id"), id);
 	}
 
-	public static void deleteDrink(QueryRunner runner, int id) throws SQLException {
-		runner.update("DELETE FROM Drinks WHERE drink_id = ?", id);
+	private static List<String> getIngredients(QueryRunner runner, int id) throws SQLException {
+		String sql = "SELECT name FROM Ingredients WHERE drink_id = ?";
+		return runner.query(sql, new ColumnListHandler<String>("name"), id);
 	}
 
-	public static void updateDrink(QueryRunner runner, Drink drink) throws SQLException {
-		String sql = "UPDATE Drinks SET name = ?, description = ?, image_url = ? " + "WHERE drink_id = ?";
-		runner.update(sql, drink.getName(), drink.getDescription(), drink.getImageUrl(), drink.getId());
-
-		saveIngredients(runner, drink);
-	}
-
-	private static void saveIngredients(QueryRunner runner, Drink drink) throws SQLException {
+	private static void saveDrinkIngredients(QueryRunner runner, Drink drink) throws SQLException {
 		runner.update("DELETE FROM Ingredients WHERE drink_id = ?", drink.getId());
 
 		for (String ingredient : drink.getIngredients()) {
@@ -109,7 +108,10 @@ public class DrinkDAO {
 		}
 	}
 
-	public static int getDrinkOwnerId(QueryRunner runner, int id) throws SQLException {
-		return runner.query("SELECT owner_id FROM Drinks WHERE drink_id = ?", new ScalarHandler<Integer>("owner_id"), id);
+	public static void updateDrink(QueryRunner runner, Drink drink) throws SQLException {
+		String sql = "UPDATE Drinks SET name = ?, description = ?, image_url = ? " + "WHERE drink_id = ?";
+		runner.update(sql, drink.getName(), drink.getDescription(), drink.getImageUrl(), drink.getId());
+
+		saveDrinkIngredients(runner, drink);
 	}
 }

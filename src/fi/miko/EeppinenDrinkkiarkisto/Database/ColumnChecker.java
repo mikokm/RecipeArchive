@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+// Wrapper that allows querying ResultSet for fields that are not available.
+// This class is stupid, please use a real ORM solution such as Hibernate.
 public class ColumnChecker {
 	private final Set<String> columns;
 	private final ResultSet rs;
@@ -15,6 +17,7 @@ public class ColumnChecker {
 		this.rs = rs;
 	}
 
+	// Read the columns from ResultSetMetaData into a HashSet.
 	private Set<String> getColumns(ResultSet rs) throws SQLException {
 		ResultSetMetaData md = rs.getMetaData();
 		Set<String> set = new HashSet<String>();

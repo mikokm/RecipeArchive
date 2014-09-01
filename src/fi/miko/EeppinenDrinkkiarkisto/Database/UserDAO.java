@@ -12,9 +12,14 @@ import org.joda.time.DateTime;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
 public class UserDAO {
+	public static String generateHash() {
+		return DigestUtils.sha1Hex(DateTime.now().toString());
+	}
+	
 	public static String hashPassword(String password, String salt) {
 		return DigestUtils.sha1Hex(password + salt);
 	}
+	
 
 	private static User createFromResult(ResultSet rs) throws SQLException {
 		ColumnChecker c = new ColumnChecker(rs);

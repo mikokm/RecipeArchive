@@ -89,7 +89,7 @@ public class RequestData {
 		this.indexPage = indexPage;
 	}
 
-	public void setPageError(String error) {
+	public void setError(String error) {
 		request.setAttribute("pageError", error);
 	}
 }

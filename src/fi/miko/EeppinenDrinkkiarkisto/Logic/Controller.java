@@ -16,6 +16,7 @@ public class Controller {
 	private static DataSource getDataSource() {
 		DataSource ds = null;
 		try {
+			// This should be set in the Context.xml.
 			ds = (DataSource) new InitialContext().lookup("java:/comp/env/jdbc/postgres");
 		} catch (NamingException e) {
 			e.printStackTrace();
@@ -56,12 +57,11 @@ public class Controller {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 
+		// Fill the RequestData object and set the pages.
 		RequestData rd = new RequestData(request, response, dataSource, "/WEB-INF/");
 		rd.setIndexPage("index.jsp");
 		rd.setErrorPage("error.jsp");
 		rd.setDefaultPage("landing.jsp");
-
-		System.out.println(request.getPathInfo() + " / " + request.getRequestURI());
 
 		// Redirect the logged in users to the landing page.
 		if (request.getPathInfo().equals("/") && isLoggedIn()) {
@@ -69,19 +69,23 @@ public class Controller {
 			return;
 		}
 
+		// Use the request parameters to get the action.
 		Action action = actions.get(request);
+		
+		// No action found.
 		if (action == null) {
-			rd.setPageError("Cannot process the request: " + request.getPathInfo());
+			rd.setError("Cannot process the request: " + request.getPathInfo());
 			rd.dispatch(rd.getErrorPage());
 			return;
 		}
 
-		// Require logged in status for the secure sites.
+		// Require that user has logged in for the secure sites.
 		if (action.secure() && !isLoggedIn()) {
 			rd.dispatch(rd.getIndexPage());
 			return;
 		}
 
+		// Execute the action.
 		String url = action.execute(rd);
 		if (url != null) {
 			rd.dispatch(url);
@@ -89,6 +93,7 @@ public class Controller {
 	}
 
 	private boolean isLoggedIn() {
+		// If the user attribute exists in the session, the user has successfully logged in.
 		return request.getSession().getAttribute("user") != null;
 	}
 }

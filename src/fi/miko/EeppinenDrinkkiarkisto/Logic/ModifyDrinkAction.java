@@ -20,7 +20,7 @@ public class ModifyDrinkAction implements Action {
 		}
 
 		if (drink.getOwnerId() != user.getId() && !user.getAdmin()) {
-			rd.setPageError("You don't have permission to modify this drink!");
+			rd.setError("You don't have permission to modify this drink!");
 			return rd.getErrorPage();
 		}
 
@@ -30,8 +30,8 @@ public class ModifyDrinkAction implements Action {
 			try {
 				DrinkDAO.deleteDrink(new QueryRunner(rd.getDataSource()), drink.getId());
 			} catch (SQLException e) {
-				System.out.println("sql fail:" + e.getMessage());
-				rd.setPageError("Failed to delete the drink from database: " + e.getMessage());
+				rd.setError("Failed to delete the drink from database: " + e.getMessage());
+				return rd.getErrorPage();
 			}
 
 			rd.redirect("drinklist");

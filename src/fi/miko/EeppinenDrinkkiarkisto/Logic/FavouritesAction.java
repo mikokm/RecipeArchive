@@ -17,13 +17,20 @@ public class FavouritesAction implements Action {
 		QueryRunner runner = new QueryRunner(rd.getDataSource());
 
 		if (rd.getRequest().getMethod() == "GET") {
-			return showFavourites(rd, runner, user);
+			try {
+				List<Drink> drinks = FavouritesDAO.getFavouritesWithUserId(runner, user.getId());
+				rd.setAttribute("drinks", drinks);
+				return "favourites.jsp";
+			} catch (SQLException e) {
+				rd.setError("Failed to query the database: " + e.getMessage());
+				return rd.getErrorPage();
+			}
 		}
 
 		int drinkId = DatabaseHelper.parseId(rd.getParameter("drinkId"));
 
 		if (drinkId == 0) {
-			rd.setPageError("Invalid query string!");
+			rd.setError("Invalid query string!");
 			return rd.getErrorPage();
 		}
 
@@ -38,11 +45,11 @@ public class FavouritesAction implements Action {
 				FavouritesDAO.removeFavourite(runner, user.getId(), drinkId);
 				rd.redirect("favourites");
 			} else {
-				rd.setPageError("Invalid query parameters!");
+				rd.setError("Invalid query parameters!");
 				return rd.getErrorPage();
 			}
 		} catch (SQLException e) {
-			rd.setPageError("Error while " + error + ":\n" + e.getMessage());
+			rd.setError("Error while " + error + ":\n" + e.getMessage());
 			return rd.getErrorPage();
 		}
 
@@ -52,16 +59,5 @@ public class FavouritesAction implements Action {
 	@Override
 	public boolean secure() {
 		return true;
-	}
-
-	private String showFavourites(RequestData rd, QueryRunner runner, User user) {
-		try {
-			List<Drink> drinks = FavouritesDAO.getFavouritesWithUserId(runner, user.getId());
-			rd.setAttribute("drinks", drinks);
-			return "favourites.jsp";
-		} catch (SQLException e) {
-			rd.setPageError("Failed to query the database: " + e.getMessage());
-			return rd.getErrorPage();
-		}
 	}
 }

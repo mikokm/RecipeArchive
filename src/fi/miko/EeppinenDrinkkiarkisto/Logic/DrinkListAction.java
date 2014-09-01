@@ -19,7 +19,7 @@ public class DrinkListAction implements Action {
 			rd.setAttribute("drinks", drinks);
 			return "drinklist.jsp";
 		} catch (SQLException e) {
-			rd.setPageError("Failed to query the database: " + e.getMessage());
+			rd.setError("Failed to query the database: " + e.getMessage());
 			return rd.getErrorPage();
 		}
 	}

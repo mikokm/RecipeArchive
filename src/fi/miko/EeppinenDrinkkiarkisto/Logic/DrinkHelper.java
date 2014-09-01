@@ -14,7 +14,7 @@ public class DrinkHelper {
 		int id = DatabaseHelper.parseId(rd.getParameter("drinkId"));
 
 		if (id == 0) {
-			rd.setPageError("Invalid query string, drinkId is invalid!");
+			rd.setError("Invalid query string, drinkId is invalid!");
 			return null;
 		}
 
@@ -22,12 +22,12 @@ public class DrinkHelper {
 		try {
 			drink = DrinkDAO.getDrink(new QueryRunner(rd.getDataSource()), id);
 		} catch (SQLException e) {
-			rd.setPageError("Failed to query the database for the drink: " + e.getMessage());
+			rd.setError("Failed to query the database for the drink: " + e.getMessage());
 			return null;
 		}
 
 		if (drink == null) {
-			rd.setPageError("Failed to find a drink from the database with a drinkId: " + id);
+			rd.setError("Failed to find a drink from the database with a drinkId: " + id);
 			return null;
 		}
 
@@ -40,6 +40,7 @@ public class DrinkHelper {
 		QueryRunner runner = new QueryRunner(rd.getDataSource());
 
 		try {
+			// If the drink id is 0, the drink is not in the database.
 			if (id == 0) {
 				DrinkDAO.addDrink(runner, drink);
 			} else {
@@ -48,15 +49,16 @@ public class DrinkHelper {
 		} catch (SQLException e) {
 			// Unique constraint.
 			if (DatabaseHelper.constraintViolation(e)) {
-				rd.setPageError("The drink name is already in use!");
+				rd.setError("The drink name is already in use!");
 				rd.setAttribute("drink", drink);
 				return (id == 0 ? "createDrink.jsp" : "modifyDrink.jsp");
 			} else {
-				rd.setPageError("Error while updating drink in database: " + e.getMessage());
+				rd.setError("Error while updating drink in database: " + e.getMessage());
 				return rd.getErrorPage();
 			}
 		}
 
+		// Return to the drink page of the drink that got added or modified.
 		rd.redirect("drink?drinkId=" + drink.getId());
 		return null;
 	}

@@ -23,7 +23,7 @@ public class ModifyPageHelper {
 			String ingredient = request.getParameter("ingredients" + i);
 
 			if (ingredient == null || ingredient.isEmpty()) {
-				// Ingredient null or empty, skip.
+				// The ingredient is null or empty, skip.
 				continue;
 			}
 

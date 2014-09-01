@@ -25,14 +25,14 @@ public class UpdateDrinkAction implements Action {
 				// Fetch the drink owner from the database.
 				ownerId = DrinkDAO.getDrinkOwnerId(new QueryRunner(rd.getDataSource()), drink.getId());
 			} catch (SQLException e) {
-				rd.setPageError("Failed to get drink owner!");
+				rd.setError("Failed to get drink owner!");
 				return rd.getErrorPage();
 			}
 		}
 
 		// Check if the user can change this drink.
 		if (ownerId != user.getId() && !user.getAdmin()) {
-			rd.setPageError("You don't have permission to modify this drink!");
+			rd.setError("You don't have permission to modify this drink!");
 			return rd.getErrorPage();
 		}
 

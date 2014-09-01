@@ -26,7 +26,7 @@ public class LoginAction implements Action {
 		try {
 			user = UserDAO.getUserWithUsername(runner, username);
 		} catch (SQLException e) {
-			rd.setPageError("Failed to query user from the database: " + e.getMessage());
+			rd.setError("Failed to query user from the database: " + e.getMessage());
 			return rd.getIndexPage();
 		}
 

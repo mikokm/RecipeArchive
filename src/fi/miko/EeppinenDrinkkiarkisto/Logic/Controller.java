@@ -27,7 +27,7 @@ public class Controller {
 	static {
 		actions.add("GET/", new RedirectAction("index.jsp", false));
 		actions.add("GET/landing", new RedirectAction("landing.jsp", true));
-		
+
 		actions.add("POST/login", new LoginAction());
 		actions.add("GET/logout", new LogoutAction());
 
@@ -53,6 +53,7 @@ public class Controller {
 	}
 
 	public void processRequest() throws Exception {
+		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 
 		RequestData rd = new RequestData(request, response, dataSource, "/WEB-INF/");

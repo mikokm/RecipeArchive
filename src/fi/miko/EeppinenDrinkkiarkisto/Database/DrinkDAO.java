@@ -23,7 +23,7 @@ public class DrinkDAO {
 		drink.setOwner(c.getString("owner_name"));
 		drink.setOwnerId(c.getInt("owner_id"));
 
-		if(c.contains("favourite")) {
+		if (c.contains("favourite")) {
 			drink.setFavourite(rs.getBoolean("favourite"));
 		}
 
@@ -65,7 +65,7 @@ public class DrinkDAO {
 	}
 
 	public static List<Drink> getDrinkList(QueryRunner runner, int userId) throws SQLException {
-		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, (Favourites.user_id IS NOT NULL) AS favourite FROM Drinks " 
+		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, (Favourites.user_id IS NOT NULL) AS favourite FROM Drinks "
 				+ "LEFT OUTER JOIN (SELECT * From Favourites WHERE Favourites.user_id = ?) Favourites ON Drinks.drink_id = Favourites.drink_id "
 				+ "ORDER BY Drinks.name";
 
@@ -107,5 +107,9 @@ public class DrinkDAO {
 		for (String ingredient : drink.getIngredients()) {
 			runner.update("INSERT INTO Ingredients(drink_id, name) VALUES (?, ?)", drink.getId(), ingredient);
 		}
+	}
+
+	public static int getDrinkOwnerId(QueryRunner runner, int id) throws SQLException {
+		return runner.query("SELECT owner_id FROM Drinks WHERE drink_id = ?", new ScalarHandler<Integer>("owner_id"), id);
 	}
 }

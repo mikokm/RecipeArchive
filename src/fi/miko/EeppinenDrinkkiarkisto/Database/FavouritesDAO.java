@@ -17,7 +17,7 @@ public class FavouritesDAO {
 	public static void addFavourite(QueryRunner runner, int userId, int drinkId) throws SQLException {
 		runner.update("INSERT INTO Favourites(user_id, drink_id) VALUES(?, ?)", userId, drinkId);
 	}
-	
+
 	public static void removeFavourite(QueryRunner runner, int userId, int drinkId) throws SQLException {
 		runner.update("DELETE FROM Favourites WHERE user_id = ? AND drink_id = ?", userId, drinkId);
 	}

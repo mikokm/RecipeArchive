@@ -1,5 +1,10 @@
 package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
+import java.sql.SQLException;
+
+import org.apache.commons.dbutils.QueryRunner;
+
+import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
@@ -9,16 +14,28 @@ public class UpdateDrinkAction implements Action {
 		User user = (User) rd.getSession().getAttribute("user");
 		Drink drink = ModifyPageHelper.parseFormParameters(rd.getRequest());
 
-		// Set the drink owner.
-		if(drink.getId() == 0) {
-			drink.setOwnerId(user.getId());
+		int ownerId = 0;
+
+		if (drink.getId() == 0) {
+			// Set the owner of the new drink to the current user.
+			ownerId = user.getId();
+			drink.setOwnerId(ownerId);
+		} else {
+			try {
+				// Fetch the drink owner from the database.
+				ownerId = DrinkDAO.getDrinkOwnerId(new QueryRunner(rd.getDataSource()), drink.getId());
+			} catch (SQLException e) {
+				rd.setPageError("Failed to get drink owner!");
+				return rd.getErrorPage();
+			}
 		}
-		
-		if(drink.getOwnerId() != user.getId()) {
+
+		// Check if the user can change this drink.
+		if (ownerId != user.getId() && !user.getAdmin()) {
 			rd.setPageError("You don't have permission to modify this drink!");
 			return rd.getErrorPage();
 		}
-		
+
 		return DrinkHelper.insertOrUpdateDrink(drink, rd);
 	}
 

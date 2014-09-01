@@ -30,17 +30,17 @@ public class DrinkHelper {
 			rd.setPageError("Failed to find a drink from the database with a drinkId: " + id);
 			return null;
 		}
-		
+
 		return drink;
 	}
-	
+
 	public static String insertOrUpdateDrink(Drink drink, RequestData rd) throws IOException {
 		int id = drink.getId();
-		
+
 		QueryRunner runner = new QueryRunner(rd.getDataSource());
-		
-		try {	
-			if(id == 0) {
+
+		try {
+			if (id == 0) {
 				DrinkDAO.addDrinkToDatabase(runner, drink);
 			} else {
 				DrinkDAO.updateDrink(runner, drink);
@@ -56,7 +56,7 @@ public class DrinkHelper {
 				return rd.getErrorPage();
 			}
 		}
-		
+
 		rd.redirect("drink?drinkId=" + drink.getId());
 		return null;
 	}

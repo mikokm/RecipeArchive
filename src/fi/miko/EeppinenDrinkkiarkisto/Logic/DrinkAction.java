@@ -6,8 +6,8 @@ public class DrinkAction implements Action {
 	@Override
 	public String execute(RequestData rd) throws Exception {
 		Drink drink = DrinkHelper.getDrink(rd);
-		
-		if(drink != null) {
+
+		if (drink != null) {
 			rd.setAttribute("drink", drink);
 			return "drink.jsp";
 		} else {

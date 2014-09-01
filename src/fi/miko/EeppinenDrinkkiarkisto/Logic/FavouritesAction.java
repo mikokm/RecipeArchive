@@ -15,26 +15,28 @@ public class FavouritesAction implements Action {
 	public String execute(RequestData rd) throws Exception {
 		User user = (User) rd.getSession().getAttribute("user");
 		QueryRunner runner = new QueryRunner(rd.getDataSource());
-		
-		if(rd.getRequest().getMethod() == "GET") {
+
+		if (rd.getRequest().getMethod() == "GET") {
 			return showFavourites(rd, runner, user);
 		}
-		
+
 		int drinkId = DatabaseHelper.parseId(rd.getParameter("drinkId"));
-		
-		if(drinkId == 0) {
+
+		if (drinkId == 0) {
 			rd.setPageError("Invalid query string!");
 			return rd.getErrorPage();
 		}
-		
+
 		String error = "";
 		try {
-			if(rd.getParameter("addFavourite") != null) {
+			if (rd.getParameter("addFavourite") != null) {
 				error = "adding favourite";
 				FavouritesDAO.addFavourite(runner, user.getId(), drinkId);
-			} else if(rd.getParameter("removeFavourite") != null) {
+				rd.redirect("drinklist");
+			} else if (rd.getParameter("removeFavourite") != null) {
 				error = "removing favourite";
 				FavouritesDAO.removeFavourite(runner, user.getId(), drinkId);
+				rd.redirect("favourites");
 			} else {
 				rd.setPageError("Invalid query parameters!");
 				return rd.getErrorPage();
@@ -43,8 +45,7 @@ public class FavouritesAction implements Action {
 			rd.setPageError("Error while " + error + ":\n" + e.getMessage());
 			return rd.getErrorPage();
 		}
-		
-		rd.redirect("drinklist");
+
 		return null;
 	}
 
@@ -52,7 +53,7 @@ public class FavouritesAction implements Action {
 	public boolean secure() {
 		return true;
 	}
-	
+
 	private String showFavourites(RequestData rd, QueryRunner runner, User user) {
 		try {
 			List<Drink> drinks = FavouritesDAO.getFavouritesWithUserId(runner, user.getId());

@@ -13,13 +13,13 @@ public class ModifyDrinkAction implements Action {
 	public String execute(RequestData rd) throws Exception {
 		User user = (User) rd.getSession().getAttribute("user");
 		Drink drink = DrinkHelper.getDrink(rd);
-		
+
 		// The drink was not found.
 		if (drink == null) {
 			return rd.getErrorPage();
 		}
 
-		if(drink.getOwnerId() != user.getId()) {
+		if (drink.getOwnerId() != user.getId() && !user.getAdmin()) {
 			rd.setPageError("You don't have permission to modify this drink!");
 			return rd.getErrorPage();
 		}

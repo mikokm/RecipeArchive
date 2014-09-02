@@ -2,8 +2,6 @@ package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
 import java.sql.SQLException;
 
-import org.apache.commons.dbutils.QueryRunner;
-
 import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
@@ -12,7 +10,9 @@ public class ModifyDrinkAction implements Action {
 	@Override
 	public String execute(RequestData rd) throws Exception {
 		User user = (User) rd.getSession().getAttribute("user");
-		Drink drink = DrinkHelper.getDrink(rd);
+		
+		DrinkDAO dao = new DrinkDAO(rd.getDataSource());
+		Drink drink = DrinkHelper.getDrink(dao, rd);
 
 		// The drink was not found.
 		if (drink == null) {
@@ -27,7 +27,7 @@ public class ModifyDrinkAction implements Action {
 		// Try to delete the drink and return to the drinklist-page.
 		if (rd.getParameter("deleteButton") != null) {
 			try {
-				DrinkDAO.deleteDrink(new QueryRunner(rd.getDataSource()), drink.getId());
+				dao.deleteDrink(drink.getId());
 			} catch (SQLException e) {
 				rd.setError("Failed to delete the drink from database: " + e.getMessage());
 				return rd.getErrorPage();

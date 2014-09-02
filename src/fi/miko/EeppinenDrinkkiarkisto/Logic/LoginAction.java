@@ -2,8 +2,6 @@ package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
 import java.sql.SQLException;
 
-import org.apache.commons.dbutils.QueryRunner;
-
 import fi.miko.EeppinenDrinkkiarkisto.Database.UserDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
@@ -21,10 +19,10 @@ public class LoginAction implements Action {
 		rd.setAttribute("username", username);
 
 		User user = null;
-		QueryRunner runner = new QueryRunner(rd.getDataSource());
+		UserDAO dao = new UserDAO(rd.getDataSource());
 
 		try {
-			user = UserDAO.getUserWithUsername(runner, username);
+			user = dao.getUserWithUsername(username);
 		} catch (SQLException e) {
 			rd.setError("Failed to query user from the database: " + e.getMessage());
 			return rd.getIndexPage();
@@ -35,7 +33,7 @@ public class LoginAction implements Action {
 			return rd.getIndexPage();
 		}
 
-		UserDAO.updateLastLogin(runner, user);
+		dao.updateLastLogin(user);
 		rd.getSession().setAttribute("user", user);
 
 		return rd.getDefaultPage();

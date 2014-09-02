@@ -13,15 +13,25 @@
 			<h1>${type}</h1>
 		</div>
 
-		<div class="form-group">
-			<form role="form" class="form-horizontal" action="updateUser" method="post">
+		<form role="form" action="updateUser" method="post">
+			<div class="form-group">
 				<label>User name</label>
-				<input type="text" name="name" class="form-control">
+				<input type="text" name="name" class="form-control" value="${user.username}">
+			</div>
+			
+			<div class="form-group">
 				<label>Password</label>
-				<input type="password" name="password" class="form-control"><br>
-				<input type="text" name="admin" class="form-control"> 
-				<input type="submit" name="${action}Button" class="btn btn-default pull-right" value="${type}">
-			</form>
-		</div>
+				<input type="password" name="password" class="form-control">
+			</div>
+			
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="admin" <c:if test="${user.admin}">checked</c:if>>Admin
+				</label>
+			</div>
+			
+			<input type="hidden" name="userId" value="${user.id}">
+			<input type="submit" name="${action}Button" class="btn btn-default pull-left" value="${type}">
+		</form>
 	</div>
 </t:template>

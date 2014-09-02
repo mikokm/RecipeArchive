@@ -3,8 +3,6 @@ package fi.miko.EeppinenDrinkkiarkisto.Logic;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.commons.dbutils.QueryRunner;
-
 import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
@@ -15,7 +13,7 @@ public class DrinkListAction implements Action {
 		User user = (User) rd.getSession().getAttribute("user");
 
 		try {
-			List<Drink> drinks = DrinkDAO.getDrinkList(new QueryRunner(rd.getDataSource()), user.getId());
+			List<Drink> drinks = new DrinkDAO(rd.getDataSource()).getDrinkList(user.getId());
 			rd.setAttribute("drinks", drinks);
 			return "drinklist.jsp";
 		} catch (SQLException e) {

@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
@@ -14,7 +16,13 @@ import org.joda.time.DateTime;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
 public class UserDAO {
-	public static void addUser(QueryRunner runner, User user) throws SQLException {
+	private final QueryRunner runner;
+	
+	public UserDAO(DataSource ds) {
+		runner = new QueryRunner(ds);
+	}
+	
+	public void addUser(User user) throws SQLException {
 		String sql = "INSERT INTO Users(username, password, salt, admin, last_login VALUES(?, ?, ?, ?, NULL) RETURNING user_id";
 		int id = runner.query(sql, new ScalarHandler<Integer>("user_id"),
 				user.getUsername(), user.getPassword(), user.getSalt(), user.getAdmin());
@@ -22,7 +30,7 @@ public class UserDAO {
 		user.setId(id);
 	}
 	
-	private static User createFromResult(ResultSet rs) throws SQLException {
+	public static User createFromResult(ResultSet rs) throws SQLException {
 		ColumnChecker c = new ColumnChecker(rs);
 		User user = new User(c.getInt("user_id"), c.getString("username"));
 		user.setSalt(c.getString("salt"));
@@ -48,7 +56,7 @@ public class UserDAO {
 		return DigestUtils.sha1Hex(password + salt);
 	}
 
-	public static List<User> getUserList(QueryRunner runner) throws SQLException {
+	public List<User> getUserList() throws SQLException {
 		ResultSetHandler<List<User>> rsh = new ResultSetHandler<List<User>>() {
 			@Override
 			public List<User> handle(ResultSet rs) throws SQLException {
@@ -66,7 +74,7 @@ public class UserDAO {
 		return runner.query("SELECT user_id, username, admin, last_login FROM Users", rsh);
 	}
 
-	public static User getUserWithUsername(QueryRunner runner, String username) throws SQLException {
+	public User getUserWithUsername(String username) throws SQLException {
 		ResultSetHandler<User> rsh = new ResultSetHandler<User>() {
 			@Override
 			public User handle(ResultSet rs) throws SQLException {
@@ -78,11 +86,11 @@ public class UserDAO {
 				rsh, username);
 	}
 
-	public static void removeUser(QueryRunner runner, int id) throws SQLException {
+	public void removeUser(int id) throws SQLException {
 		runner.update("DELETE FROM User WHERE user_id = ?", id);
 	}
 
-	public static void updateLastLogin(QueryRunner runner, User user) {
+	public void updateLastLogin(User user) {
 		try {
 			runner.update("UPDATE Users SET last_login = now() WHERE user_id = ?", user.getId());
 		} catch (SQLException e) {
@@ -90,7 +98,7 @@ public class UserDAO {
 		}
 	}
 
-	public static void updateUser(QueryRunner runner, User user) throws SQLException {
+	public void updateUser(User user) throws SQLException {
 		runner.update("UPDATE Users SET password = ?, salt = ?, admin = ? WHERE user_id = ?",
 				user.getPassword(), user.getSalt(), user.getAdmin(), user.getId());
 	}

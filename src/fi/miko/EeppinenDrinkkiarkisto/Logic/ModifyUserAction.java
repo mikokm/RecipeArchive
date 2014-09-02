@@ -2,8 +2,6 @@ package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
 import java.sql.SQLException;
 
-import org.apache.commons.dbutils.QueryRunner;
-
 import fi.miko.EeppinenDrinkkiarkisto.Database.DatabaseHelper;
 import fi.miko.EeppinenDrinkkiarkisto.Database.UserDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
@@ -25,18 +23,14 @@ public class ModifyUserAction implements Action {
 			return rd.getErrorPage();
 		}
 		
-		QueryRunner runner = new QueryRunner(rd.getDataSource());
-		
 		if(rd.getParameter("removeButton") != null) {
 			try {
-				UserDAO.removeUser(runner, userId);
+				new UserDAO(rd.getDataSource()).removeUser(userId);
 			} catch(SQLException e) {
 				rd.setError("Failed to remove user. Database error: " + e.getMessage());
 				return rd.getErrorPage();
 			}
 		}
-		
-		
 		
 		if(rd.getParameter("modifyButton") != null) {
 			rd.setAttribute("user", user);

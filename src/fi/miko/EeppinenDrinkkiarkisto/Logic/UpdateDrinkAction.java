@@ -2,8 +2,6 @@ package fi.miko.EeppinenDrinkkiarkisto.Logic;
 
 import java.sql.SQLException;
 
-import org.apache.commons.dbutils.QueryRunner;
-
 import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
@@ -16,6 +14,8 @@ public class UpdateDrinkAction implements Action {
 
 		int ownerId = 0;
 
+		DrinkDAO dao = new DrinkDAO(rd.getDataSource());
+		
 		if (drink.getId() == 0) {
 			// Set the owner of the new drink to the current user.
 			ownerId = user.getId();
@@ -23,7 +23,7 @@ public class UpdateDrinkAction implements Action {
 		} else {
 			try {
 				// Fetch the drink owner from the database.
-				ownerId = DrinkDAO.getDrinkOwnerId(new QueryRunner(rd.getDataSource()), drink.getId());
+				ownerId = dao.getDrinkOwnerId(drink.getId());
 			} catch (SQLException e) {
 				rd.setError("Failed to get drink owner!");
 				return rd.getErrorPage();
@@ -36,7 +36,7 @@ public class UpdateDrinkAction implements Action {
 			return rd.getErrorPage();
 		}
 
-		return DrinkHelper.insertOrUpdateDrink(drink, rd);
+		return DrinkHelper.insertOrUpdateDrink(dao, drink, rd);
 	}
 
 	@Override

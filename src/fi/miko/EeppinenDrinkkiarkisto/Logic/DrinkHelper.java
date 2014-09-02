@@ -3,14 +3,12 @@ package fi.miko.EeppinenDrinkkiarkisto.Logic;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import org.apache.commons.dbutils.QueryRunner;
-
 import fi.miko.EeppinenDrinkkiarkisto.Database.DatabaseHelper;
 import fi.miko.EeppinenDrinkkiarkisto.Database.DrinkDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class DrinkHelper {
-	public static Drink getDrink(RequestData rd) {
+	public static Drink getDrink(DrinkDAO dao, RequestData rd) {
 		int id = DatabaseHelper.parseId(rd.getParameter("drinkId"));
 
 		if (id == 0) {
@@ -20,7 +18,7 @@ public class DrinkHelper {
 
 		Drink drink = null;
 		try {
-			drink = DrinkDAO.getDrink(new QueryRunner(rd.getDataSource()), id);
+			drink = dao.getDrink(id);
 		} catch (SQLException e) {
 			rd.setError("Failed to query the database for the drink: " + e.getMessage());
 			return null;
@@ -34,17 +32,15 @@ public class DrinkHelper {
 		return drink;
 	}
 
-	public static String insertOrUpdateDrink(Drink drink, RequestData rd) throws IOException {
+	public static String insertOrUpdateDrink(DrinkDAO dao, Drink drink, RequestData rd) throws IOException {
 		int id = drink.getId();
-
-		QueryRunner runner = new QueryRunner(rd.getDataSource());
 
 		try {
 			// If the drink id is 0, the drink is not in the database.
 			if (id == 0) {
-				DrinkDAO.addDrink(runner, drink);
+				dao.addDrink(drink);
 			} else {
-				DrinkDAO.updateDrink(runner, drink);
+				dao.updateDrink(drink);
 			}
 		} catch (SQLException e) {
 			// Unique constraint.

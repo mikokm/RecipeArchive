@@ -12,7 +12,7 @@ public class AdminAction implements Action {
 		List<User> users;
 		
 		try {
-			users = UserDAO.getUserList(rd.getQueryRunner());
+			users = new UserDAO(rd.getDataSource()).getUserList();
 		} catch(SQLException e) {
 			rd.setError("Failed to retrieve user list, database error: " + e.getMessage());
 			return rd.getErrorPage();

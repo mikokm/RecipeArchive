@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.ColumnListHandler;
@@ -14,7 +16,13 @@ import org.joda.time.DateTime;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class DrinkDAO {
-	public static void addDrink(QueryRunner runner, Drink drink) throws SQLException {
+	private final QueryRunner runner;
+	
+	public DrinkDAO(DataSource dataSource) {
+		runner = new QueryRunner(dataSource);
+	}
+	
+	public void addDrink(Drink drink) throws SQLException {
 		String sql = "INSERT INTO Drinks(name, description, image_url, owner_id, date) VALUES(?, ?, ?, ?, NULL) RETURNING drink_id";
 		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(), drink.getImageUrl(),
 				drink.getOwnerId());
@@ -23,7 +31,7 @@ public class DrinkDAO {
 
 		// If the drink id is 0, the query failed.
 		if (id != 0) {
-			saveDrinkIngredients(runner, drink);
+			saveDrinkIngredients(drink);
 		}
 	}
 
@@ -55,11 +63,11 @@ public class DrinkDAO {
 		return drink;
 	}
 
-	public static void deleteDrink(QueryRunner runner, int id) throws SQLException {
+	public void deleteDrink(int id) throws SQLException {
 		runner.update("DELETE FROM Drinks WHERE drink_id = ?", id);
 	}
 
-	public static Drink getDrink(QueryRunner runner, int id) throws SQLException {
+	public Drink getDrink(int id) throws SQLException {
 		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, Drinks.image_url, Drinks.date, Drinks.owner_id, "
 				+ "Users.username AS owner_name FROM Drinks "
 				+ "LEFT OUTER JOIN Users ON Drinks.owner_id = Users.user_id WHERE Drinks.drink_id = ?";
@@ -74,14 +82,14 @@ public class DrinkDAO {
 		Drink drink = runner.query(sql, rhs, id);
 
 		if (drink != null) {
-			List<String> ingredients = getIngredients(runner, id);
+			List<String> ingredients = getIngredients(id);
 			drink.setIngredients(ingredients);
 		}
 
 		return drink;
 	}
 
-	public static List<Drink> getDrinkList(QueryRunner runner, int userId) throws SQLException {
+	public List<Drink> getDrinkList(int userId) throws SQLException {
 		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, (Favourites.user_id IS NOT NULL) AS favourite FROM Drinks "
 				+ "LEFT OUTER JOIN (SELECT * From Favourites WHERE Favourites.user_id = ?) Favourites ON Drinks.drink_id = Favourites.drink_id "
 				+ "ORDER BY Drinks.name";
@@ -89,16 +97,16 @@ public class DrinkDAO {
 		return runner.query(sql, new DrinkListResultSetHandler(), userId);
 	}
 
-	public static int getDrinkOwnerId(QueryRunner runner, int id) throws SQLException {
+	public int getDrinkOwnerId(int id) throws SQLException {
 		return runner.query("SELECT owner_id FROM Drinks WHERE drink_id = ?", new ScalarHandler<Integer>("owner_id"), id);
 	}
 
-	private static List<String> getIngredients(QueryRunner runner, int id) throws SQLException {
+	private List<String> getIngredients(int id) throws SQLException {
 		String sql = "SELECT name FROM Ingredients WHERE drink_id = ?";
 		return runner.query(sql, new ColumnListHandler<String>("name"), id);
 	}
 
-	private static void saveDrinkIngredients(QueryRunner runner, Drink drink) throws SQLException {
+	private void saveDrinkIngredients(Drink drink) throws SQLException {
 		runner.update("DELETE FROM Ingredients WHERE drink_id = ?", drink.getId());
 
 		for (String ingredient : drink.getIngredients()) {
@@ -106,10 +114,10 @@ public class DrinkDAO {
 		}
 	}
 
-	public static void updateDrink(QueryRunner runner, Drink drink) throws SQLException {
+	public void updateDrink(Drink drink) throws SQLException {
 		String sql = "UPDATE Drinks SET name = ?, description = ?, image_url = ? " + "WHERE drink_id = ?";
 		runner.update(sql, drink.getName(), drink.getDescription(), drink.getImageUrl(), drink.getId());
 
-		saveDrinkIngredients(runner, drink);
+		saveDrinkIngredients(drink);
 	}
 }

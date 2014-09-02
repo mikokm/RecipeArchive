@@ -29,10 +29,9 @@
 						</c:forEach>
 					</div>
 				</div>
-				<br>
-				<input type="hidden" name="drinkId" value="${drink.id}">
-				<button type="submit" class="btn btn-default pull-left" name="${action}Button">${type}</button>
 			</div>	
+			<input type="hidden" name="drinkId" value="${drink.id}">
+			<button type="submit" class="btn btn-default pull-left" name="${action}Button">${type}</button>
 		</form>
 	</div>
 </t:template>

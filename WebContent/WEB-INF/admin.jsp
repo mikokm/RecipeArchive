@@ -15,7 +15,7 @@
 			<a href="createUser">Create a new user</a>
 		</p>
 
-		<form class="form-inline" role="form" action="modifyUser" method="post">
+		<form role="form" action="modifyUser" method="post">
 			<table class="table table-striped">
 				<thead>
 					<tr>
@@ -38,10 +38,8 @@
 								</c:if></td>
 							<td><c:out value="${usr.lastLogin}" /></td>
 							<td>
-								<div class="form-group">
-									<button class="btn btn-default" type="submit" name="modifyButton" value="${usr.id}">Modify</button>
-									<button class="btn btn-default" type="submit" name="removeButton" value="${usr.id}">Remove</button>
-								</div>
+								<button class="btn btn-default" type="submit" name="modifyButton" value="${usr.id}">Modify</button>
+								<button class="btn btn-default" type="submit" name="removeButton" value="${usr.id}">Remove</button>
 							</td>
 						</tr>
 					</c:forEach>

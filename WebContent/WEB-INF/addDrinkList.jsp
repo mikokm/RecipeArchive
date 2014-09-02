@@ -12,10 +12,11 @@
 
 		<form role="form" action="addDrinkList" method="post">
 			<div class="form-group">
-				<label>File name or url</label>
+				<label>File name or URL</label>
 				<input type="text" name="filename" class="form-control">
-				<button type="submit" class="btn btn-default pull-left" name="importButton">Import</button>
 			</div>
+			
+			<button type="submit" class="btn btn-default pull-left" name="importButton">Import</button>
 		</form>
 	</div>
 </t:template>

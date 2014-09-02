@@ -11,11 +11,11 @@ import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class FavouritesDAO {
 	private final QueryRunner runner;
-	
+
 	public FavouritesDAO(DataSource dataSource) {
 		this.runner = new QueryRunner(dataSource);
 	}
-	
+
 	public List<Drink> getFavouritesWithUserId(int userId) throws SQLException {
 		String sql = "SELECT Favourites.drink_id, Drinks.name, Drinks.description "
 				+ "FROM Favourites INNER JOIN Drinks ON Favourites.drink_id = Drinks.drink_id WHERE Favourites.user_id = ?";

@@ -44,7 +44,7 @@ public class Controller {
 		actions.add("GET/admin", new AdminAction());
 		actions.add("GET/createUser", new RedirectAction("createUser.jsp", true));
 		actions.add("POST/modifyUser", new ModifyUserAction());
-		
+
 		actions.add("GET/addDrinkList", new RedirectAction("addDrinkList.jsp", true));
 	}
 
@@ -71,7 +71,7 @@ public class Controller {
 
 		// Use the request parameters to get the action.
 		Action action = actions.get(request);
-		
+
 		// No action found.
 		if (action == null) {
 			rd.setError("Cannot process the request: " + request.getPathInfo());
@@ -93,7 +93,8 @@ public class Controller {
 	}
 
 	private boolean isLoggedIn() {
-		// If the user attribute exists in the session, the user has successfully logged in.
+		// If the user attribute exists in the session, the user has
+		// successfully logged in.
 		return request.getSession().getAttribute("user") != null;
 	}
 }

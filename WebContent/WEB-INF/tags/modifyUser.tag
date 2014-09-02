@@ -16,7 +16,7 @@
 		<form role="form" action="updateUser" method="post">
 			<div class="form-group">
 				<label>User name</label>
-				<input type="text" name="name" class="form-control" value="${user.username}">
+				<input type="text" name="name" class="form-control" value="${usr.username}">
 			</div>
 			
 			<div class="form-group">
@@ -26,12 +26,18 @@
 			
 			<div class="checkbox">
 				<label>
-					<input type="checkbox" name="admin" <c:if test="${user.admin}">checked</c:if>>Admin
+					<input type="checkbox" name="changePassword">Change Password
 				</label>
 			</div>
 			
-			<input type="hidden" name="userId" value="${user.id}">
-			<input type="submit" name="${action}Button" class="btn btn-default pull-left" value="${type}">
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" name="admin" <c:if test="${usr.admin}">checked</c:if>>Admin
+				</label>
+			</div>
+			
+			<input type="hidden" name="userId" value="${usr.id}">
+			<button type="submit"class="btn btn-default pull-left"  name="${action}Button">${type}</button>
 		</form>
 	</div>
 </t:template>

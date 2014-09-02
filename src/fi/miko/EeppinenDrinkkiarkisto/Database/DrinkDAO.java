@@ -17,15 +17,15 @@ import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class DrinkDAO {
 	private final QueryRunner runner;
-	
+
 	public DrinkDAO(DataSource dataSource) {
 		runner = new QueryRunner(dataSource);
 	}
-	
+
 	public void addDrink(Drink drink) throws SQLException {
 		String sql = "INSERT INTO Drinks(name, description, image_url, owner_id, date) VALUES(?, ?, ?, ?, NULL) RETURNING drink_id";
-		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(), drink.getImageUrl(),
-				drink.getOwnerId());
+		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(),
+				drink.getImageUrl(), drink.getOwnerId());
 
 		drink.setId(id);
 
@@ -38,7 +38,8 @@ public class DrinkDAO {
 	public static Drink createFromResultSet(ResultSet rs) throws SQLException {
 		ColumnChecker c = new ColumnChecker(rs);
 
-		// Return a new Drink object with all the available fields in the ResultSet.
+		// Return a new Drink object with all the available fields in the
+		// ResultSet.
 		Drink drink = new Drink(c.getInt("drink_id"), c.getString("name"));
 		drink.setDescription(c.getString("description"));
 		drink.setImageUrl(c.getString("image_url"));
@@ -51,9 +52,9 @@ public class DrinkDAO {
 
 		if (c.contains("date")) {
 			Timestamp ts = rs.getTimestamp("date");
-			
+
 			String date = "never";
-			if(ts != null) {
+			if (ts != null) {
 				date = new DateTime(ts.getTime()).toString("HH:mm dd.MM.yyy");
 			}
 
@@ -98,7 +99,8 @@ public class DrinkDAO {
 	}
 
 	public int getDrinkOwnerId(int id) throws SQLException {
-		return runner.query("SELECT owner_id FROM Drinks WHERE drink_id = ?", new ScalarHandler<Integer>("owner_id"), id);
+		return runner.query("SELECT owner_id FROM Drinks WHERE drink_id = ?", new ScalarHandler<Integer>("owner_id"),
+				id);
 	}
 
 	private List<String> getIngredients(int id) throws SQLException {

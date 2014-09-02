@@ -35,7 +35,7 @@ public class ModifyPageHelper {
 
 		return drink;
 	}
-	
+
 	public static User parseUserFormParameters(HttpServletRequest request) {
 		return null;
 	}

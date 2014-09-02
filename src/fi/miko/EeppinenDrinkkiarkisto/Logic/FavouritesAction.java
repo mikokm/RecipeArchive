@@ -28,12 +28,12 @@ public class FavouritesAction implements Action {
 
 		int addId = DatabaseHelper.parseId(rd.getParameter("addFavourite"));
 		int removeId = DatabaseHelper.parseId(rd.getParameter("removeFavourite"));
-		
+
 		if (addId == 0 && removeId == 0) {
 			rd.setError("FavouritesAction received invalid drinkId!");
 			return rd.getErrorPage();
 		}
-		
+
 		String error = "";
 		try {
 			if (addId != 0) {

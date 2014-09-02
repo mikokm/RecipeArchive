@@ -59,7 +59,7 @@ public class RequestData {
 	public String getParameter(String parameter) {
 		return request.getParameter(parameter);
 	}
-	
+
 	public QueryRunner getQueryRunner() {
 		return new QueryRunner(this.dataSource);
 	}

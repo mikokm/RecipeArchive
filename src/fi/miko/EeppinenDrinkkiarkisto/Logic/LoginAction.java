@@ -22,7 +22,7 @@ public class LoginAction implements Action {
 		UserDAO dao = new UserDAO(rd.getDataSource());
 
 		try {
-			user = dao.getUserWithUsername(username);
+			user = dao.getUser(username);
 		} catch (SQLException e) {
 			rd.setError("Failed to query user from the database: " + e.getMessage());
 			return rd.getIndexPage();

@@ -10,14 +10,14 @@ public class AdminAction implements Action {
 	@Override
 	public String execute(RequestData rd) throws Exception {
 		List<User> users;
-		
+
 		try {
 			users = new UserDAO(rd.getDataSource()).getUserList();
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			rd.setError("Failed to retrieve user list, database error: " + e.getMessage());
 			return rd.getErrorPage();
 		}
-		
+
 		rd.setAttribute("users", users);
 		return "admin.jsp";
 	}

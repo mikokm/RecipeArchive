@@ -10,32 +10,40 @@ public class ModifyUserAction implements Action {
 	@Override
 	public String execute(RequestData rd) throws Exception {
 		User user = (User) rd.getSession().getAttribute("user");
-		
-		if(!user.getAdmin()) {
+
+		if (!user.getAdmin()) {
 			rd.setError("You are not an admin!");
 			return rd.getErrorPage();
 		}
 
-		int userId = DatabaseHelper.parseId(rd.getParameter("userId"));
-		
-		if(userId == 0) {
-			rd.setError("Invalid userId parameter!");
+		int removeId = DatabaseHelper.parseId(rd.getParameter("removeButton"));
+		int modifyId = DatabaseHelper.parseId(rd.getParameter("modifyButton"));
+
+		int userId = Math.max(DatabaseHelper.parseId(rd.getParameter("removeButton")),
+				DatabaseHelper.parseId(rd.getParameter("modifyButton")));
+
+		if (modifyId == 0 && removeId == 0) {
+			rd.setError("ModifyUserAction received incorrect parameters!");
 			return rd.getErrorPage();
 		}
-		
-		if(rd.getParameter("removeButton") != null) {
+
+		UserDAO dao = new UserDAO(rd.getDataSource());
+
+		if (removeId != 0) {
 			try {
-				new UserDAO(rd.getDataSource()).removeUser(userId);
-			} catch(SQLException e) {
+				dao.removeUser(userId);
+			} catch (SQLException e) {
 				rd.setError("Failed to remove user. Database error: " + e.getMessage());
 				return rd.getErrorPage();
 			}
 		}
-		
-		if(rd.getParameter("modifyButton") != null) {
-			rd.setAttribute("user", user);
+
+		if (modifyId != 0) {
+			user = dao.getUser(modifyId);
+			rd.setAttribute("usr", user);
+			return "modifyUser.jsp";
 		}
-		
+
 		return null;
 	}
 

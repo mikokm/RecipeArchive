@@ -8,41 +8,45 @@
 			<h1>Administration</h1>
 		</div>
 
-		<p><a href="addDrinkList">Import drinklist</a></p>
-		<p><a href="createUser">Create a new user</a></p>
+		<p>
+			<a href="addDrinkList">Import drinklist</a>
+		</p>
+		<p>
+			<a href="createUser">Create a new user</a>
+		</p>
 
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>User name</th>
-					<th>User id</th>
-					<th>Admin</th>
-					<th>Last visit</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="user" items="${users}">
+		<form class="form-inline" role="form" action="modifyUser" method="post">
+			<table class="table table-striped">
+				<thead>
 					<tr>
-						<td><c:out value="${user.username}"/></td>
-						<td>${user.id}</td>
-						<td>
-						<c:if test="${user.admin == true}"><span class="glyphicon glyphicon-check"></span></c:if>
-						<c:if test="${user.admin != true}"><span class="glyphicon glyphicon-unchecked"></span></c:if>
-						</td>
-						<td><c:out value="${user.lastLogin}"/></td>
-						<td>
-							<form class="form-inline" role="form" action="modifyUser" method="post">
-								<div class="form-group">
-									<input type="hidden" name="userId" value="${user.id}">
-									<input type="submit" name="modifyButton" class="btn btn-default" value="Modify">
-									<input type="submit" name="deleteButton" class="btn btn-default" value="Delete user">
-								</div>
-							</form>
-						</td>
+						<th>User name</th>
+						<th>User id</th>
+						<th>Admin</th>
+						<th>Last visit</th>
+						<th></th>
 					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					<c:forEach var="usr" items="${users}">
+						<tr>
+							<td><c:out value="${usr.username}" /></td>
+							<td>${usr.id}</td>
+							<td><c:if test="${usr.admin == true}">
+									<span class="glyphicon glyphicon-check"></span>
+								</c:if> <c:if test="${usr.admin != true}">
+									<span class="glyphicon glyphicon-unchecked"></span>
+								</c:if></td>
+							<td><c:out value="${usr.lastLogin}" /></td>
+							<td>
+								<div class="form-group">
+									<button class="btn btn-default" type="submit" name="modifyButton" value="${usr.id}">Modify</button>
+									<button class="btn btn-default" type="submit" name="removeButton" value="${usr.id}">Remove</button>
+								</div>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</form>
 	</div>
 </t:template>

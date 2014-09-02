@@ -42,10 +42,11 @@ public class Controller {
 		actions.add("POST/modifyDrink", new ModifyDrinkAction());
 		actions.add("POST/updateDrink", new UpdateDrinkAction());
 
-		// TODO:
-		actions.add("GET/addDrinkList", new RedirectAction("addDrinkList.jsp", true));
-		actions.add("GET/admin", new RedirectAction("admin.jsp", true));
+		actions.add("GET/admin", new AdminAction());
 		actions.add("GET/createUser", new RedirectAction("createUser.jsp", true));
+		actions.add("POST/modifyUser", new ModifyUserAction());
+		
+		actions.add("GET/addDrinkList", new RedirectAction("addDrinkList.jsp", true));
 	}
 
 	public Controller(HttpServletRequest request, HttpServletResponse response) {

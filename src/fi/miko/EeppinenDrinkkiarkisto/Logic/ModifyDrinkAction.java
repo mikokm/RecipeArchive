@@ -26,7 +26,6 @@ public class ModifyDrinkAction implements Action {
 
 		// Try to delete the drink and return to the drinklist-page.
 		if (rd.getParameter("deleteButton") != null) {
-			System.out.println("Deleting the drink...");
 			try {
 				DrinkDAO.deleteDrink(new QueryRunner(rd.getDataSource()), drink.getId());
 			} catch (SQLException e) {

@@ -7,11 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import fi.miko.EeppinenDrinkkiarkisto.Database.DatabaseHelper;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
+import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
 public class ModifyPageHelper {
 	public static final int MAX_INGREDIENTS = 10;
 
-	public static Drink parseFormParameters(HttpServletRequest request) {
+	public static Drink parseDrinkFormParameters(HttpServletRequest request) {
 		int id = DatabaseHelper.parseId(request.getParameter("drinkId"));
 
 		Drink drink = new Drink(id, request.getParameter("name"));
@@ -33,5 +34,9 @@ public class ModifyPageHelper {
 		drink.setIngredients(ingredients);
 
 		return drink;
+	}
+	
+	public static User parseUserFormParameters(HttpServletRequest request) {
+		return null;
 	}
 }

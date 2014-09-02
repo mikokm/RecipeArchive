@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import org.apache.commons.dbutils.QueryRunner;
+
+// This class is ugly, please use a real web framework that encapsulates this data better.
 public class RequestData {
 	private final HttpServletRequest request;
 	private final HttpServletResponse response;
@@ -55,6 +58,10 @@ public class RequestData {
 
 	public String getParameter(String parameter) {
 		return request.getParameter(parameter);
+	}
+	
+	public QueryRunner getQueryRunner() {
+		return new QueryRunner(this.dataSource);
 	}
 
 	public HttpServletRequest getRequest() {

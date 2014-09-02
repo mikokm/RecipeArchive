@@ -12,7 +12,7 @@ public class UpdateDrinkAction implements Action {
 	@Override
 	public String execute(RequestData rd) throws Exception {
 		User user = (User) rd.getSession().getAttribute("user");
-		Drink drink = ModifyPageHelper.parseFormParameters(rd.getRequest());
+		Drink drink = ModifyPageHelper.parseDrinkFormParameters(rd.getRequest());
 
 		int ownerId = 0;
 

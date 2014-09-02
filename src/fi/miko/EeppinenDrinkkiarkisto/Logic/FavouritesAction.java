@@ -3,8 +3,6 @@ package fi.miko.EeppinenDrinkkiarkisto.Logic;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.commons.dbutils.QueryRunner;
-
 import fi.miko.EeppinenDrinkkiarkisto.Database.DatabaseHelper;
 import fi.miko.EeppinenDrinkkiarkisto.Database.FavouritesDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
@@ -14,42 +12,44 @@ public class FavouritesAction implements Action {
 	@Override
 	public String execute(RequestData rd) throws Exception {
 		User user = (User) rd.getSession().getAttribute("user");
-		QueryRunner runner = new QueryRunner(rd.getDataSource());
+		FavouritesDAO dao = new FavouritesDAO(rd.getDataSource());
 
+		// If this action was reached with GET method, show the favourites list.
 		if (rd.getRequest().getMethod() == "GET") {
 			try {
-				List<Drink> drinks = FavouritesDAO.getFavouritesWithUserId(runner, user.getId());
+				List<Drink> drinks = dao.getFavouritesWithUserId(user.getId());
 				rd.setAttribute("drinks", drinks);
 				return "favourites.jsp";
 			} catch (SQLException e) {
-				rd.setError("Failed to query the database: " + e.getMessage());
+				rd.setError("Favourites query failed: " + e.getMessage());
 				return rd.getErrorPage();
 			}
 		}
 
-		int drinkId = DatabaseHelper.parseId(rd.getParameter("drinkId"));
-
-		if (drinkId == 0) {
-			rd.setError("Invalid query string!");
+		int addId = DatabaseHelper.parseId(rd.getParameter("addFavourite"));
+		int removeId = DatabaseHelper.parseId(rd.getParameter("removeFavourite"));
+		
+		if (addId == 0 && removeId == 0) {
+			rd.setError("FavouritesAction received invalid drinkId!");
 			return rd.getErrorPage();
 		}
-
+		
 		String error = "";
 		try {
-			if (rd.getParameter("addFavourite") != null) {
-				error = "adding favourite";
-				FavouritesDAO.addFavourite(runner, user.getId(), drinkId);
+			if (addId != 0) {
+				error = "Adding favourite";
+				dao.addFavourite(user.getId(), addId);
 				rd.redirect("drinklist");
-			} else if (rd.getParameter("removeFavourite") != null) {
-				error = "removing favourite";
-				FavouritesDAO.removeFavourite(runner, user.getId(), drinkId);
+			} else if (removeId != 0) {
+				error = "Removing favourite";
+				dao.removeFavourite(user.getId(), removeId);
 				rd.redirect("favourites");
 			} else {
-				rd.setError("Invalid query parameters!");
+				rd.setError("Unknown error in FavouritesAction!");
 				return rd.getErrorPage();
 			}
 		} catch (SQLException e) {
-			rd.setError("Error while " + error + ":\n" + e.getMessage());
+			rd.setError(error + " query failed: " + e.getMessage());
 			return rd.getErrorPage();
 		}
 

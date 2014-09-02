@@ -37,7 +37,7 @@
 			</div>
 			
 			<input type="hidden" name="userId" value="${usr.id}">
-			<button type="submit"class="btn btn-default pull-left"  name="${action}Button">${type}</button>
+			<button type="submit" class="btn btn-default pull-left" name="${action}Button">${type}</button>
 		</form>
 	</div>
 </t:template>

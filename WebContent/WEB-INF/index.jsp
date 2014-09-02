@@ -15,7 +15,7 @@
 				<label>Password</label> <input type="password" name="password" value="${password}" placeholder="Password" class="form-control">
 			</div>
 
-			<button type="submit" class="btn btn-default pull-right">Login</button>
+			<button type="submit" class="btn btn-default pull-right" name="loginButton">Login</button>
 		</form>
 	</div>
 </t:template>

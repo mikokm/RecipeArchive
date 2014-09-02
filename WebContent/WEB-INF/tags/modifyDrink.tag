@@ -11,8 +11,8 @@
 			<h1>${type}</h1>
 		</div>
 
-		<div class="form-group">
-			<form role="form" action="modifyDrink" method="post">
+		<form role="form" action="modifyDrink" method="post">
+			<div class="form-group">
 				<div class="row">
 					<div class="col-md-6">
 						<label>Drink name</label>
@@ -30,8 +30,9 @@
 					</div>
 				</div>
 				<br>
-				<input type="hidden" name="drinkId" value="${drink.id}"> <input type="submit" name="${action}Button" class="btn btn-default pull-left" value="${type}">
-			</form>
-		</div>
+				<input type="hidden" name="drinkId" value="${drink.id}">
+				<button type="submit" class="btn btn-default pull-left" name="${action}Button">${type}</button>
+			</div>	
+		</form>
 	</div>
 </t:template>

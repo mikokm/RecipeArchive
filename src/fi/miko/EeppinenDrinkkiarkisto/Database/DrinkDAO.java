@@ -23,7 +23,7 @@ public class DrinkDAO {
 	}
 
 	public void addDrink(Drink drink) throws SQLException {
-		String sql = "INSERT INTO Drinks(name, description, image_url, owner_id, date) VALUES(?, ?, ?, ?, NULL) RETURNING drink_id";
+		String sql = "INSERT INTO Drinks(name, description, image_url, owner_id, date) VALUES(?, ?, ?, ?, now()) RETURNING drink_id";
 		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(),
 				drink.getImageUrl(), drink.getOwnerId());
 
@@ -53,7 +53,7 @@ public class DrinkDAO {
 		if (c.contains("date")) {
 			Timestamp ts = rs.getTimestamp("date");
 
-			String date = "never";
+			String date = "Unknown";
 			if (ts != null) {
 				date = new DateTime(ts.getTime()).toString("HH:mm dd.MM.yyy");
 			}

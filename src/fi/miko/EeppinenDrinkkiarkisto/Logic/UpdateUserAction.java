@@ -22,19 +22,18 @@ public class UpdateUserAction implements Action {
 		User user = new User(userId, rd.getParameter("username"));
 		user.setAdmin(rd.getParameter("admin") != null);
 		
-		if(userId == 0 || rd.getParameter("changePassword") != null) {
-			String salt = UserDAO.generateSalt();
-			String password = rd.getParameter("password");
-			
-			if(password == null) {
-				password = ""; 
-			}
 
-			String hash = UserDAO.getPasswordHash(password, salt);
+		// Generate salt and hash the password + salt.
+		String salt = UserDAO.generateSalt();
+		String password = rd.getParameter("password");
 			
-			user.setSalt(salt);
-			user.setPassword(hash);
+		if(password == null) {
+			password = ""; 
 		}
+
+		String hash = UserDAO.getPasswordHash(password, salt);
+		user.setSalt(salt);
+		user.setPassword(hash);
 		
 		UserDAO dao = new UserDAO(rd.getDataSource());
 
@@ -44,10 +43,12 @@ public class UpdateUserAction implements Action {
 				dao.addUser(user);
 			} else {
 				dao.updateUser(user);
-				
-				if(rd.getParameter("changePassword") != null) {
-					dao.updateUserPassword(user);
-				}
+			}
+			
+			// Change password only if the user was just created or
+			// if the change password checkbox is checked.
+			if(userId == 0 || rd.getParameter("changePassword") != null) {
+				dao.updateUserPassword(user);
 			}
 		} catch (SQLException e) {
 			// Unique constraint.

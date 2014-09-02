@@ -32,13 +32,13 @@
 		</div>
 		<br>
 	<c:if test="${drink.ownerId == sessionScope.user.id || sessionScope.user.admin == true}">
-		<div class="form-group">
-			<form class="form-inline" role="form" action="modifyDrink" method="post">
+		<form class="form-inline" role="form" action="modifyDrink" method="post">
+			<div class="form-group">
 				<input type="hidden" name="drinkId" value="${drink.id}">
 				<button type="submit" name="modifyButton" class="btn btn-default">Modify drink</button>
 				<button type="submit" name="deleteButton" class="btn btn-default">Delete drink</button>
-			</form>
-		</div>
+			</div>
+		</form>
 	</c:if>
 	</div>
 </t:template>

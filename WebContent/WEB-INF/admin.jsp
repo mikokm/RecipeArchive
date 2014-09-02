@@ -15,13 +15,22 @@
 			<thead>
 				<tr>
 					<th>User name</th>
+					<th>User id</th>
+					<th>Admin</th>
+					<th>Last visit</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach var="user" items="${users}">
 					<tr>
-						<td>${user.username}</td>
+						<td><c:out value="${user.username}"/></td>
+						<td>${user.id}</td>
+						<td>
+						<c:if test="${user.admin == true}"><span class="glyphicon glyphicon-check"></span></c:if>
+						<c:if test="${user.admin != true}"><span class="glyphicon glyphicon-unchecked"></span></c:if>
+						</td>
+						<td><c:out value="${user.lastLogin}"/></td>
 						<td>
 							<form class="form-inline" role="form" action="modifyUser" method="post">
 								<div class="form-group">

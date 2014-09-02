@@ -71,7 +71,7 @@ public class UserDAO {
 			}
 		};
 		
-		return runner.query("SELECT user_id, username, admin, last_login FROM Users", rsh);
+		return runner.query("SELECT user_id, username, admin, last_login FROM Users ORDER BY username", rsh);
 	}
 
 	public User getUserWithUsername(String username) throws SQLException {

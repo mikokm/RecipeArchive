@@ -31,13 +31,14 @@
 			</div>
 		</div>
 		<br>
-		<c:if test="${drink.ownerId == sessionScope.user.id || sessionScope.user.admin == true}">
-			<form role="form" action="modifyDrink" method="post">
+	<c:if test="${drink.ownerId == sessionScope.user.id || sessionScope.user.admin == true}">
+		<div class="form-group">
+			<form class="form-inline" role="form" action="modifyDrink" method="post">
 				<input type="hidden" name="drinkId" value="${drink.id}">
-				<input type="hidden" name="previous" value="drink?drinkId=${drink.id}">
-				<button type="submit" name="deleteButton" class="btn btn-default">Delete drink</button>
 				<button type="submit" name="modifyButton" class="btn btn-default">Modify drink</button>
+				<button type="submit" name="deleteButton" class="btn btn-default">Delete drink</button>
 			</form>
-		</c:if>
+		</div>
+	</c:if>
 	</div>
 </t:template>

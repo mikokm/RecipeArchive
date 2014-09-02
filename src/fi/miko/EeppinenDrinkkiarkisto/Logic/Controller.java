@@ -32,7 +32,7 @@ public class Controller {
 		actions.add("POST/login", new LoginAction());
 		actions.add("GET/logout", new LogoutAction());
 
-		actions.add("GET/drink", new DrinkAction());
+		actions.add("GET/drink", new DrinkAction("drink.jsp"));
 		actions.add("GET/drinklist", new DrinkListAction());
 
 		actions.add("GET/favourites", new FavouritesAction());
@@ -40,7 +40,6 @@ public class Controller {
 
 		actions.add("GET/createDrink", new RedirectAction("createDrink.jsp", true));
 		actions.add("POST/modifyDrink", new ModifyDrinkAction());
-		actions.add("POST/updateDrink", new UpdateDrinkAction());
 
 		actions.add("GET/admin", new AdminAction());
 		actions.add("GET/createUser", new RedirectAction("createUser.jsp", true));

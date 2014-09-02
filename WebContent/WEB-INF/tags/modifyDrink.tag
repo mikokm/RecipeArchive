@@ -12,7 +12,7 @@
 		</div>
 
 		<div class="form-group">
-			<form role="form" action="updateDrink" method="post">
+			<form role="form" action="modifyDrink" method="post">
 				<div class="row">
 					<div class="col-md-6">
 						<label>Drink name</label>

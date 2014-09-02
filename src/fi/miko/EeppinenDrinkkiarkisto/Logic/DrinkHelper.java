@@ -57,6 +57,11 @@ public class DrinkHelper {
 				return rd.getErrorPage();
 			}
 		}
+		
+		if(drink.getId() == 0) {
+			rd.setError("Unknown error while updating drink: drinkId is 0.");
+			return rd.getErrorPage();
+		}
 
 		// Return to the drink page of the drink that got added or modified.
 		rd.redirect("drink?drinkId=" + drink.getId());

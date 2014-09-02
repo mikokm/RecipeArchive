@@ -14,12 +14,8 @@ import org.joda.time.DateTime;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 
 public class DrinkDAO {
-	public static boolean addDrink(QueryRunner runner, Drink drink) throws SQLException {
-		if (drink.getId() != 0) {
-			return false;
-		}
-
-		String sql = "INSERT INTO Drinks(name, description, image_url, owner_id, date) VALUES(?, ?, ?, ?, now()) RETURNING drink_id";
+	public static void addDrink(QueryRunner runner, Drink drink) throws SQLException {
+		String sql = "INSERT INTO Drinks(name, description, image_url, owner_id, date) VALUES(?, ?, ?, ?, NULL) RETURNING drink_id";
 		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(), drink.getImageUrl(),
 				drink.getOwnerId());
 
@@ -29,8 +25,6 @@ public class DrinkDAO {
 		if (id != 0) {
 			saveDrinkIngredients(runner, drink);
 		}
-
-		return drink.getId() != 0;
 	}
 
 	public static Drink createFromResultSet(ResultSet rs) throws SQLException {
@@ -49,7 +43,11 @@ public class DrinkDAO {
 
 		if (c.contains("date")) {
 			Timestamp ts = rs.getTimestamp("date");
-			String date = new DateTime(ts.getTime()).toString("HH:mm dd.MM.yyy");
+			
+			String date = "never";
+			if(ts != null) {
+				date = new DateTime(ts.getTime()).toString("HH:mm dd.MM.yyy");
+			}
 
 			drink.setDate(date);
 		}

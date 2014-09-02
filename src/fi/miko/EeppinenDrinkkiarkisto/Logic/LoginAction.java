@@ -42,7 +42,7 @@ public class LoginAction implements Action {
 	}
 
 	private boolean checkPassword(User user, String password) {
-		String hash = UserDAO.hashPassword(password, user.getSalt());
+		String hash = UserDAO.getPasswordHash(password, user.getSalt());
 		return user.getPassword().equals(hash);
 	}
 

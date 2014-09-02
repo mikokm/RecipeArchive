@@ -44,8 +44,7 @@ public class Controller {
 		actions.add("GET/admin", new AdminAction());
 		actions.add("GET/createUser", new RedirectAction("createUser.jsp", true));
 		actions.add("POST/modifyUser", new ModifyUserAction());
-
-		actions.add("GET/addDrinkList", new RedirectAction("addDrinkList.jsp", true));
+		actions.add("POST/updateUser", new UpdateUserAction());
 	}
 
 	public Controller(HttpServletRequest request, HttpServletResponse response) {

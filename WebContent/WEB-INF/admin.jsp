@@ -7,13 +7,8 @@
 		<div class="page-header">
 			<h1>Administration</h1>
 		</div>
-
-		<p>
-			<a href="addDrinkList">Import drinklist</a>
-		</p>
-		<p>
-			<a href="createUser">Create a new user</a>
-		</p>
+		
+		<p><a href="createUser">Create a new user</a></p>
 
 		<form role="form" action="modifyUser" method="post">
 			<table class="table table-striped">
@@ -31,11 +26,14 @@
 						<tr>
 							<td><c:out value="${usr.username}" /></td>
 							<td>${usr.id}</td>
-							<td><c:if test="${usr.admin == true}">
+							<td>
+								<c:if test="${usr.admin == true}">
 									<span class="glyphicon glyphicon-check"></span>
-								</c:if> <c:if test="${usr.admin != true}">
+								</c:if>
+								<c:if test="${usr.admin != true}">
 									<span class="glyphicon glyphicon-unchecked"></span>
-								</c:if></td>
+								</c:if>
+							</td>
 							<td><c:out value="${usr.lastLogin}" /></td>
 							<td>
 								<button class="btn btn-default" type="submit" name="modifyButton" value="${usr.id}">Modify</button>

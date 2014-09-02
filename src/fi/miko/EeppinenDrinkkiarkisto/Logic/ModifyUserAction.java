@@ -19,9 +19,6 @@ public class ModifyUserAction implements Action {
 		int removeId = DatabaseHelper.parseId(rd.getParameter("removeButton"));
 		int modifyId = DatabaseHelper.parseId(rd.getParameter("modifyButton"));
 
-		int userId = Math.max(DatabaseHelper.parseId(rd.getParameter("removeButton")),
-				DatabaseHelper.parseId(rd.getParameter("modifyButton")));
-
 		if (modifyId == 0 && removeId == 0) {
 			rd.setError("ModifyUserAction received incorrect parameters!");
 			return rd.getErrorPage();
@@ -31,7 +28,9 @@ public class ModifyUserAction implements Action {
 
 		if (removeId != 0) {
 			try {
-				dao.removeUser(userId);
+				dao.removeUser(removeId);
+				rd.redirect("admin");
+				return null;
 			} catch (SQLException e) {
 				rd.setError("Failed to remove user. Database error: " + e.getMessage());
 				return rd.getErrorPage();

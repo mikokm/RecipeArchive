@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import fi.miko.EeppinenDrinkkiarkisto.Database.DatabaseHelper;
+import fi.miko.EeppinenDrinkkiarkisto.Database.UserDAO;
 import fi.miko.EeppinenDrinkkiarkisto.Model.Drink;
 import fi.miko.EeppinenDrinkkiarkisto.Model.User;
 
@@ -37,6 +38,26 @@ public class ModifyPageHelper {
 	}
 
 	public static User parseUserFormParameters(HttpServletRequest request) {
-		return null;
+		int id = DatabaseHelper.parseId(request.getParameter("userId"));
+		
+		User user = new User(id, request.getParameter("username"));
+		user.setAdmin(request.getParameter("admin") != null);
+		
+		if(id == 0 || request.getParameter("changePassword") != null) {
+			String salt = UserDAO.generateSalt();
+			String password = request.getParameter("password");
+			
+			if(password == null) {
+				password = ""; 
+			}
+
+			String hash = UserDAO.getPasswordHash(password, salt);
+			
+			user.setSalt(salt);
+			user.setPassword(hash);
+		}
+		
+		
+		return user;
 	}
 }

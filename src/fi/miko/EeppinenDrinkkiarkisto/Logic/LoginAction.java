@@ -17,6 +17,10 @@ public class LoginAction implements Action {
 		}
 
 		rd.setAttribute("username", username);
+		
+		if(password == null) {
+			password = "";
+		}
 
 		User user = null;
 		UserDAO dao = new UserDAO(rd.getDataSource());

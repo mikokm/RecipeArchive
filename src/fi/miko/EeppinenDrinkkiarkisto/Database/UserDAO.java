@@ -2,6 +2,7 @@ package fi.miko.EeppinenDrinkkiarkisto.Database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class UserDAO {
 	}
 
 	public void addUser(User user) throws SQLException {
-		String sql = "INSERT INTO Users(username, password, salt, admin, last_login VALUES(?, ?, ?, ?, NULL) RETURNING user_id";
+		String sql = "INSERT INTO Users(username, password, salt, admin, last_login) VALUES(?, ?, ?, ?, NULL) RETURNING user_id";
 		int id = runner.query(sql, new ScalarHandler<Integer>("user_id"), user.getUsername(), user.getPassword(),
 				user.getSalt(), user.getAdmin());
 
@@ -41,7 +42,13 @@ public class UserDAO {
 		}
 
 		if (c.contains("last_login")) {
-			String date = new DateTime(rs.getTimestamp("last_login").getTime()).toString("HH:mm dd.MM.yyy");
+			Timestamp ts = rs.getTimestamp("last_login");
+			
+			String date = "never";
+			
+			if(ts != null) {
+				date = new DateTime(ts.getTime()).toString("HH:mm dd.MM.yyy");
+			}
 			user.setLastLogin(date);
 		}
 
@@ -53,6 +60,10 @@ public class UserDAO {
 	}
 
 	public static String getPasswordHash(String password, String salt) {
+		if(password == null) {
+			password = "";
+		}
+		
 		return DigestUtils.sha1Hex(password + salt);
 	}
 
@@ -86,7 +97,7 @@ public class UserDAO {
 	}
 
 	public void removeUser(int id) throws SQLException {
-		runner.update("DELETE FROM User WHERE user_id = ?", id);
+		runner.update("DELETE FROM Users WHERE user_id = ?", id);
 	}
 
 	public void updateLastLogin(User user) {
@@ -98,7 +109,12 @@ public class UserDAO {
 	}
 
 	public void updateUser(User user) throws SQLException {
-		runner.update("UPDATE Users SET password = ?, salt = ?, admin = ? WHERE user_id = ?", user.getPassword(),
-				user.getSalt(), user.getAdmin(), user.getId());
+		runner.update("UPDATE Users SET username = ?, admin = ? WHERE user_id = ?",
+				user.getUsername(), user.getAdmin(), user.getId());
+	}
+	
+	public void updateUserPassword(User user) throws SQLException {
+		runner.update("UPDATE Users SET password = ?, salt = ? WHERE user_id = ?",
+				user.getPassword(), user.getSalt(), user.getId());
 	}
 }

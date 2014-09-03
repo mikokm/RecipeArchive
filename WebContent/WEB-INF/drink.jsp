@@ -13,7 +13,7 @@
 				<img alt="<c:out value="${drink.name}"/>" src="<c:out value="${drink.imageUrl}" />">
 			</div>
 
-			<div class="container col-md-9">
+			<div class="container col-md-5">
 				<h3>Description</h3>
 				<p><c:out value="${drink.description}"/></p>
 
@@ -28,6 +28,9 @@
 				<c:forEach var="entry" items="${drink.ingredients}">
 				<li><c:out value=" ${entry}"/></li>
 				</c:forEach></ul>
+				
+				<h3>Instructions</h3>
+				<c:out value=" ${drink.instructions}"/>
 			</div>
 		</div>
 		<br>

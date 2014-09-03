@@ -17,8 +17,8 @@ public class LoginAction implements Action {
 		}
 
 		rd.setAttribute("username", username);
-		
-		if(password == null) {
+
+		if (password == null) {
 			password = "";
 		}
 

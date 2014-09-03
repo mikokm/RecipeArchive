@@ -18,6 +18,7 @@ public class ModifyPageHelper {
 
 		Drink drink = new Drink(id, request.getParameter("name"));
 		drink.setDescription(request.getParameter("description"));
+		drink.setInstructions(request.getParameter("instructions"));
 		drink.setImageUrl(request.getParameter("imageUrl"));
 
 		List<String> ingredients = new ArrayList<String>();
@@ -39,25 +40,24 @@ public class ModifyPageHelper {
 
 	public static User parseUserFormParameters(HttpServletRequest request) {
 		int id = DatabaseHelper.parseId(request.getParameter("userId"));
-		
+
 		User user = new User(id, request.getParameter("username"));
 		user.setAdmin(request.getParameter("admin") != null);
-		
-		if(id == 0 || request.getParameter("changePassword") != null) {
+
+		if (id == 0 || request.getParameter("changePassword") != null) {
 			String salt = UserDAO.generateSalt();
 			String password = request.getParameter("password");
-			
-			if(password == null) {
-				password = ""; 
+
+			if (password == null) {
+				password = "";
 			}
 
 			String hash = UserDAO.getPasswordHash(password, salt);
-			
+
 			user.setSalt(salt);
 			user.setPassword(hash);
 		}
-		
-		
+
 		return user;
 	}
 }

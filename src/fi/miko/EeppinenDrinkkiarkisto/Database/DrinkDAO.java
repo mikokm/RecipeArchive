@@ -23,9 +23,10 @@ public class DrinkDAO {
 	}
 
 	public void addDrink(Drink drink) throws SQLException {
-		String sql = "INSERT INTO Drinks(name, description, image_url, owner_id, date) VALUES(?, ?, ?, ?, now()) RETURNING drink_id";
-		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"), drink.getName(), drink.getDescription(),
-				drink.getImageUrl(), drink.getOwnerId());
+		String sql = "INSERT INTO Drinks(name, description, instructions, image_url, owner_id, date) "
+				+ "VALUES(?, ?, ?, ?, ?, now()) RETURNING drink_id";
+		int id = runner.query(sql, new ScalarHandler<Integer>("drink_id"),
+				drink.getName(), drink.getDescription(), drink.getInstructions(), drink.getImageUrl(), drink.getOwnerId());
 
 		drink.setId(id);
 
@@ -42,6 +43,7 @@ public class DrinkDAO {
 		// ResultSet.
 		Drink drink = new Drink(c.getInt("drink_id"), c.getString("name"));
 		drink.setDescription(c.getString("description"));
+		drink.setInstructions(c.getString("instructions"));
 		drink.setImageUrl(c.getString("image_url"));
 		drink.setOwner(c.getString("owner_name"));
 		drink.setOwnerId(c.getInt("owner_id"));
@@ -69,8 +71,8 @@ public class DrinkDAO {
 	}
 
 	public Drink getDrink(int id) throws SQLException {
-		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, Drinks.image_url, Drinks.date, Drinks.owner_id, "
-				+ "Users.username AS owner_name FROM Drinks "
+		String sql = "SELECT Drinks.drink_id, Drinks.name, Drinks.description, Drinks.instructions, Drinks.image_url, "
+				+ "Drinks.date, Drinks.owner_id, Users.username AS owner_name FROM Drinks "
 				+ "LEFT OUTER JOIN Users ON Drinks.owner_id = Users.user_id WHERE Drinks.drink_id = ?";
 
 		ResultSetHandler<Drink> rhs = new ResultSetHandler<Drink>() {
@@ -99,10 +101,9 @@ public class DrinkDAO {
 	}
 
 	public int getDrinkOwnerId(int id) throws SQLException {
-		Integer ownerId = runner.query("SELECT owner_id FROM Drinks WHERE drink_id = ?",
-				new ScalarHandler<Integer>("owner_id"), id);
+		Integer ownerId = runner.query("SELECT owner_id FROM Drinks WHERE drink_id = ?", new ScalarHandler<Integer>("owner_id"), id);
 		// If the ownerId is null, the drink doesn't exists.
-		return ownerId != null ? ownerId : 0; 
+		return ownerId != null ? ownerId : 0;
 	}
 
 	private List<String> getIngredients(int id) throws SQLException {
@@ -119,8 +120,9 @@ public class DrinkDAO {
 	}
 
 	public void updateDrink(Drink drink) throws SQLException {
-		String sql = "UPDATE Drinks SET name = ?, description = ?, image_url = ? " + "WHERE drink_id = ?";
-		runner.update(sql, drink.getName(), drink.getDescription(), drink.getImageUrl(), drink.getId());
+		String sql = "UPDATE Drinks SET name = ?, description = ?, instructions = ?, image_url = ? WHERE drink_id = ?";
+		runner.update(sql, drink.getName(), drink.getDescription(), drink.getInstructions(), drink.getImageUrl(),
+				drink.getId());
 
 		saveDrinkIngredients(drink);
 	}

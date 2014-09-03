@@ -18,41 +18,40 @@ public class UpdateUserAction implements Action {
 		}
 
 		int userId = DatabaseHelper.parseId(rd.getParameter("userId"));
-		
+
 		User user = new User(userId, rd.getParameter("username"));
 		user.setAdmin(rd.getParameter("admin") != null);
-		
 
 		// Generate salt and hash the password + salt.
 		String salt = UserDAO.generateSalt();
 		String password = rd.getParameter("password");
-			
-		if(password == null) {
-			password = ""; 
+
+		if (password == null) {
+			password = "";
 		}
 
 		String hash = UserDAO.getPasswordHash(password, salt);
 		user.setSalt(salt);
 		user.setPassword(hash);
-		
+
 		UserDAO dao = new UserDAO(rd.getDataSource());
 
 		try {
 			// If the drink id is 0, the drink is not in the database.
 			if (user.getId() == 0) {
 				dao.addUser(user);
-				
-				if(user.getId() == 0) {
+
+				if (user.getId() == 0) {
 					rd.setError("Failed to add the user, unknown error!");
 					return rd.getErrorPage();
 				}
 			} else {
 				dao.updateUser(user);
 			}
-			
+
 			// Change password only if the user was just created or
 			// if the change password checkbox is checked.
-			if(userId == 0 || rd.getParameter("changePassword") != null) {
+			if (userId == 0 || rd.getParameter("changePassword") != null) {
 				dao.updateUserPassword(user);
 			}
 		} catch (SQLException e) {
@@ -66,7 +65,7 @@ public class UpdateUserAction implements Action {
 				return rd.getErrorPage();
 			}
 		}
-		
+
 		rd.redirect("admin");
 		return null;
 	}

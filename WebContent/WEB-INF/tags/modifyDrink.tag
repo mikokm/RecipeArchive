@@ -19,6 +19,8 @@
 						<input type="text" name="name" value="${drink.name}" class="form-control">
 						<label>Description</label>
 						<input type="text" name="description" value="${drink.description}" class="form-control">
+						<label>Instructions</label>
+						<textarea name="instructions" rows="5" class="form-control">${drink.instructions}</textarea>
 						<label>Image URL</label>
 						<input type="text" name="imageUrl" value="${drink.imageUrl}" class="form-control">
 					</div>

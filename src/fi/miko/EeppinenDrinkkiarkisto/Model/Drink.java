@@ -6,6 +6,7 @@ public class Drink {
 	private int id;
 	private String name;
 	private String description;
+	private String instructions;
 	private String imageUrl;
 	private String date;
 	private String owner;
@@ -40,6 +41,10 @@ public class Drink {
 
 	public List<String> getIngredients() {
 		return ingredients;
+	}
+
+	public String getInstructions() {
+		return instructions;
 	}
 
 	public String getName() {
@@ -80,6 +85,10 @@ public class Drink {
 
 	public void setIngredients(List<String> ingredients) {
 		this.ingredients = ingredients;
+	}
+
+	public void setInstructions(String instructions) {
+		this.instructions = instructions;
 	}
 
 	public void setName(String name) {

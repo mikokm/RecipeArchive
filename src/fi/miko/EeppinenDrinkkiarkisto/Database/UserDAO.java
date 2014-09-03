@@ -25,10 +25,10 @@ public class UserDAO {
 
 	public void addUser(User user) throws SQLException {
 		String sql = "INSERT INTO Users(username, password, salt, admin, last_login) VALUES(?, ?, ?, ?, NULL) RETURNING user_id";
-		Integer id = runner.query(sql, new ScalarHandler<Integer>("user_id"), user.getUsername(), user.getPassword(),
-				user.getSalt(), user.getAdmin());
+		Integer id = runner.query(sql, new ScalarHandler<Integer>("user_id"),
+				user.getUsername(), user.getPassword(), user.getSalt(), user.getAdmin());
 
-		if(id == null) {
+		if (id == null) {
 			user.setId(0);
 		} else {
 			user.setId(id);
@@ -47,10 +47,10 @@ public class UserDAO {
 
 		if (c.contains("last_login")) {
 			Timestamp ts = rs.getTimestamp("last_login");
-			
+
 			String date = "never";
-			
-			if(ts != null) {
+
+			if (ts != null) {
 				date = new DateTime(ts.getTime()).toString("HH:mm dd.MM.yyy");
 			}
 			user.setLastLogin(date);
@@ -64,10 +64,10 @@ public class UserDAO {
 	}
 
 	public static String getPasswordHash(String password, String salt) {
-		if(password == null) {
+		if (password == null) {
 			password = "";
 		}
-		
+
 		return DigestUtils.sha1Hex(password + salt);
 	}
 
@@ -113,12 +113,11 @@ public class UserDAO {
 	}
 
 	public void updateUser(User user) throws SQLException {
-		runner.update("UPDATE Users SET username = ?, admin = ? WHERE user_id = ?",
-				user.getUsername(), user.getAdmin(), user.getId());
+		runner.update("UPDATE Users SET username = ?, admin = ? WHERE user_id = ?", user.getUsername(),
+				user.getAdmin(), user.getId());
 	}
-	
+
 	public void updateUserPassword(User user) throws SQLException {
-		runner.update("UPDATE Users SET password = ?, salt = ? WHERE user_id = ?",
-				user.getPassword(), user.getSalt(), user.getId());
+		runner.update("UPDATE Users SET password = ?, salt = ? WHERE user_id = ?", user.getPassword(), user.getSalt(), user.getId());
 	}
 }

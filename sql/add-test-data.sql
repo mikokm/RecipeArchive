@@ -4,9 +4,9 @@ INSERT INTO Users (username, password, salt, admin, last_login) VALUES
 
 \set Admin_id '(SELECT user_id FROM Users WHERE username = \'Admin\')'
 
-INSERT INTO Drinks(name, description, image_url, owner_id, date) VALUES
-('Jallu', 'Opiskelijan herkku', 'http://t-mikomynt.users.cs.helsinki.fi/html-demo/images/jallu.jpg', :Admin_id, now()),
-('ullaJ', 'Salanimellinen mysteerijuoma', 'http://t-mikomynt.users.cs.helsinki.fi/html-demo/images/jallu.jpg', :Admin_id, now());
+INSERT INTO Drinks(name, description, instructions, image_url, owner_id, date) VALUES
+('Jallu', 'Opiskelijan herkku', '', 'http://t-mikomynt.users.cs.helsinki.fi/html-demo/images/jallu.jpg', :Admin_id, now()),
+('ullaJ', 'Salanimellinen mysteerijuoma', '', 'http://t-mikomynt.users.cs.helsinki.fi/html-demo/images/jallu.jpg', :Admin_id, now());
 
 \set Jallu1_d '(SELECT drink_id FROM Drinks WHERE name = \'Jallu\')'
 \set Jallu2_d '(SELECT drink_id FROM Drinks WHERE name = \'ullaJ\')'

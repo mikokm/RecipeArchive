@@ -39,6 +39,12 @@ public class ModifyUserAction implements Action {
 
 		if (modifyId != 0) {
 			user = dao.getUser(modifyId);
+			
+			if(user == null || user.getId() != modifyId) {
+				rd.setError("Invalid userId for the modify page!");
+				return rd.getErrorPage();
+			}
+			
 			rd.setAttribute("usr", user);
 			return "modifyUser.jsp";
 		}

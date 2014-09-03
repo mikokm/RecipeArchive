@@ -99,8 +99,10 @@ public class DrinkDAO {
 	}
 
 	public int getDrinkOwnerId(int id) throws SQLException {
-		return runner.query("SELECT owner_id FROM Drinks WHERE drink_id = ?", new ScalarHandler<Integer>("owner_id"),
-				id);
+		Integer ownerId = runner.query("SELECT owner_id FROM Drinks WHERE drink_id = ?",
+				new ScalarHandler<Integer>("owner_id"), id);
+		// If the ownerId is null, the drink doesn't exists.
+		return ownerId != null ? ownerId : 0; 
 	}
 
 	private List<String> getIngredients(int id) throws SQLException {

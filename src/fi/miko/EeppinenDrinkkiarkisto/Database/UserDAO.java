@@ -25,10 +25,14 @@ public class UserDAO {
 
 	public void addUser(User user) throws SQLException {
 		String sql = "INSERT INTO Users(username, password, salt, admin, last_login) VALUES(?, ?, ?, ?, NULL) RETURNING user_id";
-		int id = runner.query(sql, new ScalarHandler<Integer>("user_id"), user.getUsername(), user.getPassword(),
+		Integer id = runner.query(sql, new ScalarHandler<Integer>("user_id"), user.getUsername(), user.getPassword(),
 				user.getSalt(), user.getAdmin());
 
-		user.setId(id);
+		if(id == null) {
+			user.setId(0);
+		} else {
+			user.setId(id);
+		}
 	}
 
 	public static User createFromResult(ResultSet rs) throws SQLException {

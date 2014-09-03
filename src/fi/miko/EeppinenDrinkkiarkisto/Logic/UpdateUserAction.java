@@ -41,6 +41,11 @@ public class UpdateUserAction implements Action {
 			// If the drink id is 0, the drink is not in the database.
 			if (user.getId() == 0) {
 				dao.addUser(user);
+				
+				if(user.getId() == 0) {
+					rd.setError("Failed to add the user, unknown error!");
+					return rd.getErrorPage();
+				}
 			} else {
 				dao.updateUser(user);
 			}

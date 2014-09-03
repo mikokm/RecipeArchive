@@ -38,6 +38,6 @@ public class ColumnChecker {
 	}
 
 	public String getString(String column) throws SQLException {
-		return columns.contains(column) ? rs.getString(column) : null;
+		return columns.contains(column) ? rs.getString(column) : "";
 	}
 }

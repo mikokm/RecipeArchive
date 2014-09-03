@@ -39,7 +39,7 @@ public class FavouritesAction implements Action {
 			if (addId != 0) {
 				error = "Adding favourite";
 				dao.addFavourite(user.getId(), addId);
-				rd.redirect("drinklist");
+				rd.redirect("drinklist#" + addId);
 			} else if (removeId != 0) {
 				error = "Removing favourite";
 				dao.removeFavourite(user.getId(), removeId);

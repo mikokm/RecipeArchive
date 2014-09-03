@@ -25,7 +25,7 @@
 				<tbody>
 					<c:forEach var="drink" items="${drinks}">
 						<tr>
-							<td><a href="drink?drinkId=${drink.id}"><c:out value="${drink.name}"/></a></td>
+							<td><a class="anchor" id="${drink.id}"/></a><a href="drink?drinkId=${drink.id}"><c:out value="${drink.name}"/></a></td>
 							<td><c:out value="${drink.description}"/></td>
 							<td>
 							<c:if test="${(page == 'favourites') || (page == 'drinklist' && !drink.favourite)}">

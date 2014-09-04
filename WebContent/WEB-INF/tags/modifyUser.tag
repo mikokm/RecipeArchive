@@ -16,7 +16,7 @@
 		<form role="form" action="updateUser" method="post">
 			<div class="form-group">
 				<label>User name</label>
-				<input type="text" name="username" class="form-control" value="${usr.username}">
+				<input type="text" name="username" class="form-control" value="<c:out value="${usr.username}"/>">
 			</div>
 			
 			<div class="form-group">

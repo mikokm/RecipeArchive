@@ -4,7 +4,7 @@
 
 <t:template page="drink">
 	<div class="container-fluid">
-		<p><a href="javascript: history.back()">Return to the drinks</a></p>
+		<p><a href="drinklist#${drink.id}">Return to the drinks</a></p>
 	
 		<div class="page-header">
 			<h1><c:out value="${drink.name}"/></h1>
